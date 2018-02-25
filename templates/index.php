@@ -1,0 +1,1 @@
+<?php script($_['appId'], ['../build/main']); ?>

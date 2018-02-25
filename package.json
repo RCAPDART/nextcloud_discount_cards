@@ -1,0 +1,80 @@
+{
+  "scripts": {
+    "build": "node ./node_modules/better-npm-run build",
+    "lint": "eslint -c .eslintrc js",
+    "watch-client": "node ./node_modules/better-npm-run watch-client",
+    "proxy": "node ./node_modules/better-npm-run proxy",
+    "dev": "concurrent --kill-others \"npm run watch-client\" \"npm run proxy\"",
+    "configure": "node ./configure.js"
+  },
+  "betterScripts": {
+    "build": {
+      "command": "webpack --verbose --colors --display-error-details --config webpack/test.js",
+      "env": {
+        "NODE_ENV": "development"
+      }
+    },
+    "proxy": {
+      "command": "node webpack/dev-proxy.js",
+      "env": {
+        "NODE_PATH": "./js",
+        "NODE_ENV": "development"
+      }
+    },
+    "watch-client": {
+      "command": "node webpack/webpack-dev-server.js",
+      "env": {
+        "UV_THREADPOOL_SIZE": 100,
+        "NODE_PATH": "./js"
+      }
+    }
+  },
+  "devDependencies": {
+    "autoprefixer-loader": "*",
+    "babel-core": "*",
+    "babel-eslint": "*",
+    "babel-plugin-transform-async-to-module-method": "*",
+    "babel-plugin-transform-class-properties": "*",
+    "babel-preset-es2015": "*",
+    "babel-preset-react": "*",
+    "better-npm-run": "*",
+    "clean-webpack-plugin": "*",
+    "concurrently": "*",
+    "css-loader": "*",
+    "eslint": "*",
+    "eslint-config-airbnb": "*",
+    "eslint-plugin-react": "*",
+    "express": "*",
+    "express-http-proxy": "*",
+    "extract-text-webpack-plugin": "*",
+    "http-proxy": "*",
+    "json-loader": "*",
+    "less": "*",
+    "less-loader": "*",
+    "prompt": "*",
+    "react-a11y": "*",
+    "react-hot-loader": "*",
+    "redux-devtools-extension": "^2.13.2",
+    "replace": "*",
+    "strip-loader": "*",
+    "style-loader": "*",
+    "webpack": "*",
+    "webpack-dev-server": "*"
+  },
+  "dependencies": {
+    "babel": "*",
+    "babel-loader": "*",
+    "babel-plugin-typecheck": "*",
+    "babel-preset-stage-0": "^6.24.1",
+    "babel-runtime": "*",
+    "bluebird": "*",
+    "immutable": "^3.8.2",
+    "lodash": "^4.17.5",
+    "oc-react-components": "*",
+    "react": "*",
+    "react-beautiful-dnd": "^4.0.1",
+    "react-dom": "*",
+    "react-redux": "^5.0.6",
+    "redux": "^3.7.2"
+  }
+}
