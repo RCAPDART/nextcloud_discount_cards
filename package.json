@@ -5,7 +5,9 @@
     "watch-client": "node ./node_modules/better-npm-run watch-client",
     "proxy": "node ./node_modules/better-npm-run proxy",
     "dev": "concurrent --kill-others \"npm run watch-client\" \"npm run proxy\"",
-    "configure": "node ./configure.js"
+    "configure": "node ./configure.js",
+    "deploy": "node ./deploy.js",
+    "build-deploy": "npm run build && npm run deploy"
   },
   "betterScripts": {
     "build": {
@@ -68,6 +70,7 @@
     "babel-preset-stage-0": "^6.24.1",
     "babel-runtime": "*",
     "bluebird": "*",
+    "ftp-deploy": "^1.2.2",
     "immutable": "^3.8.2",
     "lodash": "^4.17.5",
     "oc-react-components": "*",
@@ -75,6 +78,7 @@
     "react-beautiful-dnd": "^4.0.1",
     "react-dom": "*",
     "react-redux": "^5.0.6",
-    "redux": "^3.7.2"
+    "redux": "^3.7.2",
+    "webpack-cli": "^2.0.8"
   }
 }

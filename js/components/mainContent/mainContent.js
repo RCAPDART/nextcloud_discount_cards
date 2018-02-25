@@ -1,7 +1,7 @@
 import {Component} from 'react';
 import {CardsService} from '../../services/cardsService.js';
 import {Cards} from '../cards/cards.js';
-import style from './mainContent.less';
+import './mainContent.less';
 
 export class MainContent extends Component {
 	constructor(props) {
@@ -12,7 +12,7 @@ export class MainContent extends Component {
 	render () {
 		return (
 			<div>
-				<span>Content page: {this.cardsService.GetName(this.props.name)}</span>
+				<span>Selected page: {this.cardsService.GetName(this.props.name)}</span>
 				<Cards data={this.cards}/>
 			</div>
 		);
