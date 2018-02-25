@@ -2,39 +2,21 @@
   "scripts": {
     "build": "node ./node_modules/better-npm-run build",
     "lint": "eslint -c .eslintrc js",
-    "watch-client": "node ./node_modules/better-npm-run watch-client",
-    "proxy": "node ./node_modules/better-npm-run proxy",
-    "dev": "concurrent --kill-others \"npm run watch-client\" \"npm run proxy\"",
-    "configure": "node ./configure.js",
     "deploy": "node ./deploy.js",
     "build-deploy": "npm run build && npm run deploy"
   },
   "betterScripts": {
     "build": {
-      "command": "webpack --verbose --colors --display-error-details --config webpack/test.js",
+      "command": "webpack --verbose --colors --display-error-details --config webpack/dev.config.js",
       "env": {
         "NODE_ENV": "development"
-      }
-    },
-    "proxy": {
-      "command": "node webpack/dev-proxy.js",
-      "env": {
-        "NODE_PATH": "./js",
-        "NODE_ENV": "development"
-      }
-    },
-    "watch-client": {
-      "command": "node webpack/webpack-dev-server.js",
-      "env": {
-        "UV_THREADPOOL_SIZE": 100,
-        "NODE_PATH": "./js"
       }
     }
   },
   "devDependencies": {
     "autoprefixer-loader": "*",
     "babel-core": "*",
-    "babel-eslint": "*",
+    "babel-eslint": "^8.2.2",
     "babel-plugin-transform-async-to-module-method": "*",
     "babel-plugin-transform-class-properties": "*",
     "babel-preset-es2015": "*",
@@ -43,8 +25,9 @@
     "clean-webpack-plugin": "*",
     "concurrently": "*",
     "css-loader": "*",
-    "eslint": "*",
+    "eslint": "^4.18.1",
     "eslint-config-airbnb": "*",
+    "eslint-loader": "^1.9.0",
     "eslint-plugin-react": "*",
     "express": "*",
     "express-http-proxy": "*",
@@ -74,11 +57,10 @@
     "immutable": "^3.8.2",
     "lodash": "^4.17.5",
     "oc-react-components": "*",
+    "prop-types": "^15.6.0",
     "react": "*",
     "react-beautiful-dnd": "^4.0.1",
     "react-dom": "*",
-    "react-redux": "^5.0.6",
-    "redux": "^3.7.2",
     "webpack-cli": "^2.0.8"
   }
 }

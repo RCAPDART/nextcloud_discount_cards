@@ -1,70 +1,111 @@
+/* eslint-disable no-undef */
 var path = require('path');
 var webpack = require('webpack');
-var assetsPath = path.resolve(__dirname, '../build');
-var host = 'localhost';
-var port = parseInt(process.env.PORT) + 1 || 3001;
+var CleanPlugin = require('clean-webpack-plugin');
+var ExtractTextPlugin = require('extract-text-webpack-plugin');
+
+var relativeAssetsPath = '../build';
+var assetsPath = path.join(__dirname, relativeAssetsPath);
+process.env.NODE_ENV = 'development';
 
 module.exports = {
-	ocRoot: 'http://localhost/owncloud/',
-	appId: 'react_oc_boilerplate',
+    context: path.resolve(__dirname, '..'),
+    entry: {
+        'main': './js/index.jsx'
+    },
+    //output: { path: __dirname, filename: 'bundle.js' },
+    output: {
+        path: assetsPath,
+        filename: '[name].js',
+        chunkFilename: '[name]-[chunkhash].js',
+        publicPath: '/dist/'
+    },
+    module: {
+        loaders: [
+            {
+                test: /.jsx?$/,
+                loader: 'babel-loader',
+                exclude: /node_modules/,
+                query: {
+                    presets: ['es2015', 'react', 'stage-0']
+                }
+            },
+            {
+                test: /\.less$/,
+                use: [
+                    {
+                        loader: "style-loader" // creates style nodes from JS strings
+                    },
+                    {
+                        loader: "css-loader" // translates CSS into CommonJS
+                    },
+                    {
+                        loader: "less-loader" // compiles Less to CSS
+                    }
+                ]
+            },
+            {
+                test: /\.css$/,
+                use: [
+                    'style-loader',
+                    'css-loader'
+                ]
+            },
+            {
+                test: /\.json$/,
+                loader: 'json-loader'
+            },
+            {
+                test: /\.(png|jpg|gif|jpe?g|svg)$/,
+                use: [
+                    {
+                        loader: 'url-loader',
+                        options: {
+                            limit: 8192
+                        }
+                    }
+                ]
+            },
+            {
+                test: /.jsx?$/,
+                exclude: /node_modules/,
+                use: ['eslint-loader']
+            }
+        ]
+    },
+    resolve: {
+        modules: [
+            'src',
+            'node_modules'
+        ],
+        extensions: ['.json', '.js']
+    },
+    plugins: [
+        new CleanPlugin([relativeAssetsPath]),
+        new ExtractTextPlugin("[name].css"),
+        new webpack.DefinePlugin({
+            __CLIENT__: true,
+            __SERVER__: false,
+            __DEVELOPMENT__: true,
+            __DEVTOOLS__: true
+        }),
 
-	webPackPort: port,
-	devtool: 'inline-source-map',
-	context: path.resolve(__dirname, '..'),
-	entry: {
-		'main': [
-			'webpack-dev-server/client?http://' + host + ':' + port,
-			'webpack/hot/only-dev-server',
-			'./js/index.js'
-		]
-	},
-	output: {
-		path: assetsPath,
-		filename: '[name].js',
-		chunkFilename: '[name]-[chunkhash].js',
-		publicPath: 'http://' + host + ':' + port + '/build/'
-	},
-	module: {
-		loaders: [
-			{
-				test: /\.(jpe?g|png|gif|svg)$/,
-				loader: 'url',
-				query: {limit: 10240}
-			},
-			{
-				test: /\.js$/,
-				exclude: /node_modules/,
-				loaders: ['react-hot', 'babel-loader']
-			},
-			{test: /\.json$/, loader: 'json-loader'},
-			{
-				test: /\.css$/,
-				loader: 'style!css?modules&importLoaders=2&sourceMap&localIdentName=[local]___[hash:base64:5]!autoprefixer?browsers=last 2 version!'
-			},
-			{
-				test: /\.less$/,
-				loader: 'style!css?modules&importLoaders=2&sourceMap&localIdentName=[local]___[hash:base64:5]!autoprefixer?browsers=last 2 version!less'
-			}
-		]
-	},
-	progress: true,
-	resolve: {
-		modulesDirectories: [
-			'src',
-			'node_modules'
-		],
-		extensions: ['', '.json', '.js']
-	},
-	plugins: [
-		// hot reload
-		new webpack.HotModuleReplacementPlugin(),
-		new webpack.IgnorePlugin(/\.json$/),
-		new webpack.NoErrorsPlugin(),
-		new webpack.DefinePlugin({
-			__CLIENT__: true,
-			__SERVER__: false,
-			__DEVELOPMENT__: true,
-			__DEVTOOLS__: true  // <-------- DISABLE redux-devtools HERE
-		})
-	]
+        // ignore dev config
+        new webpack.IgnorePlugin(/\.\/dev/, /\/config$/),
+
+        // set global vars
+        new webpack.DefinePlugin({
+            'process.env': {
+                // Useful to reduce the size of client-side libraries, e.g. react
+                NODE_ENV: JSON.stringify('development')
+            }
+        }),
+
+        // optimizations
+        new webpack.optimize.UglifyJsPlugin({
+            //compress: {warnings: false}
+            compress: false,
+            mangle: false,
+        })
+    ]
 };

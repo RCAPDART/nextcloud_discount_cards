@@ -1,6 +1,6 @@
-import { Component } from 'react';
+import React, { Component } from 'react';
 import { SideBar, Entry, Separator, App as AppContainer, Content, ControlBar, Settings } from 'oc-react-components';
-import { MainContent } from './components/mainContent/mainContent.js';
+import { MainContent } from './components/mainContent/mainContent.jsx';
 
 
 export class App extends Component {

@@ -1,7 +1,12 @@
-import {Component} from 'react';
-import style from './card.less';
+import React, {Component} from 'react';
+import PropTypes from 'prop-types';
+import './card.less';
 
 export class Card extends Component {
+    static propTypes = {
+        data: PropTypes.object.isRequired,
+    }
+
 	constructor(props) {
 		super(props);
 	}
