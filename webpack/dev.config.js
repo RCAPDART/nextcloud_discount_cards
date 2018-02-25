@@ -13,7 +13,6 @@ module.exports = {
     entry: {
         'main': './js/index.jsx'
     },
-    //output: { path: __dirname, filename: 'bundle.js' },
     output: {
         path: assetsPath,
         filename: '[name].js',
@@ -101,7 +100,6 @@ module.exports = {
             }
         }),
 
-        // optimizations
         new webpack.optimize.UglifyJsPlugin({
             //compress: {warnings: false}
             compress: false,

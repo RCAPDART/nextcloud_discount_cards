@@ -1,3 +1,4 @@
+/* eslint-disable no-console,no-undef */
 var FtpDeploy = require('ftp-deploy');
 var ftpDeploy = new FtpDeploy();
 
@@ -9,12 +10,12 @@ var config = {
     localRoot: __dirname + "/build",
     remoteRoot: "/build",
     include: ['build/version.txt'],
-    exclude: ['.git', '.idea', 'tmp/*', 'build/*']
+    exclude: ['.git', '.idea', 'tmp/*', '.gitignore']
 }
 
 ftpDeploy.deploy(config, function(err) {
     if (err) console.log(err)
-    else console.log('Deploy finished');
+    else console.log('FTP deployment is finished.');
 });
 
 ftpDeploy.on('uploading', function(data) {
@@ -24,7 +25,9 @@ ftpDeploy.on('uploading', function(data) {
     data.filename;             // partial path with filename being uploaded
 });
 ftpDeploy.on('uploaded', function(data) {
-    console.log(data);         // same data as uploading event
+    //console.log(data);         // same data as uploading event
+    console.log('Uploaded "' + data.filename +
+        '". Progress: ' + data.transferredFileCount + '/' + data.totalFileCount);
 });
 ftpDeploy.on('upload-error', function (data) {
     console.log(data.err); // data will also include filename, relativePath, and other goodies

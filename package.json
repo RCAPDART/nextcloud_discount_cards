@@ -1,66 +1,47 @@
 {
+  "description": "Application for managing discount cards for Nextcloud.",
+  "license": "SEE LICENSE IN LICENSE FILE",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/RCAPDART/nextcloud_discount_cards.git"
+  },
   "scripts": {
-    "build": "node ./node_modules/better-npm-run build",
-    "lint": "eslint -c .eslintrc js",
+    "build": "webpack --verbose --colors --display-error-details --config webpack/dev.config.js",
     "deploy": "node ./deploy.js",
     "build-deploy": "npm run build && npm run deploy"
   },
-  "betterScripts": {
-    "build": {
-      "command": "webpack --verbose --colors --display-error-details --config webpack/dev.config.js",
-      "env": {
-        "NODE_ENV": "development"
-      }
-    }
-  },
   "devDependencies": {
-    "autoprefixer-loader": "*",
+    "lodash": "^4.17.5",
+    "babel": "*",
     "babel-core": "*",
     "babel-eslint": "^8.2.2",
+    "babel-loader": "*",
     "babel-plugin-transform-async-to-module-method": "*",
     "babel-plugin-transform-class-properties": "*",
     "babel-preset-es2015": "*",
     "babel-preset-react": "*",
-    "better-npm-run": "*",
-    "clean-webpack-plugin": "*",
-    "concurrently": "*",
-    "css-loader": "*",
-    "eslint": "^4.18.1",
-    "eslint-config-airbnb": "*",
-    "eslint-loader": "^1.9.0",
-    "eslint-plugin-react": "*",
-    "express": "*",
-    "express-http-proxy": "*",
-    "extract-text-webpack-plugin": "*",
-    "http-proxy": "*",
-    "json-loader": "*",
-    "less": "*",
-    "less-loader": "*",
-    "prompt": "*",
-    "react-a11y": "*",
-    "react-hot-loader": "*",
-    "redux-devtools-extension": "^2.13.2",
-    "replace": "*",
-    "strip-loader": "*",
-    "style-loader": "*",
-    "webpack": "*",
-    "webpack-dev-server": "*"
-  },
-  "dependencies": {
-    "babel": "*",
-    "babel-loader": "*",
-    "babel-plugin-typecheck": "*",
     "babel-preset-stage-0": "^6.24.1",
     "babel-runtime": "*",
-    "bluebird": "*",
+    "clean-webpack-plugin": "*",
+    "eslint": "^4.18.1",
+    "eslint-loader": "^1.9.0",
+    "eslint-plugin-react": "*",
+    "eslint-plugin-import": "^2.7.0",
+    "eslint-plugin-jsx-a11y": "^6.0.2",
+    "extract-text-webpack-plugin": "*",
     "ftp-deploy": "^1.2.2",
-    "immutable": "^3.8.2",
-    "lodash": "^4.17.5",
-    "oc-react-components": "*",
+    "json-loader": "*",
+    "css-loader": "*",
+    "less": "*",
+    "less-loader": "*",
     "prop-types": "^15.6.0",
-    "react": "*",
-    "react-beautiful-dnd": "^4.0.1",
-    "react-dom": "*",
+    "style-loader": "*",
+    "webpack": "*",
     "webpack-cli": "^2.0.8"
+  },
+  "dependencies": {
+    "oc-react-components": "*",
+    "react": "16.0.0",
+    "react-dom": "*"
   }
 }

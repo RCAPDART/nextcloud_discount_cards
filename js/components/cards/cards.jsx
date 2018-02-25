@@ -7,7 +7,7 @@ import PropTypes from "prop-types";
 
 export class Cards extends Component {
     static propTypes = {
-        data: PropTypes.object.isRequired
+        data: PropTypes.array.isRequired
     }
 
 	state = {
@@ -52,7 +52,7 @@ export class Cards extends Component {
 	render () {
 		return (
 			<div className = 'cards'>
-				<OrderingPanel orderKey='order' ascending='true' 
+				<OrderingPanel orderKey='order' ascending={true}
 				orderKeys={this.orderKeys}
 				callback={(orderKey, ascending) => this.reorderCards(orderKey, ascending)} />
 				<div className = 'cardsList'>
