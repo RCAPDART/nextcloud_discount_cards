@@ -1,26 +1,27 @@
 /* eslint-disable no-undef */
-var path = require('path');
-var webpack = require('webpack');
-var CleanPlugin = require('clean-webpack-plugin');
-var ExtractTextPlugin = require('extract-text-webpack-plugin');
-
+const path = require('path');
 var relativeAssetsPath = '../build';
 var assetsPath = path.join(__dirname, relativeAssetsPath);
-process.env.NODE_ENV = 'development';
+var webpack = require('webpack');
 
+// Webpack configuration
 module.exports = {
-    context: path.resolve(__dirname, '..'),
-    entry: {
-        'main': './js/index.jsx'
-    },
+    entry: './js/index.jsx',
     output: {
         path: assetsPath,
-        filename: '[name].js',
-        chunkFilename: '[name]-[chunkhash].js',
-        publicPath: '/dist/'
+        filename: 'main.js',
     },
+    plugins: [
+        new webpack.LoaderOptionsPlugin({ options: {} }),
+        new webpack.DefinePlugin({
+            __CLIENT__: true,
+            __SERVER__: false,
+            __DEVELOPMENT__: true,
+            __DEVTOOLS__: true
+        })
+    ],
     module: {
-        loaders: [
+        rules: [
             {
                 test: /.jsx?$/,
                 loader: 'babel-loader',
@@ -68,42 +69,11 @@ module.exports = {
             {
                 test: /.jsx?$/,
                 exclude: /node_modules/,
-                use: ['eslint-loader']
+                loader: 'eslint-loader'
             }
-        ]
+        ],
     },
     resolve: {
-        modules: [
-            'src',
-            'node_modules'
-        ],
-        extensions: ['.json', '.js']
+        extensions: ['.js', '.jsx'],
     },
-    plugins: [
-        new CleanPlugin([relativeAssetsPath]),
-        new ExtractTextPlugin("[name].css"),
-        new webpack.DefinePlugin({
-            __CLIENT__: true,
-            __SERVER__: false,
-            __DEVELOPMENT__: true,
-            __DEVTOOLS__: true
-        }),
-
-        // ignore dev config
-        new webpack.IgnorePlugin(/\.\/dev/, /\/config$/),
-
-        // set global vars
-        new webpack.DefinePlugin({
-            'process.env': {
-                // Useful to reduce the size of client-side libraries, e.g. react
-                NODE_ENV: JSON.stringify('development')
-            }
-        }),
-
-        new webpack.optimize.UglifyJsPlugin({
-            //compress: {warnings: false}
-            compress: false,
-            mangle: false,
-        })
-    ]
 };
