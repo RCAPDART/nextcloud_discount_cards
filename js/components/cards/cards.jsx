@@ -1,9 +1,21 @@
 import React, { Component } from 'react';
-import { Card } from './card/card.js';
+import {GridList} from 'material-ui/GridList';
+import { Card } from './card/card.jsx';
 import { OrderingPanel } from '../common/orderingPanel/orderingPanel.jsx';
 import { CardsService } from '../../services/cardsService.js';
 import './cards.less';
 import PropTypes from "prop-types";
+
+const styles = {
+    root: {
+        display: 'flex',
+        flexWrap: 'wrap',
+        justifyContent: 'space-around',
+    },
+    gridList: {
+        display: 'flex'
+    },
+};
 
 export class Cards extends Component {
     static propTypes = {
@@ -51,13 +63,17 @@ export class Cards extends Component {
 
 	render () {
 		return (
-			<div className = 'cards'>
+			<div>
 				<OrderingPanel orderKey='order' ascending={true}
-				orderKeys={this.orderKeys}
-				callback={(orderKey, ascending) => this.reorderCards(orderKey, ascending)} />
-				<div className = 'cardsList'>
+					orderKeys={this.orderKeys}
+					callback={(orderKey, ascending) => this.reorderCards(orderKey, ascending)} />
+				<GridList
+					cols={5}
+                    cellHeight={220}
+					style={styles.gridList}
+				>
 					{ this.state.cards.map((item) => <Card key={item.id} data = {item}/>) }
-				</div>
+				</GridList>
 			</div>
 		);
 	}
