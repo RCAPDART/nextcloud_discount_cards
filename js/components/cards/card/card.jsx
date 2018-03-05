@@ -18,16 +18,22 @@ const styles = {
 export class Card extends Component {
     static propTypes = {
         data: PropTypes.object.isRequired,
+        openCardCallback: PropTypes.func.isRequired
     }
 
 	constructor(props) {
 		super(props);
 	}
 
+    openCard () {
+        this.props.openCardCallback(this.props.data.id);
+    }
+
 	render () {
 		const {data} = this.props;
 		return (
             <GridTile
+                onClick = {this.openCard.bind(this)}
 				key = {data.img}
 				cols={1}
 				rows={1}

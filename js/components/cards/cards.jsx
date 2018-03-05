@@ -56,13 +56,13 @@ export class Cards extends BaseComponent {
         });
     }
 
-    openCard (id,b,c) {
+    openCard (id) {
         window.console.log('opened');
         window.console.log(id);
-        window.console.log(b);
-        window.console.log(c);
-        // this.setState({cardOpened: true});
-        // this.setState({selectedCard: card});
+        const card = this.cardsService.GetCardById(this.state.cards, id);
+        window.console.log(card);
+        this.setState({cardOpened: true});
+        this.setState({selectedCard: card});
     }
 
     render() {
@@ -104,7 +104,7 @@ export class Cards extends BaseComponent {
                         <Card
                             key={item.id}
                             data={item}
-                            onClick={(a,b) => this.openCard(a,b,item.id)}
+                            openCardCallback={() => this.openCard(item.id)}
                         />
                     ,this)}
                 </GridList>
