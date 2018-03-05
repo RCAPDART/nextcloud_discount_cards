@@ -11,7 +11,6 @@ export class App extends Component {
 		return (
             <MuiThemeProvider>
 				<div className='discountCardsMainContainer'>
-					<h1>{this.state.page}</h1>
 					<MainContent name={this.state.page}/>
 				</div>
 			</MuiThemeProvider>

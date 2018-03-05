@@ -38,6 +38,9 @@
   "dependencies": {
     "material-ui": "^0.20.0",
     "react": "^16.2.0",
-    "react-dom": "^16.2.0"
+    "react-dom": "^16.2.0",
+    "react-material-icons": "^1.0.3",
+    "react-sizeme": "^2.3.6",
+    "react-window-dimensions": "^1.0.1"
   }
 }

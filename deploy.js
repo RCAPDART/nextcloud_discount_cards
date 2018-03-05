@@ -9,8 +9,9 @@ var config = {
     port: 21,
     localRoot: __dirname + "/build",
     remoteRoot: "/build",
-    include: ['build/version.txt'],
-    exclude: ['.git', '.idea', 'tmp/*', '.gitignore']
+    include: ['build', 'templates'],
+    exclude: ['.git', '.idea', 'tmp/*', '.gitignore', 'node_modules', 'js',
+        'webpack', 'package.json', 'package-lock.json', 'README.md', '.eslintrc', 'deploy.js']
 }
 
 ftpDeploy.deploy(config, function(err) {
@@ -25,7 +26,6 @@ ftpDeploy.on('uploading', function(data) {
     data.filename;             // partial path with filename being uploaded
 });
 ftpDeploy.on('uploaded', function(data) {
-    //console.log(data);         // same data as uploading event
     console.log('Uploaded "' + data.filename +
         '". Progress: ' + data.transferredFileCount + '/' + data.totalFileCount);
 });
