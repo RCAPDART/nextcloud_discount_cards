@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from "prop-types";
 import { Card } from './card/card.jsx';
+import { CardPopup } from './cardPopup/cardPopup.jsx';
 import { OrderingPanel } from '../common/orderingPanel/orderingPanel.jsx';
 import { CardsService } from '../../services/cardsService.js';
 import {BaseComponent} from "../../BaseComponent";
@@ -57,10 +58,7 @@ export class Cards extends BaseComponent {
     }
 
     openCard (id) {
-        window.console.log('opened');
-        window.console.log(id);
         const card = this.cardsService.GetCardById(this.state.cards, id);
-        window.console.log(card);
         this.setState({cardOpened: true});
         this.setState({selectedCard: card});
     }
@@ -82,12 +80,6 @@ export class Cards extends BaseComponent {
             />,
         ];
 
-        function SelectedCard(props){
-            if(props.card != null){
-                return  <Card key={'selectedCard'} data={props.card}/>
-            }
-            return '';
-        }
         return (
             <div>
                 <OrderingPanel
@@ -114,7 +106,7 @@ export class Cards extends BaseComponent {
                     open={this.state.cardOpened}
                     actions={actions}
                 >
-                    <SelectedCard card={this.state.selectedCard}/>
+                    <CardPopup card={this.state.selectedCard}/>
                 </Dialog>
             </div>
         );

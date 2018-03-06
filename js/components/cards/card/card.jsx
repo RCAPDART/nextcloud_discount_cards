@@ -18,7 +18,7 @@ const styles = {
 export class Card extends Component {
     static propTypes = {
         data: PropTypes.object.isRequired,
-        openCardCallback: PropTypes.func.isRequired
+        openCardCallback: PropTypes.func
     }
 
 	constructor(props) {
@@ -26,6 +26,8 @@ export class Card extends Component {
 	}
 
     openCard () {
+		if(this.props.openCardCallback===null || this.props.openCardCallback===undefined)
+			return;
         this.props.openCardCallback(this.props.data.id);
     }
 
