@@ -19,4 +19,15 @@ export class DimensionHelper {
         if(width>this.extraSmallWidth) return 2;
         return 1;
     }
+
+    GetMaxDialogWidth(width){
+        if(width>this.uHdWidth) return 30;
+        if(width>this.quadHdWidth) return 40;
+        if(width>this.fullHdWidth) return 50;
+        if(width>this.mediumWidth) return 60;
+        if(width>this.laptopWidth) return 70;
+        if(width>this.smallWidth) return 80;
+        if(width>this.extraSmallWidth) return 100;
+        return 100;
+    }
 }

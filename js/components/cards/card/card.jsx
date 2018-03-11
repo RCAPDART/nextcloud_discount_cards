@@ -4,16 +4,7 @@ import IconButton from 'material-ui/IconButton';
 import StarBorder from 'material-ui/svg-icons/toggle/star-border';
 import PropTypes from 'prop-types';
 import './card.less';
-
-const styles = {
-    root: {
-        display: 'flex',
-        flexWrap: 'wrap',
-        justifyContent: 'space-around',
-    },
-    gridTile: {
-    },
-};
+import {CommonService} from "../../../services/commonService";
 
 export class Card extends Component {
     static propTypes = {
@@ -23,6 +14,9 @@ export class Card extends Component {
 
 	constructor(props) {
 		super(props);
+        const commonService = new CommonService();
+		this.rgbBack = commonService.HexToRgb(props.data.color);
+		this.invertedColor = commonService.InvertColor(props.data.color);
 	}
 
     openCard () {
@@ -31,21 +25,37 @@ export class Card extends Component {
         this.props.openCardCallback(this.props.data.id);
     }
 
+    getTileStyle() {
+		return {
+            titleStyle: {
+                color: this.invertedColor,
+                fontWeight: 'bold'
+            }
+		}
+	}
+
 	render () {
 		const {data} = this.props;
 		return (
             <GridTile
-                onClick = {this.openCard.bind(this)}
 				key = {data.img}
 				cols={1}
 				rows={1}
-                titleBackground="linear-gradient(to bottom, rgba(0,0,0,0.7) 0%,rgba(0,0,0,0.3) 70%,rgba(0,0,0,0) 100%)"
+                titleBackground = {
+					'linear-gradient(to bottom, ' +
+					'rgba('+this.rgbBack.r+','+this.rgbBack.g+','+this.rgbBack.b+',0.9) 0%, ' +
+                    'rgba('+this.rgbBack.r+','+this.rgbBack.g+','+this.rgbBack.b+',0.5) 70%, ' +
+                    'rgba('+this.rgbBack.r+','+this.rgbBack.g+','+this.rgbBack.b+',0) 100%)'
+                }
 				title = {data.title}
-				style ={styles.gridTile}
+                titleStyle = {this.getTileStyle().titleStyle}
 				subtitle = {''}
-				actionIcon = {<IconButton><StarBorder color="white" /></IconButton>}
+				actionIcon = {<IconButton><StarBorder color={this.invertedColor} /></IconButton>}
 			>
-				<img src = {data.img} />
+				<img
+                    onClick = {this.openCard.bind(this)}
+					className = 'cardImage'
+					src = {data.img} />
 			</GridTile>
 		);
 	}

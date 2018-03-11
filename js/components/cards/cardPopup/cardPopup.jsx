@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
-import Card from '../card/card.jsx'
 import PropTypes from 'prop-types';
 import './cardPopup.less';
+import {Accordion} from "../../common/accordion/accordion";
 
 export class CardPopup extends Component {
     static propTypes = {
@@ -15,7 +15,18 @@ export class CardPopup extends Component {
     render () {
         function RenderCard(props){
             if(props.card != null){
-                return  <Card key={props.card.id} data={props.card}/>
+                return <div className='cardPopup'>
+                    <Accordion title={'Image'} backColor={props.card.color} checked={true}>
+                        <div className='data'>
+                            <img src={props.card.img}/>
+                        </div>
+                    </Accordion>
+                    <Accordion title={'Data'} backColor={props.card.color} checked={false}>
+                        <div className='data'>
+                            <h2>{props.card.title}</h2>
+                        </div>
+                    </Accordion>
+                </div>
             }
             return <span/>;
         }

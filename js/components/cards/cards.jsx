@@ -10,14 +10,15 @@ import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import GridList from 'material-ui/GridList';
 import './cards.less';
-
-const styles = {
-    gridList: {
-        display: 'flex'
-    },
-};
+import {CommonService} from "../../services/commonService";
 
 export class Cards extends BaseComponent {
+    styles = {
+        gridList: {
+            display: 'flex'
+        }
+    };
+
     state = {
         cards: this.props.data,
         selectedCard: this.props.data[0],
@@ -32,6 +33,7 @@ export class Cards extends BaseComponent {
         super(props);
         this.cardsService = new CardsService();
         this.dimensionHelper = new DimensionHelper();
+        this.commonService = new CommonService();
         this.orderKeys = [
             {
                 id: 1,
@@ -63,16 +65,36 @@ export class Cards extends BaseComponent {
         this.setState({selectedCard: card});
     }
 
+    dialogStyle() {
+        return {
+            dialogContent: {
+                padding: '0px',
+                position: 'relative',
+                width: this.dimensionHelper.GetMaxDialogWidth(this.state.width)+'%',
+                maxWidth: 'none'
+            },
+            bodyContent:{
+                padding: '0px'
+            },
+            titleContent:{
+                background: this.state.selectedCard.color,
+                color: this.commonService.InvertColor(this.state.selectedCard.color)
+            }
+        };
+    }
+
     render() {
         const actions = [
             <FlatButton
                 key={1}
+                className='button'
                 label="Cancel"
                 primary={true}
                 onClick={this.handleClose}
             />,
             <FlatButton
                 key={2}
+                className='button'
                 label="Submit"
                 primary={true}
                 keyboardFocused={true}
@@ -89,8 +111,8 @@ export class Cards extends BaseComponent {
                     callback={(orderKey, ascending) => this.reorderCards(orderKey, ascending)}/>
                 <GridList
                     cols={this.dimensionHelper.GetColumns(this.state.width)}
-                    cellHeight={220}
-                    style={styles.gridList}
+                    cellHeight={225}
+                    style={this.styles.gridList}
                 >
                     {this.state.cards.map((item) =>
                         <Card
@@ -101,12 +123,22 @@ export class Cards extends BaseComponent {
                     ,this)}
                 </GridList>
                 <Dialog
+                    className='dialogWindow'
                     title = {this.state.selectedCard.title}
-                    modal={true}
+                    modal={false}
+                    autoScrollBodyContent={true}
                     open={this.state.cardOpened}
                     actions={actions}
+                    contentStyle={this.dialogStyle().dialogContent}
+                    bodyStyle={this.dialogStyle().bodyContent}
+                    repositionOnUpdate={ true }
+                    titleStyle={this.dialogStyle().titleContent}
                 >
-                    <CardPopup card={this.state.selectedCard}/>
+                    <div className='popupWindowContent'>
+                        <CardPopup
+                            card={this.state.selectedCard}
+                        />
+                    </div>
                 </Dialog>
             </div>
         );
