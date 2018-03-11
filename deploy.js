@@ -4,7 +4,7 @@ var ftpDeploy = new FtpDeploy();
 
 var config = {
     username: "ftpuser",
-    password: "tP3U^hZr11s*", // optional, prompted if none given
+    password: "", // optional, prompted if none given
     host: "5.2.75.196",
     port: 21,
     localRoot: __dirname + "/build",
