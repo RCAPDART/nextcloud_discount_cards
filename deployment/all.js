@@ -2,16 +2,25 @@
 var FtpDeploy = require('ftp-deploy');
 var ftpDeploy = new FtpDeploy();
 
+var user = 'ftpuser';
+var password = '';
+var server = '5.2.75.196';
+var port = 21;
+var localRoot = './';
+var remoteRoot = '';
+
 var config = {
-    username: "ftpuser",
-    password: "", // optional, prompted if none given
-    host: "5.2.75.196",
-    port: 21,
-    localRoot: __dirname + "/build",
-    remoteRoot: "/build",
+    username: user,
+    password: password, // optional, prompted if none given
+    host: server,
+    port: port,
+    localRoot: localRoot,
+    remoteRoot: remoteRoot,
     include: ['build', 'templates'],
     exclude: ['.git', '.idea', 'tmp/*', '.gitignore', 'node_modules', 'js',
-        'webpack', 'package.json', 'package-lock.json', 'README.md', '.eslintrc', 'deploy.js']
+        'webpack', 'package.json', 'package-lock.json', 'README.md', '.eslintrc',
+        'deploy.js', 'build.php', 'deployment'
+        ]
 }
 
 ftpDeploy.deploy(config, function(err) {

@@ -8,6 +8,7 @@ export class Accordion extends Component {
         children: PropTypes.object.isRequired,
         title: PropTypes.string.isRequired,
         backColor: PropTypes.string.isRequired,
+        textColor: PropTypes.string.isRequired,
         checked: PropTypes.bool
     }
 
@@ -16,23 +17,23 @@ export class Accordion extends Component {
         const commonService = new CommonService();
         this.style = {
             background: this.props.backColor,
-            color: commonService.InvertColor(this.props.backColor)
+            color: this.props.textColor
         }
         this.id = commonService.GetGuid();
     }
 
-    GetChecked(){
+    GetChecked() {
         if (this.props.checked == null)
             return 'false';
 
-        return this.props.checked ? 'true' : 'false';
+        return this.props.checked ? true : false;
     }
 
-    render () {
+    render() {
         return (
             <div className='accordion'>
-                <input style={this.style} id = {this.id} type='checkbox' name='tabs' checked={this.GetChecked}/>
-                <label style={this.style} htmlFor = {this.id}>{this.props.title}</label>
+                <input style={this.style} id={this.id} type='checkbox' name='tabs' defaultChecked={this.GetChecked()}/>
+                <label style={this.style} htmlFor={this.id}>{this.props.title}</label>
                 <div style={this.style} className='tab-container'>
                     {this.props.children}
                 </div>

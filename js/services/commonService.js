@@ -17,10 +17,6 @@ export class CommonService{
         return '#000000';
     }
 
-    GetTriadicColor(hex){
-        const rgbColor = this.HexToRgb(hex);
-    }
-
     InvertColor(hex) {
         if (hex.indexOf('#') === 0) {
             hex = hex.slice(1);

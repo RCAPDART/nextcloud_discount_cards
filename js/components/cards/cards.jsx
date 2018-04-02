@@ -78,7 +78,7 @@ export class Cards extends BaseComponent {
             },
             titleContent:{
                 background: this.state.selectedCard.color,
-                color: this.commonService.InvertColor(this.state.selectedCard.color)
+                color: this.commonService.GetTextColor(this.state.selectedCard.color)
             }
         };
     }

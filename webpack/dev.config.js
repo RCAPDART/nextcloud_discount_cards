@@ -14,6 +14,9 @@ module.exports = {
     plugins: [
         new webpack.LoaderOptionsPlugin({ options: {} }),
         new webpack.DefinePlugin({
+            'process.env': {
+                PUBLIC_URL: '"/public"',
+            },
             __CLIENT__: true,
             __SERVER__: false,
             __DEVELOPMENT__: true,

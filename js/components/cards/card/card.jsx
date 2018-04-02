@@ -16,7 +16,7 @@ export class Card extends Component {
 		super(props);
         const commonService = new CommonService();
 		this.rgbBack = commonService.HexToRgb(props.data.color);
-		this.invertedColor = commonService.InvertColor(props.data.color);
+		this.invertedColor = props.data.textColor;
 	}
 
     openCard () {
