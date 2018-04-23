@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import './accordion.less';
 import {CommonService} from '../../../services/commonService';
+import {Container} from "../../../baseComponents/container/container";
 
 export class Accordion extends Component {
     static propTypes = {
@@ -31,13 +32,13 @@ export class Accordion extends Component {
 
     render() {
         return (
-            <div className='accordion'>
+            <Container className='accordion'>
                 <input style={this.style} id={this.id} type='checkbox' name='tabs' defaultChecked={this.GetChecked()}/>
                 <label style={this.style} htmlFor={this.id}>{this.props.title}</label>
-                <div style={this.style} className='tab-container'>
+                <Container style={this.style} className='tab-container'>
                     {this.props.children}
-                </div>
-            </div>
+                </Container>
+            </Container>
         );
     }
 }

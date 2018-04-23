@@ -6,11 +6,12 @@ import { OrderingPanel } from '../common/orderingPanel/orderingPanel.jsx';
 import { CardsService } from '../../services/cardsService.js';
 import {BaseComponent} from "../../BaseComponent";
 import {DimensionHelper} from "../../services/dimensionHelper.js";
-import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import GridList from 'material-ui/GridList';
 import './cards.less';
 import {CommonService} from "../../services/commonService";
+import {Container} from "../../baseComponents/container/container";
+import {FullDialog} from "../common/fullDialog/fullDialog";
 
 export class Cards extends BaseComponent {
     styles = {
@@ -27,7 +28,7 @@ export class Cards extends BaseComponent {
 
     static propTypes = {
         data: PropTypes.array.isRequired
-    }
+    };
 
     constructor(props) {
         super(props);
@@ -53,6 +54,7 @@ export class Cards extends BaseComponent {
     };
 
     reorderCards(orderKey, ascending) {
+        window.console.log(orderKey + "  "+ascending);
         const orderedCards = this.cardsService.OrderCards(this.state.cards, orderKey, ascending);
         this.setState({
             cards: orderedCards
@@ -88,22 +90,14 @@ export class Cards extends BaseComponent {
             <FlatButton
                 key={1}
                 className='button'
-                label="Cancel"
+                label="Close"
                 primary={true}
                 onClick={this.handleClose}
-            />,
-            <FlatButton
-                key={2}
-                className='button'
-                label="Submit"
-                primary={true}
-                keyboardFocused={true}
-                onClick={this.handleClose}
-            />,
+            />
         ];
 
         return (
-            <div>
+            <Container>
                 <OrderingPanel
                     orderKey='order'
                     ascending={true}
@@ -122,25 +116,19 @@ export class Cards extends BaseComponent {
                         />
                     ,this)}
                 </GridList>
-                <Dialog
-                    className='dialogWindow'
+                <FullDialog
                     title = {this.state.selectedCard.title}
-                    modal={false}
-                    autoScrollBodyContent={true}
-                    open={this.state.cardOpened}
-                    actions={actions}
-                    contentStyle={this.dialogStyle().dialogContent}
-                    bodyStyle={this.dialogStyle().bodyContent}
-                    repositionOnUpdate={ true }
-                    titleStyle={this.dialogStyle().titleContent}
+                    titleBackground={this.state.selectedCard.color}
+                    titleTextColor={this.state.selectedCard.textColor}
+                    opened={this.state.cardOpened}
+                    footer={actions}
+                    width={this.dimensionHelper.GetMaxDialogWidth(this.state.width)}
                 >
-                    <div className='popupWindowContent'>
-                        <CardPopup
-                            card={this.state.selectedCard}
-                        />
-                    </div>
-                </Dialog>
-            </div>
+                    <CardPopup
+                        card={this.state.selectedCard}
+                    />
+                </FullDialog>
+            </Container>
         );
     }
 }

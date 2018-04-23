@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import './orderItem.less';
 import PropTypes from "prop-types";
+import {Container} from "../../../../baseComponents/container/container";
 
 export class OrderItem extends Component {
     static propTypes = {
@@ -20,10 +21,10 @@ export class OrderItem extends Component {
 	
 	render () {
 		return (
-			<div className = 'orderLink' onClick = {this.onOrderChange.bind(this)}>
+			<Container className = 'orderLink' onClick = {this.onOrderChange.bind(this)}>
 				<span className = 'name unselectable'>{this.props.title}</span>
 				<span className = {'sort-indicator unselectable ' + this.getOrderingClass()}></span>
-			</div>
+			</Container>
 		);
 	}
 }

@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {CardsService} from '../../services/cardsService.js';
 import {Cards} from '../cards/cards.jsx';
 import './mainContent.less';
+import {Container} from "../../baseComponents/container/container";
 
 export class MainContent extends Component {
 	constructor(props) {
@@ -11,9 +12,9 @@ export class MainContent extends Component {
 	}
 	render () {
 		return (
-			<div>
-				<Cards data={this.cards}/>
-			</div>
+			<Container>
+				<Cards data={this.cards}></Cards>
+			</Container>
 		);
 	}
 }

@@ -45,6 +45,7 @@
     "react-dom": "^16.2.0",
     "react-material-icons": "^1.0.3",
     "react-sizeme": "^2.3.6",
-    "react-window-dimensions": "^1.0.1"
+    "react-window-dimensions": "^1.0.1",
+    "roboto-fontface": "^0.9.0"
   }
 }

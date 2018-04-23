@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { OrderItem } from './orderItem/orderItem.jsx';
 import './orderingPanel.less';
 import PropTypes from "prop-types";
+import {Container} from "../../../baseComponents/container/container";
 
 export class OrderingPanel extends Component {
     static propTypes = {
@@ -55,7 +56,7 @@ export class OrderingPanel extends Component {
 
 	render () {
 		return (		
-			<div className = 'orderingPanel'>
+			<Container className = 'orderingPanel'>
 				{ 
 					this.orderKeys.map((orderKey) => 
 						<OrderItem 
@@ -67,7 +68,7 @@ export class OrderingPanel extends Component {
 						/>
 					) 
 				}
-			</div>
+			</Container>
 		);
 	}
 }
