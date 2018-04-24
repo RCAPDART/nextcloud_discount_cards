@@ -30,4 +30,26 @@ export class DimensionHelper {
         if(width>this.extraSmallWidth) return 100;
         return 100;
     }
+
+    GetMaxDialogHeight(width){
+        if(width>this.uHdWidth) return {height: 75, top: 5};
+        if(width>this.quadHdWidth) return {height: 80, top: 5};
+        if(width>this.fullHdWidth) return {height: 85, top: 5};
+        if(width>this.mediumWidth) return {height: 85, top: 5};
+        if(width>this.laptopWidth) return {height: 92, top: 1};
+        if(width>this.smallWidth) return {height: 100, top: 0};
+        if(width>this.extraSmallWidth) return {height: 100, top: 0};
+        return 100;
+    }
+
+    GetCardImageHeight(width){
+        if(width>this.uHdWidth) return 270;
+        if(width>this.quadHdWidth) return 270;
+        if(width>this.fullHdWidth) return 260;
+        if(width>this.mediumWidth) return 250;
+        if(width>this.laptopWidth) return 240;
+        if(width>this.smallWidth) return 230;
+        if(width>this.extraSmallWidth) return 220;
+        return 100;
+    }
 }

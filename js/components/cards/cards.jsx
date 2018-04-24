@@ -67,24 +67,6 @@ export class Cards extends BaseComponent {
         this.setState({selectedCard: card});
     }
 
-    dialogStyle() {
-        return {
-            dialogContent: {
-                padding: '0px',
-                position: 'relative',
-                width: this.dimensionHelper.GetMaxDialogWidth(this.state.width)+'%',
-                maxWidth: 'none'
-            },
-            bodyContent:{
-                padding: '0px'
-            },
-            titleContent:{
-                background: this.state.selectedCard.color,
-                color: this.commonService.GetTextColor(this.state.selectedCard.color)
-            }
-        };
-    }
-
     render() {
         const actions = [
             <FlatButton
@@ -117,12 +99,13 @@ export class Cards extends BaseComponent {
                     ,this)}
                 </GridList>
                 <FullDialog
-                    title = {this.state.selectedCard.title}
+                    title={this.state.selectedCard.title}
                     titleBackground={this.state.selectedCard.color}
                     titleTextColor={this.state.selectedCard.textColor}
                     opened={this.state.cardOpened}
                     footer={actions}
                     width={this.dimensionHelper.GetMaxDialogWidth(this.state.width)}
+                    height={this.dimensionHelper.GetMaxDialogHeight(this.state.width)}
                 >
                     <CardPopup
                         card={this.state.selectedCard}

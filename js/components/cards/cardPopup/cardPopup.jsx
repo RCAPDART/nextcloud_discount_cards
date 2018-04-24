@@ -1,27 +1,36 @@
-import React, {Component} from 'react';
+/* eslint-disable react/prop-types */
+import React from 'react';
 import PropTypes from 'prop-types';
 import './cardPopup.less';
 import FlatButton from 'material-ui/FlatButton';
 import {Barcode} from "../../common/barcode/barcode";
 import {CommonService} from "../../../services/commonService";
 import {Container} from "../../../baseComponents/container/container";
+import {BaseComponent} from "../../../BaseComponent";
+import {DimensionHelper} from "../../../services/dimensionHelper";
 
-export class CardPopup extends Component {
+export class CardPopup extends BaseComponent {
     static propTypes = {
         card: PropTypes.object.isRequired
     };
-
+    //state = {
+   // };
     id = '';
 
     constructor(props) {
         super(props);
+        this.dimensionHelper = new DimensionHelper();
         const commonService = new CommonService();
         this.id = commonService.GetGuid();
     }
 
-    imageDataStyle = {
-        background: this.props.card.color
-    };
+    getImageDataStyle() {
+        if(this.state==null) return null;
+        return {
+            background: this.props.card.color,
+            height: this.dimensionHelper.GetCardImageHeight(this.state.width)+'px'
+        };
+    }
 
     imageStyle = {
         backgroundSize: 'cover',
@@ -32,7 +41,7 @@ export class CardPopup extends Component {
         function RenderCard(props) {
             if (props.card != null) {
                 return <Container className='cardPopup'>
-                    <Container className='imageData' style={props.imageDataStyle}>
+                    <Container className='imageData' style={this.getImageDataStyle()}>
                         <Container className='image' style={props.imageStyle}></Container>
                     </Container>
                     <Container className='barcodeData'>
@@ -58,7 +67,7 @@ export class CardPopup extends Component {
         }
 
         return (
-            <RenderCard card={this.props.card} imageDataStyle={this.imageDataStyle}
+            <RenderCard card={this.props.card}
                         imageStyle={this.imageStyle} id={this.id}/>
         );
     }

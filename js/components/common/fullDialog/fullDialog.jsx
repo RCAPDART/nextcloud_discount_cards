@@ -18,7 +18,8 @@ export class FullDialog extends Component {
         opened: PropTypes.bool,
         titleBackground: PropTypes.string,
         titleTextColor: PropTypes.string,
-        width: PropTypes.number
+        width: PropTypes.number,
+        height: PropTypes.any
     };
 
     constructor(props) {
@@ -38,6 +39,17 @@ export class FullDialog extends Component {
             width = this.props.width;
             marginLeft = (100 - width) / 2;
         }
+
+        if(this.props.height && this.props.height.height !== 100){
+            const height = this.props.height;
+            return {
+                width: width + '%',
+                marginLeft: marginLeft + '%',
+                height: height.height+'%',
+                top: height.top+'%'
+            };
+        }
+
         return {
             width: width + '%',
             marginLeft: marginLeft + '%'
