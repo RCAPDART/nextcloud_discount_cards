@@ -41,7 +41,7 @@ export class CardPopup extends BaseComponent {
         function RenderCard(props) {
             if (props.card != null) {
                 return <Container className='cardPopup'>
-                    <Container className='imageData' style={this.getImageDataStyle()}>
+                    <Container className='imageData' style={props.imageDataStyle}>
                         <Container className='image' style={props.imageStyle}></Container>
                     </Container>
                     <Container className='barcodeData'>
@@ -68,6 +68,7 @@ export class CardPopup extends BaseComponent {
 
         return (
             <RenderCard card={this.props.card}
+                        imageDataStyle={this.getImageDataStyle()}
                         imageStyle={this.imageStyle} id={this.id}/>
         );
     }

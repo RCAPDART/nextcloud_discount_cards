@@ -3,7 +3,7 @@
 $c = \OC::$server;
 
 $appId = 'react_oc_boilerplate';
-$appName = 'React Boilerplate';
+$appName = 'Discount cards';
 
 \OC::$server->getNavigationManager()->add(function () use ($appId, $appName) {
 	return [
