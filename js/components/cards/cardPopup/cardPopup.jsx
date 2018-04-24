@@ -6,6 +6,7 @@ import {CommonService} from "../../../services/commonService";
 import {Container} from "../../../baseComponents/container/container";
 import {DimensionHelper} from "../../../services/dimensionHelper";
 import ModeEdit from 'material-ui/svg-icons/editor/mode-edit';
+import Done from 'material-ui/svg-icons/action/done';
 import IconButton from 'material-ui/IconButton';
 
 export class CardPopup extends Component {
@@ -15,17 +16,21 @@ export class CardPopup extends Component {
     };
     id = '';
 
+    state = {
+        card: this.props.card,
+        edit: false,
+    };
+
     constructor(props) {
         super(props);
         this.dimensionHelper = new DimensionHelper();
         const commonService = new CommonService();
         this.id = commonService.GetGuid();
-        this.setState({edit:false});
     }
 
     getImageDataStyle() {
         return {
-            background: this.props.card.color,
+            background: this.state.card.color,
             height: this.dimensionHelper.GetCardImageHeight(this.props.screenWidth) + 'vh'
         };
     }
@@ -33,14 +38,27 @@ export class CardPopup extends Component {
     toggleEdit(){
         const currentState = this.state.edit;
         this.setState({edit: !currentState});
+        window.console.log(this.state);
     }
 
     imageStyle = {
         backgroundSize: 'cover',
-        background: 'url("' + this.props.card.img + '") scroll no-repeat center/cover'
+        background: 'url("' + this.state.card.img + '") scroll no-repeat center/cover'
     };
 
     render() {
+        function DrawButtons(props) {
+            if(props.edit){
+                return <Done onClick = {props.toggleEdit}>
+                    <ModeEdit color={props.textColor}/>
+                </Done>
+            }
+            else{
+                return <IconButton onClick = {props.toggleEdit}>
+                    <ModeEdit color={props.textColor}/>
+                </IconButton>
+            }
+        }
         function RenderCard(props) {
             if (props.card != null) {
                 return <Container>
@@ -53,7 +71,10 @@ export class CardPopup extends Component {
                         </Container>
                     </Container>
                     <Container className='buttons'>
-                        <IconButton><ModeEdit color={props.card.textColor}/></IconButton>
+                        <DrawButtons
+                            textColor={props.card.textColor}
+                            edit={props.edit}
+                            toggleEdit={props.toggleEdit}/>
                     </Container>
                 </Container>
             }
@@ -61,9 +82,12 @@ export class CardPopup extends Component {
         }
 
         return (
-            <RenderCard card={this.props.card}
+            <RenderCard card={this.state.card}
+                        edit={this.state.edit}
                         imageDataStyle={this.getImageDataStyle()}
-                        imageStyle={this.imageStyle} id={this.id}/>
+                        imageStyle={this.imageStyle} id={this.id}
+                        toggleEdit={this.toggleEdit.bind(this)}
+            />
         );
     }
 }
