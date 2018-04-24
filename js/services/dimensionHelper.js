@@ -6,8 +6,8 @@ export class DimensionHelper {
     fullHdWidth = 1900;
     mediumWidth = 1500;
     laptopWidth = 1100;
-    smallWidth = 900;
-    extraSmallWidth = 600;
+    smallWidth = 800;
+    extraSmallWidth = 500;
 
     GetColumns(width){
         if(width>this.uHdWidth) return 7;
@@ -43,13 +43,13 @@ export class DimensionHelper {
     }
 
     GetCardImageHeight(width){
-        if(width>this.uHdWidth) return 270;
-        if(width>this.quadHdWidth) return 270;
-        if(width>this.fullHdWidth) return 260;
-        if(width>this.mediumWidth) return 250;
-        if(width>this.laptopWidth) return 240;
-        if(width>this.smallWidth) return 230;
-        if(width>this.extraSmallWidth) return 220;
-        return 100;
+        if(width>this.uHdWidth) return 40;
+        if(width>this.quadHdWidth) return 35;
+        if(width>this.fullHdWidth) return 35;
+        if(width>this.mediumWidth) return 35;
+        if(width>this.laptopWidth) return 35;
+        if(width>this.smallWidth) return 35;
+        if(width>this.extraSmallWidth) return 30;
+        return 30;
     }
 }

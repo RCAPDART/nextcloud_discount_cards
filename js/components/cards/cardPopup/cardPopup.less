@@ -1,4 +1,7 @@
 .cardPopup{
+  position: relative;
+  overflow-y: auto;
+  overflow-x: auto;
   .data{
     padding: 5px;
   }
@@ -9,12 +12,12 @@
 }
 
 .barcodeData{
-  height: 135px;
+  height: auto;
   padding: 10px;
   text-align: center;
   .barcodeCanvas{
     width: 90%;
-    height: 100px;
+    height: 10vh;
   }
 
   h2{
@@ -23,7 +26,6 @@
 }
 
 .imageData{
-  height: 340px;
   padding: 5px;
   text-align: center;
   .image{
@@ -36,4 +38,11 @@
     background-size: cover;
     height: 100%;
   }
+}
+.buttons{
+  position: absolute;
+  right: 5px;
+  top: 5px;
+  width: auto;
+  height: auto;
 }

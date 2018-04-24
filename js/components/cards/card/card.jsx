@@ -16,7 +16,6 @@ export class Card extends Component {
 		super(props);
         const commonService = new CommonService();
 		this.rgbBack = commonService.HexToRgb(props.data.color);
-		this.invertedColor = props.data.textColor;
 	}
 
     openCard () {
@@ -28,7 +27,7 @@ export class Card extends Component {
     getTileStyle() {
 		return {
             titleStyle: {
-                color: this.invertedColor,
+                color: this.props.data.textColor,
                 fontWeight: 'bold'
             }
 		}
@@ -50,7 +49,7 @@ export class Card extends Component {
 				title = {data.title}
                 titleStyle = {this.getTileStyle().titleStyle}
 				subtitle = {''}
-				actionIcon = {<IconButton><StarBorder color={this.invertedColor} /></IconButton>}
+				actionIcon = {<IconButton><StarBorder color={this.props.data.textColor} /></IconButton>}
 			>
 				<img
                     onClick = {this.openCard.bind(this)}

@@ -108,6 +108,7 @@ export class Cards extends BaseComponent {
                     height={this.dimensionHelper.GetMaxDialogHeight(this.state.width)}
                 >
                     <CardPopup
+                        screenWidth={this.state.width}
                         card={this.state.selectedCard}
                     />
                 </FullDialog>

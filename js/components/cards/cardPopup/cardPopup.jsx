@@ -1,20 +1,18 @@
-/* eslint-disable react/prop-types */
-import React from 'react';
+import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import './cardPopup.less';
-import FlatButton from 'material-ui/FlatButton';
 import {Barcode} from "../../common/barcode/barcode";
 import {CommonService} from "../../../services/commonService";
 import {Container} from "../../../baseComponents/container/container";
-import {BaseComponent} from "../../../BaseComponent";
 import {DimensionHelper} from "../../../services/dimensionHelper";
+import ModeEdit from 'material-ui/svg-icons/editor/mode-edit';
+import IconButton from 'material-ui/IconButton';
 
-export class CardPopup extends BaseComponent {
+export class CardPopup extends Component {
     static propTypes = {
-        card: PropTypes.object.isRequired
+        card: PropTypes.object.isRequired,
+        screenWidth: PropTypes.number
     };
-    //state = {
-   // };
     id = '';
 
     constructor(props) {
@@ -22,14 +20,19 @@ export class CardPopup extends BaseComponent {
         this.dimensionHelper = new DimensionHelper();
         const commonService = new CommonService();
         this.id = commonService.GetGuid();
+        this.setState({edit:false});
     }
 
     getImageDataStyle() {
-        if(this.state==null) return null;
         return {
             background: this.props.card.color,
-            height: this.dimensionHelper.GetCardImageHeight(this.state.width)+'px'
+            height: this.dimensionHelper.GetCardImageHeight(this.props.screenWidth) + 'vh'
         };
+    }
+
+    toggleEdit(){
+        const currentState = this.state.edit;
+        this.setState({edit: !currentState});
     }
 
     imageStyle = {
@@ -40,26 +43,17 @@ export class CardPopup extends BaseComponent {
     render() {
         function RenderCard(props) {
             if (props.card != null) {
-                return <Container className='cardPopup'>
-                    <Container className='imageData' style={props.imageDataStyle}>
-                        <Container className='image' style={props.imageStyle}></Container>
-                    </Container>
-                    <Container className='barcodeData'>
-                        <Barcode code={props.card.code} id={props.id}/>
+                return <Container>
+                    <Container className='cardPopup'>
+                        <Container className='imageData' style={props.imageDataStyle}>
+                            <Container className='image' style={props.imageStyle}/>
+                        </Container>
+                        <Container className='barcodeData'>
+                            <Barcode code={props.card.code} id={props.id}/>
+                        </Container>
                     </Container>
                     <Container className='buttons'>
-                        <FlatButton
-                            key={1}
-                            className='button'
-                            label="Edit"
-                            primary={true}
-                        />
-                        <FlatButton
-                            key={2}
-                            className='button'
-                            label="Save"
-                            primary={true}
-                        />
+                        <IconButton><ModeEdit color={props.card.textColor}/></IconButton>
                     </Container>
                 </Container>
             }
