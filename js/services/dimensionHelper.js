@@ -36,7 +36,7 @@ export class DimensionHelper {
         if(width>this.quadHdWidth) return {height: 80, top: 5};
         if(width>this.fullHdWidth) return {height: 85, top: 5};
         if(width>this.mediumWidth) return {height: 85, top: 5};
-        if(width>this.laptopWidth) return {height: 92, top: 1};
+        if(width>this.laptopWidth) return {height: 91, top: 1};
         if(width>this.smallWidth) return {height: 100, top: 0};
         if(width>this.extraSmallWidth) return {height: 100, top: 0};
         return 100;

@@ -38,7 +38,6 @@ export class CardPopup extends Component {
     toggleEdit(){
         const currentState = this.state.edit;
         this.setState({edit: !currentState});
-        window.console.log(this.state);
     }
 
     imageStyle = {
@@ -49,12 +48,12 @@ export class CardPopup extends Component {
     render() {
         function DrawButtons(props) {
             if(props.edit){
-                return <Done onClick = {props.toggleEdit}>
-                    <ModeEdit color={props.textColor}/>
-                </Done>
+                return <IconButton className='editButton' onClick = {props.toggleEdit}>
+                    <Done color={props.textColor}/>
+                </IconButton>
             }
             else{
-                return <IconButton onClick = {props.toggleEdit}>
+                return <IconButton className='editButton' onClick = {props.toggleEdit}>
                     <ModeEdit color={props.textColor}/>
                 </IconButton>
             }
