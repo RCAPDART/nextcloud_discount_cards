@@ -58,17 +58,31 @@ export class CardPopup extends Component {
                 </IconButton>
             }
         }
+        function DrawCard(props){
+            if(!props.edit){
+                return <Container className='cardPopup'>
+                    <Container className='imageData' style={props.imageDataStyle}>
+                        <Container className='image' style={props.imageStyle}/>
+                    </Container>
+                    <Container className='barcodeData'>
+                        <Barcode code={props.card.code} id={props.id}/>
+                    </Container>
+                </Container>
+            }
+            else{
+                return <span/>
+            }
+        }
         function RenderCard(props) {
             if (props.card != null) {
                 return <Container>
-                    <Container className='cardPopup'>
-                        <Container className='imageData' style={props.imageDataStyle}>
-                            <Container className='image' style={props.imageStyle}/>
-                        </Container>
-                        <Container className='barcodeData'>
-                            <Barcode code={props.card.code} id={props.id}/>
-                        </Container>
-                    </Container>
+                    <DrawCard
+                        edit={props.edit}
+                        imageDataStyle={props.imageDataStyle}
+                        imageStyle={props.imageStyle}
+                        card={props.card}
+                        id={props.id}
+                    />
                     <Container className='buttons'>
                         <DrawButtons
                             textColor={props.card.textColor}
