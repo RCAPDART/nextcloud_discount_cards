@@ -10,7 +10,7 @@ export class OrderingPanel extends Component {
         ascending: PropTypes.bool.isRequired,
         callback: PropTypes.func.isRequired,
         orderKeys: PropTypes.array.isRequired
-    }
+    };
 
 	state = {
 		orderKey: this.props.orderKey,
@@ -27,7 +27,7 @@ export class OrderingPanel extends Component {
 	
 	onOrderChange (orderKey) {
 		let ascending = this.state.ascending;
-		if (orderKey == this.state.orderKey){
+		if (orderKey === this.state.orderKey){
 			ascending = !ascending;
 		}
 		else{
@@ -42,7 +42,7 @@ export class OrderingPanel extends Component {
 	
 	getOrderingClass(orderKey) {
 		let orderClass = '';
-		if (orderKey == this.state.orderKey) {
+		if (orderKey === this.state.orderKey) {
 			if (this.state.ascending){
 				orderClass = this.orderAscIconClass;
 			}

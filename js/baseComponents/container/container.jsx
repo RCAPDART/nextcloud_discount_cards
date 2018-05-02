@@ -10,7 +10,8 @@ export class Container extends Component {
             PropTypes.array
         ]),
         className: PropTypes.string,
-        style: PropTypes.object
+        style: PropTypes.object,
+        onClick: PropTypes.func
     };
 
     style = null;
@@ -23,7 +24,7 @@ export class Container extends Component {
 
     render() {
         return (
-            <div className={this.props.className} style={this.style}>
+            <div className={this.props.className} style={this.style} onClick={this.props.onClick}>
                 {this.props.children}
             </div>
         );

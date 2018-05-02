@@ -9,7 +9,7 @@ export class OrderItem extends Component {
         title: PropTypes.string.isRequired,
         onOrderChangeCallback: PropTypes.func.isRequired,
         getItemClassState: PropTypes.func.isRequired
-    }
+    };
 
 	onOrderChange () {
 		this.props.onOrderChangeCallback(this.props.orderKey);
@@ -23,7 +23,7 @@ export class OrderItem extends Component {
 		return (
 			<Container className = 'orderLink' onClick = {this.onOrderChange.bind(this)}>
 				<span className = 'name unselectable'>{this.props.title}</span>
-				<span className = {'sort-indicator unselectable ' + this.getOrderingClass()}></span>
+				<span className = {'sort-indicator unselectable ' + this.getOrderingClass()}/>
 			</Container>
 		);
 	}

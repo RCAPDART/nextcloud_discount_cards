@@ -54,7 +54,6 @@ export class Cards extends BaseComponent {
     };
 
     reorderCards(orderKey, ascending) {
-        window.console.log(orderKey + "  "+ascending);
         const orderedCards = this.cardsService.OrderCards(this.state.cards, orderKey, ascending);
         this.setState({
             cards: orderedCards
