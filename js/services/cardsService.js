@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
 'use strict';
-import {find, orderBy} from 'lodash';
+import {cloneDeep, find, orderBy} from 'lodash';
 import {CommonService} from "./commonService";
 
 export class CardsService {
@@ -95,6 +95,10 @@ export class CardsService {
             this.FillCardColors(card);
         });
         return cards;
+    }
+
+    CloneCard(card){
+        return cloneDeep(card);
     }
 
     FillCardColors(card) {

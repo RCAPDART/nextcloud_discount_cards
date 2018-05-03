@@ -25,6 +25,14 @@ export class Barcode extends Component {
     }
 
     componentDidMount() {
+        this.SetBarcode();
+    }
+
+    componentDidUpdate(){
+        this.SetBarcode();
+    }
+
+    SetBarcode(){
         bwipjs(this.props.id, {
             bcid: this.props.type != null ? this.props.type : defaultType,
             text: this.props.code != null ? this.props.code : defaultCode,

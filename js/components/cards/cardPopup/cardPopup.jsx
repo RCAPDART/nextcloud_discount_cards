@@ -43,6 +43,7 @@ export class CardPopup extends Component {
 
     applyEditChanges(updatedCard){
         this.setState({card: updatedCard});
+        window.console.log(this.state.card);
         this.toggleEdit();
     }
 
@@ -82,6 +83,9 @@ export class CardPopup extends Component {
         function RenderCard(props) {
             if (props.card != null) {
                 return <Container>
+                    <Container className={'dialogTitle'}>
+                        <h3>{props.card.title}</h3>
+                    </Container>
                     <DrawCard
                         edit={props.edit}
                         imageDataStyle={props.imageDataStyle}

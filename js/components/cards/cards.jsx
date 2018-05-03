@@ -63,7 +63,7 @@ export class Cards extends BaseComponent {
     openCard (id) {
         const card = this.cardsService.GetCardById(this.state.cards, id);
         this.setState({cardOpened: true});
-        this.setState({selectedCard: card});
+        this.setState({selectedCard: this.cardsService.CloneCard(card)});
     }
 
     render() {
@@ -98,7 +98,6 @@ export class Cards extends BaseComponent {
                     ,this)}
                 </GridList>
                 <FullDialog
-                    title={this.state.selectedCard.title}
                     titleBackground={this.state.selectedCard.color}
                     titleTextColor={this.state.selectedCard.textColor}
                     opened={this.state.cardOpened}
