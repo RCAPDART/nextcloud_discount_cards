@@ -6,36 +6,34 @@ import {Container} from "../../../baseComponents/container/container";
 
 export class Accordion extends Component {
     static propTypes = {
-        children: PropTypes.object.isRequired,
+        children: PropTypes.any.isRequired,
         title: PropTypes.string.isRequired,
-        backColor: PropTypes.string.isRequired,
-        textColor: PropTypes.string.isRequired,
+        style: PropTypes.object,
         checked: PropTypes.bool
-    }
+    };
 
     constructor(props) {
         super(props);
         const commonService = new CommonService();
-        this.style = {
-            background: this.props.backColor,
-            color: this.props.textColor
-        }
         this.id = commonService.GetGuid();
     }
 
     GetChecked() {
         if (this.props.checked == null)
-            return 'false';
+            return false;
 
-        return this.props.checked ? true : false;
+        return this.props.checked;
     }
 
     render() {
         return (
-            <Container className='accordion'>
-                <input style={this.style} id={this.id} type='checkbox' name='tabs' defaultChecked={this.GetChecked()}/>
-                <label style={this.style} htmlFor={this.id}>{this.props.title}</label>
-                <Container style={this.style} className='tab-container'>
+            <Container className='accordion'
+                       style={this.props.style}>
+                <input className='accordionInput'
+                       id={this.id} type='checkbox' name='tabs'
+                       defaultChecked={this.GetChecked()}/>
+                <label htmlFor={this.id}>{this.props.title}</label>
+                <Container className='tab-container'>
                     {this.props.children}
                 </Container>
             </Container>

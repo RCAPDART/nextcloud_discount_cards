@@ -4,10 +4,9 @@
   position: relative;
   margin-bottom: 1px;
   width: 100%;
-  color: @color-white;
   overflow: hidden;
 
-  input {
+  input.accordionInput {
     position: absolute;
     opacity: 0;
     z-index: -1;
@@ -17,7 +16,6 @@
     position: relative;
     display: block;
     padding: 0 0 0 1em;
-    background: @color-second;
     font-weight: bold;
     line-height: 3;
     cursor: pointer;
@@ -26,13 +24,12 @@
   .tab-container {
     max-height: 0;
     overflow: hidden;
-    background: @color-second;
     -webkit-transition: max-height .35s;
     -o-transition: max-height .35s;
     transition: max-height .35s;
   }
 
-  input:checked ~ .tab-container {
+  input.accordionInput:checked ~ .tab-container {
     max-height: 100em;
   }
 
@@ -50,18 +47,18 @@
     transition: all .35s;
   }
 
-  input[type=checkbox] + label::after {
+  input.accordionInput[type=checkbox] + label::after {
     content: "+";
   }
-  input[type=radio] + label::after {
+  input.accordionInput[type=radio] + label::after {
     content: "\25BC";
   }
 
-  input[type=checkbox]:checked + label::after {
+  input.accordionInput[type=checkbox]:checked + label::after {
     transform: rotate(315deg);
   }
 
-  input[type=radio]:checked + label::after {
+  input.accordionInput[type=radio]:checked + label::after {
     transform: rotateX(180deg);
   }
 }

@@ -13,25 +13,24 @@ import {CardEditor} from "./cardEditor/cardEditor";
 export class CardPopup extends Component {
     static propTypes = {
         card: PropTypes.object.isRequired,
+        applyColorChanges: PropTypes.func.isRequired,
         screenWidth: PropTypes.number
     };
     id = '';
 
-    state = {
-        card: this.props.card,
-        edit: false,
-    };
+    state = {};
 
     constructor(props) {
         super(props);
         this.dimensionHelper = new DimensionHelper();
         const commonService = new CommonService();
         this.id = commonService.GetGuid();
+        this.setState({edit: false});
     }
 
     getImageDataStyle() {
         return {
-            background: this.state.card.color,
+            background: this.props.card.color,
             height: this.dimensionHelper.GetCardImageHeight(this.props.screenWidth) + 'vh'
         };
     }
@@ -41,15 +40,20 @@ export class CardPopup extends Component {
         this.setState({edit: !currentState});
     }
 
+    applyColorChanges(updateCard){
+        const background = updateCard.color;
+        const color = updateCard.textColor;
+        this.props.applyColorChanges(background,color);
+    }
+
     applyEditChanges(updatedCard){
         this.setState({card: updatedCard});
-        window.console.log(this.state.card);
         this.toggleEdit();
     }
 
     imageStyle = {
         backgroundSize: 'cover',
-        background: 'url("' + this.state.card.img + '") scroll no-repeat center/cover'
+        background: 'url("' + this.props.card.img + '") scroll no-repeat center/cover'
     };
 
     render() {
@@ -77,14 +81,16 @@ export class CardPopup extends Component {
                 </Container>
             }
             else {
-                return <CardEditor card={props.card} callBack={props.editCallback}/>
+                return <CardEditor card={props.card} callBack={props.editCallback}
+                                   applyColorCallback={props.applyColorCallback}
+                />
             }
         }
         function RenderCard(props) {
             if (props.card != null) {
                 return <Container>
                     <Container className={'dialogTitle'}>
-                        <h3>{props.card.title}</h3>
+                        <h3 style={{color: props.card.textColor}}>{props.card.title}</h3>
                     </Container>
                     <DrawCard
                         edit={props.edit}
@@ -93,6 +99,7 @@ export class CardPopup extends Component {
                         card={props.card}
                         id={props.id}
                         editCallback={props.editCallback}
+                        applyColorCallback={props.applyColorCallback}
                     />
                     <Container className='buttons'>
                         <DrawButtons
@@ -106,11 +113,12 @@ export class CardPopup extends Component {
         }
 
         return (
-            <RenderCard card={this.state.card}
+            <RenderCard card={this.props.card}
                         edit={this.state.edit}
                         imageDataStyle={this.getImageDataStyle()}
                         imageStyle={this.imageStyle} id={this.id}
                         editCallback={this.applyEditChanges.bind(this)}
+                        applyColorCallback={this.applyColorChanges.bind(this)}
                         toggleEdit={this.toggleEdit.bind(this)}
             />
         );

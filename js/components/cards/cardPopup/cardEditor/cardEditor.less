@@ -1,31 +1,37 @@
-.cardEditor{
-  padding: 10px;
-  .editorInput{
-    margin-bottom: 25px;
-    border-bottom: 1px black solid;
-    padding-bottom: 15px;
-    h2{
-      padding-left: 5px;
-    }
-    input{
-      width: 100%;
-    }
+.cardEditor {
+  h2 {
+    padding-left: 5px;
+  }
+  input {
+    width: calc(100% - 12px);
+    margin: 6px;
+  }
 
-    .swatches-picker{
-      width: 90%!important;
-      margin-left: 5%!important;
-    }
+  .swatches-picker {
+    width: 90% !important;
+    margin-left: 5% !important;
+  }
 
-    .barcode{
-      .barcodeCanvas{
-        width: 90%;
-        margin-left: 5%;
-        height: 12vh;
-      }
-      h2{
-        text-align: center;
-        padding-left: 0;
-      }
+  .barcode {
+    .barcodeCanvas {
+      width: 90%;
+      margin-left: 5%;
+      height: 12vh;
+    }
+    h2 {
+      text-align: center;
+      padding-left: 0;
+    }
+  }
+  .confirmButton{
+    cursor: pointer;
+    overflow: hidden;
+    span{
+      font-weight: 400;
+      font-size: 16px;
+    }
+    .confirmButton{
+      display: inline;
     }
   }
 }

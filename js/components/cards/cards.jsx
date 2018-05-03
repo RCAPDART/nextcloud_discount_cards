@@ -66,6 +66,13 @@ export class Cards extends BaseComponent {
         this.setState({selectedCard: this.cardsService.CloneCard(card)});
     }
 
+    applyColorChanges(background, color){
+        const card = this.state.selectedCard;
+        card.color = background;
+        card.textColor = color;
+        this.setState({selectedCard: card});
+    }
+
     render() {
         const actions = [
             <FlatButton
@@ -108,6 +115,7 @@ export class Cards extends BaseComponent {
                     <CardPopup
                         screenWidth={this.state.width}
                         card={this.state.selectedCard}
+                        applyColorChanges={this.applyColorChanges.bind(this)}
                     />
                 </FullDialog>
             </Container>

@@ -17,7 +17,13 @@ export class Barcode extends Component {
         type: PropTypes.string,
         scale: PropTypes.number,
         height: PropTypes.number,
-        showText: PropTypes.bool
+        showText: PropTypes.bool,
+        textColor: PropTypes.string
+    };
+
+
+    state = {
+        code: ''
     };
 
     constructor(props) {
@@ -25,11 +31,18 @@ export class Barcode extends Component {
     }
 
     componentDidMount() {
-        this.SetBarcode();
+        this.TrySetBarcode();
     }
 
     componentDidUpdate(){
-        this.SetBarcode();
+        this.TrySetBarcode();
+    }
+
+    TrySetBarcode(){
+        if(this.state.code !== this.props.code){
+            this.SetBarcode();
+            this.setState({code: this.props.code});
+        }
     }
 
     SetBarcode(){
@@ -55,8 +68,9 @@ export class Barcode extends Component {
     render() {
         return (
             <Container className='barcode' id={idPrefix + this.props.id}>
-                <canvas className='barcodeCanvas' id={this.props.id}></canvas>
-                <h2 className={(this.props.showText == null ? true : this.props.showText) ? '' : 'hide'}>
+                <canvas className='barcodeCanvas' id={this.props.id}/>
+                <h2 style={{color: this.props.textColor}}
+                    className={(this.props.showText == null ? true : this.props.showText) ? '' : 'hide'}>
                     {this.GetText()}
                 </h2>
             </Container>
