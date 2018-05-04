@@ -13,7 +13,7 @@ export class CardEditor extends Component {
     static propTypes = {
         card: PropTypes.object.isRequired,
         callBack: PropTypes.func.isRequired,
-        applyColorCallback: PropTypes.func.isRequired
+        applyChanges: PropTypes.func.isRequired
     };
 
     constructor(props) {
@@ -55,7 +55,6 @@ export class CardEditor extends Component {
         editableCard.color = color.hex;
         editableCard.textColor =  this.getCommonService().GetTextColor(this.state.editableCard.color);
         this.setState({backColor: editableCard.color, textColor: editableCard.textColor});
-        this.props.applyColorCallback(editableCard);
         this.updateCardState(editableCard);
     }
 
@@ -70,6 +69,7 @@ export class CardEditor extends Component {
 
     updateCardState(editableCard) {
         this.setState({editableCard: editableCard});
+        this.props.applyChanges(editableCard, true);
     }
 
     applyChanges() {

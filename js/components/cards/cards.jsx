@@ -24,6 +24,7 @@ export class Cards extends BaseComponent {
         cards: this.props.data,
         selectedCard: this.props.data[0],
         cardOpened: false,
+        editing: false
     };
 
     static propTypes = {
@@ -62,15 +63,14 @@ export class Cards extends BaseComponent {
 
     openCard (id) {
         const card = this.cardsService.GetCardById(this.state.cards, id);
-        this.setState({cardOpened: true});
-        this.setState({selectedCard: this.cardsService.CloneCard(card)});
+        let isEdit = false;
+        if(id===0) isEdit = true;
+        this.setState({cardOpened: true, editing: isEdit,selectedCard: this.cardsService.CloneCard(card)});
     }
 
-    applyColorChanges(background, color){
-        const card = this.state.selectedCard;
-        card.color = background;
-        card.textColor = color;
-        this.setState({selectedCard: card});
+    applyChanges(card, editing){
+        this.setState({selectedCard: card, editing: editing});
+        window.console.log(this.state);
     }
 
     render() {
@@ -115,7 +115,8 @@ export class Cards extends BaseComponent {
                     <CardPopup
                         screenWidth={this.state.width}
                         card={this.state.selectedCard}
-                        applyColorChanges={this.applyColorChanges.bind(this)}
+                        isEdit={this.state.editing}
+                        applyColorChanges={this.applyChanges.bind(this)}
                     />
                 </FullDialog>
             </Container>

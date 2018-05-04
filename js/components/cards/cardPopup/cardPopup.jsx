@@ -14,18 +14,16 @@ export class CardPopup extends Component {
     static propTypes = {
         card: PropTypes.object.isRequired,
         applyColorChanges: PropTypes.func.isRequired,
+        isEdit: PropTypes.bool.isRequired,
         screenWidth: PropTypes.number
     };
     id = '';
-
-    state = {};
 
     constructor(props) {
         super(props);
         this.dimensionHelper = new DimensionHelper();
         const commonService = new CommonService();
         this.id = commonService.GetGuid();
-        this.setState({edit: false});
     }
 
     getImageDataStyle() {
@@ -36,14 +34,11 @@ export class CardPopup extends Component {
     }
 
     toggleEdit(){
-        const currentState = this.state.edit;
-        this.setState({edit: !currentState});
+        this.applyChanges(this.props.card, !this.props.isEdit);
     }
 
-    applyColorChanges(updateCard){
-        const background = updateCard.color;
-        const color = updateCard.textColor;
-        this.props.applyColorChanges(background,color);
+    applyChanges(updateCard, isEdit){
+        this.props.applyColorChanges(updateCard, isEdit);
     }
 
     applyEditChanges(updatedCard){
@@ -82,7 +77,7 @@ export class CardPopup extends Component {
             }
             else {
                 return <CardEditor card={props.card} callBack={props.editCallback}
-                                   applyColorCallback={props.applyColorCallback}
+                                   applyChanges={props.applyChanges}
                 />
             }
         }
@@ -99,7 +94,7 @@ export class CardPopup extends Component {
                         card={props.card}
                         id={props.id}
                         editCallback={props.editCallback}
-                        applyColorCallback={props.applyColorCallback}
+                        applyChanges={props.applyChanges}
                     />
                     <Container className='buttons'>
                         <DrawButtons
@@ -114,11 +109,11 @@ export class CardPopup extends Component {
 
         return (
             <RenderCard card={this.props.card}
-                        edit={this.state.edit}
+                        edit={this.props.isEdit}
                         imageDataStyle={this.getImageDataStyle()}
                         imageStyle={this.imageStyle} id={this.id}
                         editCallback={this.applyEditChanges.bind(this)}
-                        applyColorCallback={this.applyColorChanges.bind(this)}
+                        applyChanges={this.applyChanges.bind(this)}
                         toggleEdit={this.toggleEdit.bind(this)}
             />
         );
