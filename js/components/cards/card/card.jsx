@@ -1,21 +1,30 @@
-import React, {Component} from 'react';
-import {GridTile} from 'material-ui/GridList';
+import Chip from 'material-ui/Chip';
 import IconButton from 'material-ui/IconButton';
 import StarBorder from 'material-ui/svg-icons/toggle/star-border';
 import PropTypes from 'prop-types';
+import React, {Component} from 'react';
+
+import { CommonService } from "../../../services/commonService";
+import { GridTile } from 'material-ui/GridList';
+import { StyleService } from './StyleService';
+
 import './card.less';
-import {CommonService} from "../../../services/commonService";
+import {Container} from "../../../baseComponents/container/container";
 
 export class Card extends Component {
     static propTypes = {
         data: PropTypes.object.isRequired,
         openCardCallback: PropTypes.func
-    }
+    };
 
 	constructor(props) {
 		super(props);
-        const commonService = new CommonService();
-		this.rgbBack = commonService.HexToRgb(props.data.color);
+        this.commonService = new CommonService();
+        this.styleService = new StyleService();
+	}
+
+	getRGB(){
+		return CommonService.HexToRgb(this.props.data.color);
 	}
 
     openCard () {
@@ -42,15 +51,22 @@ export class Card extends Component {
 				rows={1}
                 titleBackground = {
 					'linear-gradient(to bottom, ' +
-					'rgba('+this.rgbBack.r+','+this.rgbBack.g+','+this.rgbBack.b+',0.9) 0%, ' +
-                    'rgba('+this.rgbBack.r+','+this.rgbBack.g+','+this.rgbBack.b+',0.5) 70%, ' +
-                    'rgba('+this.rgbBack.r+','+this.rgbBack.g+','+this.rgbBack.b+',0) 100%)'
+					'rgba('+this.getRGB().r+','+this.getRGB().g+','+this.getRGB().b+',0.9) 0%, ' +
+                    'rgba('+this.getRGB().r+','+this.getRGB().g+','+this.getRGB().b+',0.5) 70%, ' +
+                    'rgba('+this.getRGB().r+','+this.getRGB().g+','+this.getRGB().b+',0) 100%)'
                 }
 				title = {data.title}
                 titleStyle = {this.getTileStyle().titleStyle}
 				subtitle = {''}
 				actionIcon = {<IconButton><StarBorder color={this.props.data.textColor} /></IconButton>}
 			>
+				<Container className = 'chipTags'>
+					{this.props.data.tags.map((item) =>
+							<Chip className = 'chipTag' key = {item.id} style={this.styleService.GetChipStyles()}>
+								{item.title}
+							</Chip>
+						,this)}
+				</Container>
 				<img
                     onClick = {this.openCard.bind(this)}
 					className = 'cardImage'

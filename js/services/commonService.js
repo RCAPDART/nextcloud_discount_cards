@@ -1,5 +1,5 @@
 export class CommonService{
-    HexToRgb(hex) {
+    static HexToRgb(hex) {
         const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
         return result ? {
             r: parseInt(result[1], 16),
@@ -8,8 +8,8 @@ export class CommonService{
         } : null;
     }
 
-    GetTextColor(hex){
-        const rgbColor = this.HexToRgb(hex);
+    static GetTextColor(hex){
+        const rgbColor = CommonService.HexToRgb(hex);
         const colorMass = rgbColor.r+ rgbColor.g+rgbColor.b;
         if(colorMass < 382){
             return '#ffffff';

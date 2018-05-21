@@ -19,7 +19,7 @@
  *
  */
 
-namespace OCA\react_oc_boilerplate\Controller;
+namespace OCA\discount_cards\Controller;
 
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http\ContentSecurityPolicy;
@@ -28,7 +28,7 @@ use OCP\AppFramework\Http\TemplateResponse;
 /**
  * Class PageController
  *
- * @package OCA\React_OC_Boilerplate\Controller
+ * @package OCA\Discount_cards\Controller
  */
 class PageController extends Controller {
 	/**

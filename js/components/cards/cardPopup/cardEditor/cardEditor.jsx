@@ -12,8 +12,7 @@ import {Accordion} from "../../../common/accordion/accordion";
 export class CardEditor extends Component {
     static propTypes = {
         card: PropTypes.object.isRequired,
-        callBack: PropTypes.func.isRequired,
-        applyChanges: PropTypes.func.isRequired
+        callBack: PropTypes.func.isRequired
     };
 
     constructor(props) {
@@ -69,7 +68,6 @@ export class CardEditor extends Component {
 
     updateCardState(editableCard) {
         this.setState({editableCard: editableCard});
-        this.props.applyChanges(editableCard, true);
     }
 
     applyChanges() {
@@ -102,10 +100,12 @@ export class CardEditor extends Component {
                            title='Color'>
                         <SwatchesPicker onChange={this.handleChangeColor.bind(this)}/>
                     </Accordion>
-                    <Container className="confirmButton" onClick={this.applyChanges.bind(this)}>
-                        <span style={{color: this.state.backColor}}>Save changes</span>
-                        <IconButton className='editButton' onClick={this.applyChanges.bind(this)}>
-                            <ModeEdit color={this.state.backColor}/>
+                    <Container style = {{background: this.state.backColor}}
+                               className="confirmButton"
+                               onClick={this.applyChanges.bind(this)}>
+                        <span style={{color: this.state.textColor}}>Save changes</span>
+                        <IconButton className='editButton'>
+                            <ModeEdit color={this.state.textColor}/>
                         </IconButton>
                     </Container>
             </Container>

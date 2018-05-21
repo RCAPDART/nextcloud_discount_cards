@@ -2,7 +2,7 @@
 
 $c = \OC::$server;
 
-$appId = 'react_oc_boilerplate';
+$appId = 'discount_cards';
 $appName = 'Discount cards';
 
 \OC::$server->getNavigationManager()->add(function () use ($appId, $appName) {

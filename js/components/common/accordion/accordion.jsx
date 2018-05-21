@@ -12,17 +12,14 @@ export class Accordion extends Component {
         checked: PropTypes.bool
     };
 
+    state = {
+        expanded: this.props.checked != null ? this.props.checked : false
+    };
+
     constructor(props) {
         super(props);
         const commonService = new CommonService();
         this.id = commonService.GetGuid();
-    }
-
-    GetChecked() {
-        if (this.props.checked == null)
-            return false;
-
-        return this.props.checked;
     }
 
     render() {
@@ -31,7 +28,7 @@ export class Accordion extends Component {
                        style={this.props.style}>
                 <input className='accordionInput'
                        id={this.id} type='checkbox' name='tabs'
-                       defaultChecked={this.GetChecked()}/>
+                       defaultChecked={this.state.expanded}/>
                 <label htmlFor={this.id}>{this.props.title}</label>
                 <Container className='tab-container'>
                     {this.props.children}
