@@ -20,7 +20,7 @@ export class CardsService {
 
     static FillCardsColors(cards) {
         cards.forEach((card) => {
-            CommonService.FillCardColors(card);
+            CardsService.FillCardColors(card);
         });
         return cards;
     }
