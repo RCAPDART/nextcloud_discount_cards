@@ -1,22 +1,39 @@
-import {Component} from 'react';
+import { Component } from 'react';
 
 export class BaseComponent extends Component {
+    eventListenerEnabled = false;
+    lastResize = 0;
+    delay = 50;
+
     onResize() {
+        if (this.lastClick >= (Date.now() -this. delay))
+            return;
+        this.lastClick = Date.now();
+
+        const width = window.innerWidth;
+        if(this.state.width === width) return;
         this.setState({
-            width: window.innerWidth,
-            height: window.innerHeight
+            width: width
         });
     }
+
     constructor(props) {
         super(props);
     }
+
     componentDidMount() {
         this.onResize();
     }
+
     componentWillMount () {
-        window.addEventListener('resize', () => this.onResize());
+        if(!this.eventListenerEnabled) {
+            window.addEventListener('resize', () => this.onResize());
+            this.eventListenerEnabled = true;
+        }
     }
+
     componentWillUnmount() {
-        window.removeEventListener('resize', this.onResize);
+        if(this.eventListenerEnabled)
+            window.removeEventListener('resize', this.onResize);
     }
 }

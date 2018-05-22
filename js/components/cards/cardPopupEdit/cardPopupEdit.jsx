@@ -46,12 +46,14 @@ export class CardPopupEdit extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
+        if (this.props.opened) return;
         this.setState({
             openedCard: CardsService.CloneCard(nextProps.card),
             color: nextProps.card.color,
             editedCard: nextProps.card,
             textColor: nextProps.card.textColor,
-            title: nextProps.card.title});
+            title: nextProps.card.title,
+            isEdit: false});
     }
 
     toggleEdit() {

@@ -5,11 +5,10 @@ import { CommonService } from "./commonService";
 import { MockService } from "./MockService";
 
 export class CardsService {
-    base64Img = MockService.GetImagePlaceholder();
     cards = [];
 
     static GetCardsFromApi() {
-        return MockService.GetCardsPlaceholder(this.base64Img);
+        return MockService.GetCardsPlaceholder();
     }
 
     GetCards() {

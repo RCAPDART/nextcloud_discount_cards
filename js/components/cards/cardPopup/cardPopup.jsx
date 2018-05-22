@@ -1,14 +1,16 @@
-import React, {Component} from 'react';
-import PropTypes from 'prop-types';
-import './cardPopup.less';
-import {Barcode} from "../../common/barcode/barcode";
-import {CommonService} from "../../../services/commonService";
-import {Container} from "../../../baseComponents/container/container";
-import {DimensionHelper} from "../../../services/dimensionHelper";
-import ModeEdit from 'material-ui/svg-icons/editor/mode-edit';
 import Clear from 'material-ui/svg-icons/content/clear';
 import IconButton from 'material-ui/IconButton';
-import {CardEditor} from "./cardEditor/cardEditor";
+import ModeEdit from 'material-ui/svg-icons/editor/mode-edit';
+import PropTypes from 'prop-types';
+import React, {Component} from 'react';
+
+import { Barcode } from "../../common/barcode/barcode";
+import { CardEditor } from "./cardEditor/cardEditor";
+import { CommonService } from "../../../services/commonService";
+import { Container } from "../../../baseComponents/container/container";
+import { DimensionHelper } from "../../../services/dimensionHelper";
+
+import './cardPopup.less';
 
 export class CardPopup extends Component {
     static propTypes = {

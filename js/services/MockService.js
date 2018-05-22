@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 export class MockService {
 
     static GetTagsPlaceholder(){
@@ -32,11 +33,11 @@ export class MockService {
             }];
     }
 
-    static GetCardsPlaceholder(base64Img){
+    static GetCardsPlaceholder(){
         return [
             {
                 id: 1, title: "MVideo", link: "https://mvideo.ru",
-                code: "1234567890", order: 2, img: base64Img, color: '#f44336',
+                code: "1234567890", order: 2, img: MockService.GetImagePlaceholder(), color: '#f44336',
                 tags: [{id: 1,title: 'Shops'},{id: 2,title: 'Electronics'},
                     {id: 3,title: 'Russia'},{id: 4,title: 'Yaroslavl'},
                     {id: 5,title: 'Test1'},{id: 6,title: 'TestTest2'},
@@ -45,60 +46,60 @@ export class MockService {
             },
             {
                 id: 2, title: "Mediamarkt", link: "https://mediamarkt.ru",
-                code: "2345678901", order: 1, img: base64Img, color: '#ff9800',
+                code: "2345678901", order: 1, img: MockService.GetImagePlaceholder(), color: '#ff9800',
                 tags: [{id: 1,title: 'Shops'},{id: 2,title: 'Electronics'},
                     {id: 3,title: 'Russia'},{id: 4,title: 'Yaroslavl'}]
             },
             {
                 id: 3, title: "Eldorado", link: "https://eldorado.ru",
-                code: "3456789012", order: 4, img: base64Img, color: '#9c27b0',
+                code: "3456789012", order: 4, img: MockService.GetImagePlaceholder(), color: '#9c27b0',
                 tags: [{id: 1,title: 'Shops'},{id: 2,title: 'Electronics'},
                     {id: 3,title: 'Russia'},{id: 4,title: 'Yaroslavl'}]
             },
             {
                 id: 4, title: "Svyaznoy", link: "https://ya.ru",
-                code: "4567890123", order: 3, img: base64Img, color: '#3f51b5',
+                code: "4567890123", order: 3, img: MockService.GetImagePlaceholder(), color: '#3f51b5',
                 tags: [{id: 1,title: 'Shops'},{id: 2,title: 'Electronics'},
                     {id: 3,title: 'Russia'},{id: 4,title: 'Yaroslavl'}]
             },
             {
                 id: 5, title: "MTS", link: "https://mts.ru",
-                code: "7654321098", order: 5, img: base64Img, color: '#2196f3',
+                code: "7654321098", order: 5, img: MockService.GetImagePlaceholder(), color: '#2196f3',
                 tags: [{id: 1,title: 'Shops'},{id: 2,title: 'Electronics'},
                     {id: 3,title: 'Russia'},{id: 4,title: 'Yaroslavl'}]
             },
             {
                 id: 6, title: "MVideo", link: "https://mvideo.ru",
-                code: "1234567890", order: 6, img: base64Img, color: '#03a9f4',
+                code: "1234567890", order: 6, img: MockService.GetImagePlaceholder(), color: '#03a9f4',
                 tags: [{id: 1,title: 'Shops'},{id: 2,title: 'Electronics'},
                     {id: 3,title: 'Russia'},{id: 4,title: 'Yaroslavl'}]
             },
             {
                 id: 7, title: "Mediamarkt", link: "https://mediamarkt.ru",
-                code: "2345678901", order: 7, img: base64Img, color: '#009688',
+                code: "2345678901", order: 7, img: MockService.GetImagePlaceholder(), color: '#009688',
                 tags: [{id: 1,title: 'Shops'},{id: 2,title: 'Electronics'},
                     {id: 3,title: 'Russia'},{id: 4,title: 'Yaroslavl'}]
             },
             {
                 id: 8, title: "Eldorado", link: "https://eldorado.ru",
-                code: "3456789012", order: 8, img: base64Img, color: '#4caf50',
+                code: "3456789012", order: 8, img: MockService.GetImagePlaceholder(), color: '#4caf50',
                 tags: []
             },
             {
                 id: 9, title: "Svyaznoy", link: "https://ya.ru",
-                code: "4567890123", order: 9, img: base64Img, color: '#cddc39',
+                code: "4567890123", order: 9, img: MockService.GetImagePlaceholder(), color: '#cddc39',
                 tags: [{id: 1,title: 'Shops'},{id: 2,title: 'Electronics'},
                     {id: 3,title: 'Russia'},{id: 7,title: 'Jeans'}]
             },
             {
                 id: 10, title: "Wrangler", link: "https://mts.ru",
-                code: "7654321098", order: 5, img: base64Img, color: '#ff9800',
+                code: "7654321098", order: 5, img: MockService.GetImagePlaceholder(), color: '#ff9800',
                 tags: [{id: 1,title: 'Shops'},{id: 2,title: 'Electronics'},
                     {id: 6,title: 'USA'}]
             },
             {
                 id: 11, title: "Waikiki", link: "https://mts.ru",
-                code: "7654321000", order: 5, img: base64Img, color: '#607d8b',
+                code: "7654321000", order: 5, img: MockService.GetImagePlaceholder(), color: '#607d8b',
                 tags: [{id: 1,title: 'Shops'},{id: 5,title: 'Cloths'},
                     {id: 3,title: 'Russia'},{id: 4,title: 'Yaroslavl'}]
             }
