@@ -44,6 +44,7 @@
     "react": "^16.3.2",
     "react-color": "^2.14.1",
     "react-dom": "^16.3.2",
+    "react-dropzone": "^4.2.10",
     "react-material-icons": "^1.0.3",
     "react-sizeme": "^2.4.3",
     "react-window-dimensions": "^1.0.2",

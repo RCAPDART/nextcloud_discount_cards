@@ -1,5 +1,6 @@
 import AddCircleOutline from 'material-ui/svg-icons/content/add-circle-outline';
 import Chip from 'material-ui/Chip';
+import Dropzone from 'react-dropzone'
 import IconButton from 'material-ui/IconButton';
 import ModeEdit from 'material-ui/svg-icons/editor/mode-edit';
 import PropTypes from 'prop-types';
@@ -28,7 +29,9 @@ export class CardEditor extends Component {
     state = {
         editableCard: this.props.card,
         backColor: this.props.card.color,
-        textColor: this.props.card.textColor
+        textColor: this.props.card.textColor,
+        acceptedUploads: [],
+        rejectedUploads: []
     };
 
     handleChangeTitle(event) {
@@ -106,6 +109,19 @@ export class CardEditor extends Component {
         this.setState({editableCard: card});
     }
 
+    getImagePreview() {
+        if(this.state.acceptedUploads.length > 0) {
+            return {
+                backgroundSize: 'cover',
+                background: 'url("' + this.state.acceptedUploads[0].preview + '") scroll no-repeat center/cover'
+            }
+        }
+        return {
+            backgroundSize: 'cover',
+            background: 'url("' + this.state.editableCard.img + '") scroll no-repeat center/cover'
+        };
+    }
+
     render() {
         return (
             <Container className = 'cardEditor'>
@@ -168,7 +184,15 @@ export class CardEditor extends Component {
 
                 <Accordion style = {this.getContainerStyle()}
                            title = 'Image'>
-                    <span>ToDo - image setter via API</span>
+                    <Dropzone
+                        className='dragZoneImage'
+                        accept="image/jpeg, image/png"
+                        onDrop={(acceptedUploads,rejectedUploads) =>
+                        { this.setState({ acceptedUploads,rejectedUploads }); }}
+                    >
+                        <div className="image" style={this.getImagePreview()}>
+                        </div>
+                    </Dropzone>
                 </Accordion>
 
                 <Container style = {{background: this.state.backColor}}
