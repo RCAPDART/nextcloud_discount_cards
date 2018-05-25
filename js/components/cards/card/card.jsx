@@ -1,6 +1,6 @@
 import Chip from 'material-ui/Chip';
 import IconButton from 'material-ui/IconButton';
-import StarBorder from 'material-ui/svg-icons/toggle/star-border';
+import AddCircleOutline from 'material-ui/svg-icons/content/add-circle-outline';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 
@@ -42,8 +42,20 @@ export class Card extends Component {
 		}
 	}
 
+	getImageStyle() {
+		return {
+            background: 'url("' + this.props.data.img + '") scroll no-repeat center/cover'
+        }
+	}
+
 	render () {
-		const {data} = this.props;
+        const { data } = this.props;
+		function RenderCardImage () {
+			if(data.id !== 0 ) return null;
+			return <div className='newCardIcon'>
+                <IconButton><AddCircleOutline/></IconButton>
+			</div>
+        }
 		return (
             <GridTile
 				key = {data.img}
@@ -58,7 +70,6 @@ export class Card extends Component {
 				title = {data.title}
                 titleStyle = {this.getTileStyle().titleStyle}
 				subtitle = {''}
-				actionIcon = {<IconButton><StarBorder color={this.props.data.textColor} /></IconButton>}
 			>
 				<Container className = 'chipTags'>
 					{this.props.data.tags.map((item) =>
@@ -67,10 +78,11 @@ export class Card extends Component {
 							</Chip>
 						,this)}
 				</Container>
-				<img
+				<Container
+					style = {this.getImageStyle()}
                     onClick = {this.openCard.bind(this)}
-					className = 'cardImage'
-					src = {data.img} />
+					className = 'cardImage'/>
+				<RenderCardImage/>
 			</GridTile>
 		);
 	}

@@ -6,6 +6,7 @@ import { MockService } from "./MockService";
 
 export class CardsService {
     cards = [];
+    static colors = ['#f44336', '#ff9800', '#9c27b0', '#3f51b5', '#2196f3', '#03a9f4', '#009688', '#4caf50', '#cddc39'];
 
     static GetCardsFromApi() {
         return MockService.GetCardsPlaceholder();
@@ -15,6 +16,36 @@ export class CardsService {
         this.cards = CardsService.GetCardsFromApi();
         this.cards = CardsService.FillCardsColors(this.cards);
         return this.cards;
+    }
+
+    static GetDefaultCard() {
+        const card = {
+            id: 0,
+            title: "New card",
+            link: '',
+            code: '1234',
+            order: 999999,
+            img: '',
+            tags: [],
+            color: this.colors[Math.floor(Math.random() * this.colors.length)]
+        };
+        CardsService.FillCardColors(card);
+        return card;
+    }
+
+    static GetAddableCard() {
+        const card =  {
+            id: 0,
+            title: "Add card",
+            link: '',
+            code: '1234',
+            order: 999999,
+            img: '',
+            tags: [],
+            color: this.colors[Math.floor(Math.random() * this.colors.length)]
+        };
+        CardsService.FillCardColors(card);
+        return card;
     }
 
     static FillCardsColors(cards) {
@@ -28,7 +59,8 @@ export class CardsService {
         return cloneDeep(card);
     }
 
-    static UpdateCard(prevState, newState) {
+    static UpdateCard = (prevState, newState) => {
+        // ToDo API call update
         prevState.title = newState.title;
         prevState.link = newState.link;
         prevState.code = newState.code;
@@ -38,6 +70,25 @@ export class CardsService {
         prevState.textColor = newState.textColor;
         prevState.tags = newState.tags;
         return prevState;
+    };
+
+    static AddCard = (newCard) => {
+        // ToDo API call add
+        newCard.id = CommonService.GetGuid();
+        return CommonService.CloneObject(newCard);
+    };
+
+    static DeleteCard = (id) => {
+        // ToDo API call delete
+        return id;
+    };
+
+    static CardsAreEqual (card1, card2){
+        if (card1.title !== card2.title) return false;
+        if (card1.code !== card2.code) return false;
+        if (card1.img !== card2.img) return false;
+
+        return true;
     }
 
     static FillCardColors(card) {

@@ -1,5 +1,8 @@
 import Chip from 'material-ui/Chip';
 import Clear from 'material-ui/svg-icons/content/clear';
+import DeleteForever from 'material-ui/svg-icons/action/delete-forever';
+import Dialog from 'material-ui/Dialog';
+import FlatButton from 'material-ui/FlatButton';
 import IconButton from 'material-ui/IconButton';
 import ModeEdit from 'material-ui/svg-icons/editor/mode-edit';
 import PropTypes from 'prop-types';
@@ -19,11 +22,12 @@ import './cardPopupEdit.less';
 export class CardPopupEdit extends Component {
     static propTypes = {
         opened: PropTypes.bool.isRequired,
-        card: PropTypes.object.isRequired,
+        card: PropTypes.object,
         isEdit: PropTypes.bool.isRequired,
         modalWidth: PropTypes.number.isRequired,
         modalHeight: PropTypes.any.isRequired,
-        closeCallback: PropTypes.func.isRequired
+        closeCallback: PropTypes.func.isRequired,
+        deleteCallback: PropTypes.func.isRequired
     };
     id = '';
 
@@ -33,14 +37,14 @@ export class CardPopupEdit extends Component {
         editedCard: this.props.card,
         color: this.props.card.color,
         textColor: this.props.card.textColor,
-        title: this.props.card.title
+        title: this.props.card.title,
+        modalForDeleteCardOpened: false
     };
 
     constructor(props) {
         super(props);
         this.dimensionHelper = new DimensionHelper();
-        const commonService = new CommonService();
-        this.id = commonService.GetGuid();
+        this.id = CommonService.GetGuid();
         this.styleService = new StyleService();
         this.cardsService = new CardsService();
     }
@@ -48,16 +52,17 @@ export class CardPopupEdit extends Component {
     componentWillReceiveProps(nextProps) {
         if (this.props.opened) return;
         this.setState({
+            modalForDeleteCardOpened: false,
             openedCard: CardsService.CloneCard(nextProps.card),
             color: nextProps.card.color,
             editedCard: nextProps.card,
             textColor: nextProps.card.textColor,
             title: nextProps.card.title,
-            isEdit: false});
+            isEdit: nextProps.isEdit});
     }
 
     toggleEdit() {
-        this.applyStateChanges(true, CardsService.CloneCard(this.props.card));
+        this.applyStateChanges(true, CardsService.CloneCard(this.state.editedCard));
     }
 
     discardChanges(){
@@ -71,6 +76,18 @@ export class CardPopupEdit extends Component {
 
     closeModal() {
         this.props.closeCallback(this.state.editedCard);
+    }
+
+    deleteCard() {
+        this.setState({modalForDeleteCardOpened: true});
+    }
+
+    cancelDelete(){
+        this.setState({modalForDeleteCardOpened: false});
+    }
+
+    acceptDelete(){
+        this.props.deleteCallback(this.props.card.id);
     }
 
     applyStateChanges(isEdit, card) {
@@ -87,7 +104,8 @@ export class CardPopupEdit extends Component {
 
     render() {
         function DrawEditButtons(props) {
-            if(props.edit){
+            if(props.cardId === 0) return null;
+            if(props.edit) {
                 return <IconButton className='editButton' onClick = {props.discardChanges}>
                     <Undo color={props.textColor}/>
                 </IconButton>
@@ -97,23 +115,38 @@ export class CardPopupEdit extends Component {
             </IconButton>
         }
 
+        function DrawDeleteButton(props) {
+            if(props.cardId === 0) return null;
+            return <IconButton className = 'editButton' onClick = {props.deleteCard}>
+                <DeleteForever  color = {props.textColor}/>
+            </IconButton>;
+        }
+
         function DrawButtons(props) {
             return <Fragment>
+                <DrawDeleteButton
+                    deleteCard = {props.deleteCard}
+                    textColor = {props.textColor}
+                    cardId = {props.card.id}
+                />
                 <DrawEditButtons
                     edit = {props.edit}
+                    cardId = {props.card.id}
                     discardChanges = {props.discardChanges}
                     toggleEdit = {props.toggleEdit}
-                    textColor = {props.textColor}/>
+                    textColor = {props.textColor}
+                />
                 <IconButton className = 'editButton' onClick = {props.closeModal}>
                     <Clear color = {props.textColor}/>
                 </IconButton>
             </Fragment>
         }
+
         function DrawCard(props) {
             if (!props.edit) {
-                return <Container className='cardPopup'>
-                    <Container className='imageData' style={props.imageDataStyle}>
-                        <Container className='image' style={props.imageStyle}/>
+                return <Container className = 'cardPopup'>
+                    <Container className = 'imageData' style = {props.imageDataStyle}>
+                        <Container className = 'image' style = {props.imageStyle}/>
                     </Container>
                     <Container className = 'chipTags'>
                         {props.card.tags.map((item) =>
@@ -122,34 +155,37 @@ export class CardPopupEdit extends Component {
                                 </Chip>
                             ,this)}
                     </Container>
-                    <Container className='barcodeData'>
-                        <Barcode code={props.card.code} id={props.id}/>
+                    <Container className = 'barcodeData'>
+                        <Barcode code = {props.card.code} id = {props.id}/>
                     </Container>
                 </Container>
             }
-            else {
-                return <CardEditor card={props.card} callBack={props.editCallback}/>
-            }
+            return <CardEditor card={props.card} callBack={props.editCallback}/>
         }
+
         function RenderCard(props) {
             if (props.card != null) {
                 return <Container>
                     <DrawCard
+                        id = {props.id}
                         edit = {props.edit}
                         imageDataStyle = {props.imageDataStyle}
                         imageStyle = {props.imageStyle}
                         card = {props.card}
-                        id = {props.id}
                         editCallback = {props.editCallback}
                         chipStyles = {props.chipStyles}
                     />
                     <Container className = 'buttons'>
                         <DrawButtons
+                            id = {props.id}
                             textColor = {props.textColor}
                             edit = {props.edit}
+                            card = {props.card}
                             discardChanges = {props.discardChanges}
                             toggleEdit = {props.toggleEdit}
-                            closeModal = {props.closeModal}/>
+                            deleteCard = {props.deleteCard}
+                            closeModal = {props.closeModal}
+                        />
                     </Container>
                 </Container>
             }
@@ -173,6 +209,20 @@ export class CardPopupEdit extends Component {
                 </Container>
             </Container>
         }
+        const actions = [
+            <FlatButton
+                key = 'Delete'
+                label = "Delete"
+                primary = {true}
+                onClick = {this.acceptDelete.bind(this)}
+            />,
+            <FlatButton
+                key = 'Cancel'
+                label = "Cancel"
+                primary = {true}
+                onClick = {this.cancelDelete.bind(this)}
+            />
+        ];
         return (
             <RenderDialog
                 title = {this.state.title}
@@ -194,7 +244,16 @@ export class CardPopupEdit extends Component {
                     discardChanges = {this.discardChanges.bind(this)}
                     closeModal = {this.closeModal.bind(this)}
                     chipStyles = {this.styleService.GetChipStyles()}
+                    deleteCard = {this.deleteCard.bind(this)}
                 />
+                <Dialog
+                    actions={actions}
+                    modal={false}
+                    open={this.state.modalForDeleteCardOpened}
+                    onRequestClose={this.cancelDelete.bind(this)}
+                >
+                    Delete card?
+                </Dialog>
             </RenderDialog>
         );
     }

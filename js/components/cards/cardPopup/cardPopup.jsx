@@ -24,8 +24,7 @@ export class CardPopup extends Component {
     constructor(props) {
         super(props);
         this.dimensionHelper = new DimensionHelper();
-        const commonService = new CommonService();
-        this.id = commonService.GetGuid();
+        this.id = CommonService.GetGuid();
     }
 
     getImageDataStyle() {

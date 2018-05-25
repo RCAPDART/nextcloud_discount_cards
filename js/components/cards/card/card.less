@@ -34,10 +34,13 @@
 		height: auto;
 	}
 }
+
 .cardImage{
 	width: 100%;
 	cursor: pointer;
+	height: 100%;
 }
+
 .chipTags {
 	display: flex;
 	overflow: hidden;
@@ -51,5 +54,17 @@
 		background-color: rgba(224, 224, 224, 0.75);
 		margin-left: 3px!important;
 		margin-right: 3px!important;
+	}
+}
+
+.newCardIcon {
+	position: absolute;
+	top: calc(50% - 75px);
+	left: calc(50% - 55px);
+	pointer-events: none;
+
+	svg {
+		width: 80px !important;
+		height: 80px !important;
 	}
 }
