@@ -103,14 +103,17 @@ export class CardPopupEdit extends Component {
     }
 
     render() {
+        const discardChanges = this.discardChanges.bind(this);
+        const toggleEdit = this.toggleEdit.bind(this);
+
         function DrawEditButtons(props) {
             if(props.cardId === 0) return null;
             if(props.edit) {
-                return <IconButton className='editButton' onClick = {props.discardChanges}>
+                return <IconButton className='editButton' onClick = {discardChanges}>
                     <Undo color={props.textColor}/>
                 </IconButton>
             }
-            return <IconButton className='editButton' onClick = {props.toggleEdit}>
+            return <IconButton className='editButton' onClick = {toggleEdit}>
                 <ModeEdit color={props.textColor}/>
             </IconButton>
         }
@@ -132,8 +135,6 @@ export class CardPopupEdit extends Component {
                 <DrawEditButtons
                     edit = {props.edit}
                     cardId = {props.card.id}
-                    discardChanges = {props.discardChanges}
-                    toggleEdit = {props.toggleEdit}
                     textColor = {props.textColor}
                 />
                 <IconButton className = 'editButton' onClick = {props.closeModal}>
@@ -181,8 +182,6 @@ export class CardPopupEdit extends Component {
                             textColor = {props.textColor}
                             edit = {props.edit}
                             card = {props.card}
-                            discardChanges = {props.discardChanges}
-                            toggleEdit = {props.toggleEdit}
                             deleteCard = {props.deleteCard}
                             closeModal = {props.closeModal}
                         />
@@ -240,8 +239,6 @@ export class CardPopupEdit extends Component {
                     imageStyle = {this.styleService.GetImageStyle(this.state.openedCard.img)}
                     id = {this.id}
                     editCallback = {this.applyEditChanges.bind(this)}
-                    toggleEdit = {this.toggleEdit.bind(this)}
-                    discardChanges = {this.discardChanges.bind(this)}
                     closeModal = {this.closeModal.bind(this)}
                     chipStyles = {this.styleService.GetChipStyles()}
                     deleteCard = {this.deleteCard.bind(this)}

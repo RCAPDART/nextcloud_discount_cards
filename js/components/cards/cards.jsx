@@ -45,17 +45,18 @@ export class Cards extends BaseComponent {
 
     openCardModal (id) {
         let card = CardsService.GetAddableCard();
-        if (id > 0) {
+        let isEdit = true;
+        if (id !== 0) {
             card = CardsService.CloneCard(CardsService.GetCardById(this.state.cards, id));
+            isEdit = false;
         }
-        let isEdit = false;
-        if(id === 0) isEdit = true;
+
         this.setState({ cardOpened: true, editing: isEdit,selectedCard: card });
     }
 
     closeCardModal(updatedCard) {
         if(updatedCard !== null) {
-            if(updatedCard.id > 0) {
+            if(updatedCard.id !== 0) {
                 // Updating existing card
                 const card = CardsService.GetCardById(this.state.cards, updatedCard.id);
                 CardsService.UpdateCard(card, updatedCard);

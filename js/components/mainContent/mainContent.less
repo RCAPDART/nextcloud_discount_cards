@@ -1,3 +1,38 @@
-div{
+button.filterToggle{
+  position: absolute!important;
+  top: 0;
+}
 
+button.filterToggle,
+button.closeDrawer{
+  cursor: pointer;
+  svg,div{
+    pointer-events: none;
+  }
+}
+
+button.closeDrawer{
+  float: right;
+}
+
+.drawerHead{
+  margin-top: 50px;
+  height: 50px;
+}
+
+.filteredTags{
+  margin-bottom: 30px;
+  background: linen;
+  overflow: hidden;
+  padding: 5px;
+}
+
+.allTags{
+  overflow: hidden;
+  padding: 5px;
+}
+
+.selectedTag,
+.unselectedTag{
+  float: left;
 }

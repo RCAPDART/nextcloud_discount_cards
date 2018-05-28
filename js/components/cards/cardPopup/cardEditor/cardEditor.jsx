@@ -79,7 +79,6 @@ export class CardEditor extends Component {
         }
         let editableCard = this.state.editableCard;
         const indexOf = (editableCard.tags.map((tag) => tag.title).indexOf(newTagName));
-        window.console.log(indexOf);
 
         if (indexOf !== -1) {
             return;

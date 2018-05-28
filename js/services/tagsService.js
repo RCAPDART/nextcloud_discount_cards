@@ -1,5 +1,5 @@
 'use strict';
-import {find, orderBy} from 'lodash';
+import {find} from 'lodash';
 import {CommonService} from "./commonService";
 import { MockService } from "./MockService";
 
@@ -16,8 +16,20 @@ export class TagsService {
         return this.tags;
     }
 
+    static GetTagByTitle(tags, title) {
+        const foundTag = find(tags, {title});
+        return foundTag
+    }
+
+    static TagsContainsByTitle(tags, title){
+        const foundTag = TagsService.GetTagByTitle(tags, title);
+        if (foundTag === null || foundTag === undefined)
+            return false;
+        return true;
+    }
+
     GetTagById(id) {
         const foundTag = find(this.tags, {id});
-        foundTag
+        return foundTag
     }
 }
