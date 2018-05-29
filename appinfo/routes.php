@@ -10,5 +10,6 @@
 
 return ['routes' => [
 	// page
-	['name' => 'page#index', 'url' => '/', 'verb' => 'GET']
+	['name' => 'page#index', 'url' => '/', 'verb' => 'GET'],
+	array('name' => 'cards#test', 'url' => '/cards/test', 'verb' => 'GET'),
 ]];
