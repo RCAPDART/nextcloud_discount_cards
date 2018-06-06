@@ -38,6 +38,7 @@
     "webpack-cli": "^2.1.2"
   },
   "dependencies": {
+    "axios": "^0.18.0",
     "bwip-js": "^1.6.3",
     "less": "^3.0.2",
     "material-ui": "^0.20.0",

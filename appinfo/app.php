@@ -1,19 +1,12 @@
 <?php
+namespace OCA\Discount_Cards\AppInfo;
 
-
-namespace OCA\Bookmarks\AppInfo;
-
-use OCA\DiscountCards\Controller;
 use \OCP\AppFramework\App;
 use OCP\AppFramework\Utility\ITimeFactory;
 use \OCP\IContainer;
-use \OCA\Bookmarks\Controller\WebViewController;
-use OCA\Bookmarks\Controller\Rest\TagsController;
-use OCA\Bookmarks\Controller\Rest\BookmarkController;
-use OCA\Bookmarks\Controller\Rest\InternalTagsController;
-use OCA\Bookmarks\Controller\Rest\InternalBookmarkController;
-use OCA\Bookmarks\Controller\Rest\PublicController;
+use OCA\Discount_Cards\Controller;
 use OCP\IUser;
+
 
 $c = \OC::$server;
 
