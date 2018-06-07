@@ -12,6 +12,6 @@ window.React = React;
 $(document).ready(() => {
 	ReactDOM.render(
 	<App />,  
-	document.getElementById('content')
+	document.getElementById('cardsContent')
 	);
 });

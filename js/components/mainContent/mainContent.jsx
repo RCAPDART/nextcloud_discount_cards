@@ -1,3 +1,5 @@
+// import axios from 'axios';
+
 import Clear from 'material-ui/svg-icons/content/clear';
 import Chip from 'material-ui/Chip';
 import Drawer from 'material-ui/Drawer';
@@ -24,6 +26,13 @@ export class MainContent extends Component {
     componentDidMount() {
         const tags = this.tagsService.GetTags();
         this.setState({tags});
+        // axios.get('cards/test')
+        //    .then(function (response) {
+        //        window.console.log(response);
+        //    })
+        //    .catch(function (error) {
+        //        window.console.log(error);
+        //    });
     }
 
     state = {

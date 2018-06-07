@@ -30,24 +30,14 @@ class CardsController extends ApiController  {
 	}
 
 	/**
-	 * @param string $id
 	 * @return JSONResponse
 	 *
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 * @CORS
 	 */
-	public function test($id = 0) {
-
-		$response = new JSONResponse(
-			$this->appName,
-			'index',
-			[
-				'appId' => $this->appName
-			],
-			$id
-		);
-
+	public function test() {
+		$response = new JSONResponse("COOL");
 		return $response;
 	}
 
