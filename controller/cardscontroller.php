@@ -1,14 +1,16 @@
 <?php
 namespace OCA\Discount_Cards\Controller;
 
-use OCP\AppFramework\ApiController;
-use OCP\AppFramework\Http\JSONResponse;
-use OCP\AppFramework\Http;
-use OCP\IDBConnection;
-use OCP\IL10N;
+use OCA\Discount_Cards\Controller\Lib\Cards;
+
 use OCP\IRequest;
 use OCP\Util;
 use \OC\User\Manager;
+
+use OCP\AppFramework\ApiController;
+use OCP\AppFramework\Http\ContentSecurityPolicy;
+use OCP\AppFramework\Http\JSONResponse;
+use OCP\IDBConnection;
 
 /**
  * Class CardsController
@@ -16,30 +18,28 @@ use \OC\User\Manager;
  * @package OCA\Discount_Cards\Controller
  */
 class CardsController extends ApiController  {
-
     private $userId;
 	private $db;
-	private $l10n;
 	private $userManager;
+	protected $request;
+	private $cards;
 
-	public function __construct($appName, IRequest $request, $userId, IDBConnection $db) {
+	public function __construct($appName, IRequest $request, $userId, IDBConnection $db, Cards $cards) {
 		parent::__construct($appName, $request);
 		$this->userId = $userId;
 		$this->db = $db;
 		$this->request = $request;
+		$this->cards = $cards;
 	}
 
 	/**
-	 * @return JSONResponse
-	 *
-	 * @NoAdminRequired
-	 * @NoCSRFRequired
-	 * @CORS
-	 */
+	* @NoCSRFRequired
+	* @NoAdminRequired
+	*
+	* @return JSONResponse
+	*/
 	public function test() {
-		$response = new JSONResponse("COOL");
-		return $response;
+        $bookmarks = $this->cards->FindCards($this->userId, 'lastmodified');
+		return new JSONResponse(array('data' => $bookmarks, 'status' => 'success'));
 	}
-
-
 }

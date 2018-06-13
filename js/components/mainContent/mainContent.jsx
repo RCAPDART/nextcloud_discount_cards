@@ -1,4 +1,4 @@
-// import axios from 'axios';
+import axios from 'axios';
 
 import Clear from 'material-ui/svg-icons/content/clear';
 import Chip from 'material-ui/Chip';
@@ -21,18 +21,28 @@ export class MainContent extends Component {
         this.tagsService = new TagsService();
         this.cardsService = new CardsService();
         this.cards = this.cardsService.GetCards();
+        this.requestToken = window.oc_requesttoken;
+        window.console.log(this.requestToken);
     }
 
     componentDidMount() {
         const tags = this.tagsService.GetTags();
         this.setState({tags});
-        // axios.get('cards/test')
-        //    .then(function (response) {
-        //        window.console.log(response);
-        //    })
-        //    .catch(function (error) {
-        //        window.console.log(error);
-        //    });
+        const config = {
+            headers: {
+                'Accept': '*/*',
+                'OCS-APIREQUEST': true,
+                'requesttoken':window.oc_requesttoken,
+                'X-Requested-With': 'XMLHttpRequest'
+            }};
+
+        axios.get('cards/test', config)
+           .then(function (response) {
+               window.console.log(response);
+           })
+           .catch(function (error) {
+               window.console.log(error);
+           });
     }
 
     state = {

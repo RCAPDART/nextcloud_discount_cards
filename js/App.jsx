@@ -8,6 +8,7 @@ export class App extends Component {
     state = {
         page: "Main"
     };
+
 	render () {
 		return (
             <MuiThemeProvider>

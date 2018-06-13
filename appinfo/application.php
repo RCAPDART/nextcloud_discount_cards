@@ -4,6 +4,7 @@ namespace OCA\Discount_Cards\AppInfo;
 use OCP\AppFramework\App;
 use OCP\AppFramework\Utility\ITimeFactory;
 use OCA\Discount_Cards\Controller\CardsController;
+use OCA\Discount_Cards\Controller\Lib\Cards;
 use OCP\IContainer;
 use OCP\IUser;
 
@@ -23,7 +24,8 @@ class Application extends App {
 				$c->query('AppName'),
 				$c->query('Request'),
 				$uid,
-				$c->query('ServerContainer')->getDatabaseConnection()
+				$c->query('ServerContainer')->getDatabaseConnection(),
+				$c->query('ServerContainer')->query(Cards::class)
 			);
 		});
 	}
