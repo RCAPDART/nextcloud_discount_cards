@@ -1,5 +1,3 @@
-import axios from 'axios';
-
 import Clear from 'material-ui/svg-icons/content/clear';
 import Chip from 'material-ui/Chip';
 import Drawer from 'material-ui/Drawer';
@@ -14,6 +12,7 @@ import {Cards} from '../cards/cards.jsx';
 import './mainContent.less';
 import {TagsService} from "../../services/tagsService";
 import {Loader} from "../common/loader/loader";
+import {ApiService} from "../../services/apiService";
 
 export class MainContent extends Component {
     constructor(props) {
@@ -28,21 +27,35 @@ export class MainContent extends Component {
     componentDidMount() {
         const tags = this.tagsService.GetTags();
         this.setState({tags});
-        const config = {
-            headers: {
-                'Accept': '*/*',
-                'OCS-APIREQUEST': true,
-                'requesttoken':window.oc_requesttoken,
-                'X-Requested-With': 'XMLHttpRequest'
-            }};
 
-        axios.get('cards/test', config)
-           .then(function (response) {
-               window.console.log(response);
-           })
-           .catch(function (error) {
-               window.console.log(error);
-           });
+        window.api = ApiService;
+
+        ApiService.Get('cards/test').then(result=>{
+            window.console.log(result);
+        }).catch(error=>{
+            window.console.log(error);
+        });
+        ApiService.Get('cards/test?tags=Test').then(result=>{
+            window.console.log(result);
+        }).catch(error=>{
+            window.console.log(error);
+        });
+        ApiService.Get('cards/test?tags=Russia,Yaroslavl').then(result=>{
+            window.console.log(result);
+        }).catch(error=>{
+            window.console.log(error);
+        });
+        ApiService.Get('cards/getCards').then(result=>{
+            window.console.log(result);
+        }).catch(error=>{
+            window.console.log(error);
+        });
+
+        ApiService.Get('cards/getTags').then(result=>{
+            window.console.log(result);
+        }).catch(error=>{
+            window.console.log(error);
+        });
     }
 
     state = {

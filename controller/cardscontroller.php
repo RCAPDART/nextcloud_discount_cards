@@ -24,12 +24,20 @@ class CardsController extends ApiController  {
 	protected $request;
 	private $cards;
 
-	public function __construct($appName, IRequest $request, $userId, IDBConnection $db, Cards $cards) {
-		parent::__construct($appName, $request);
-		$this->userId = $userId;
-		$this->db = $db;
-		$this->request = $request;
-		$this->cards = $cards;
+	public function __construct(
+		$appName,
+		IRequest
+		$request,
+		$userId,
+		IDBConnection
+		$db,
+		Cards
+		$cards) {
+			parent::__construct($appName, $request);
+			$this->userId = $userId;
+			$this->db = $db;
+			$this->request = $request;
+			$this->cards = $cards;
 	}
 
 	/**
@@ -38,8 +46,32 @@ class CardsController extends ApiController  {
 	*
 	* @return JSONResponse
 	*/
-	public function test() {
-        $bookmarks = $this->cards->FindCards($this->userId, 'lastmodified');
-		return new JSONResponse(array('data' => $bookmarks, 'status' => 'success'));
+	public function test($tags = null) {
+		$filterTags = $this->cards->AnalyzeTagRequest($tags);
+		$cards = $this->cards->FindCards($this->userId, 'lastmodified', $filterTags);
+		return $cards;
+		return new JSONResponse(array('data' => $cards, 'status' => 'success'));
+	}
+
+	/**
+	* @NoCSRFRequired
+	* @NoAdminRequired
+	*
+	* @return JSONResponse
+	*/
+	public function getCards() {
+		$cards = $this->cards->FindCards($this->userId, 'lastmodified');
+		return new JSONResponse(array('data' => $cards, 'status' => 'success'));
+	}
+
+	/**
+	* @NoCSRFRequired
+	* @NoAdminRequired
+	*
+	* @return JSONResponse
+	*/
+	public function getTags() {
+		$tags = $this->cards->GetTags($this->userId);
+		return new JSONResponse(array('data' => $tags, 'status' => 'success'));
 	}
 }
