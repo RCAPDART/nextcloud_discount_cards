@@ -2,14 +2,21 @@
 'use strict';
 import { cloneDeep, find, orderBy } from 'lodash';
 import { CommonService } from "./commonService";
-import { MockService } from "./MockService";
+import {ApiService} from "./apiService";
 
 export class CardsService {
     cards = [];
     static colors = ['#f44336', '#ff9800', '#9c27b0', '#3f51b5', '#2196f3', '#03a9f4', '#009688', '#4caf50', '#cddc39'];
 
-    static GetCardsFromApi() {
-        return MockService.GetCardsPlaceholder();
+    static GetCardsFromApi = (filter) => ApiService.Get('cards/getCards?tags='+filter);
+
+    static UploadImage = (data) => ApiService.Post('cards/uploadImage', data);
+
+    static ProcessCards(cards) {
+        cards.forEach((card) => {
+            card.tags = card.tags.split(',');
+        });
+        return cards;
     }
 
     GetCards() {
@@ -65,7 +72,7 @@ export class CardsService {
         prevState.link = newState.link;
         prevState.code = newState.code;
         prevState.order = newState.order;
-        prevState.img = newState.img;
+        prevState.image = newState.image;
         prevState.color = newState.color;
         prevState.textColor = newState.textColor;
         prevState.tags = newState.tags;
@@ -86,7 +93,7 @@ export class CardsService {
     static CardsAreEqual (card1, card2){
         if (card1.title !== card2.title) return false;
         if (card1.code !== card2.code) return false;
-        if (card1.img !== card2.img) return false;
+        if (card1.image !== card2.image) return false;
 
         return true;
     }

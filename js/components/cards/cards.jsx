@@ -22,7 +22,7 @@ export class Cards extends BaseComponent {
 
     state = {
         cards: this.props.data,
-        selectedCard: this.props.data[0],
+        selectedCard: (this.props.data != null && this.props.data.length > 0) ? this.props.data[0] : null,
         cardOpened: false,
         editing: false
     };
@@ -34,6 +34,12 @@ export class Cards extends BaseComponent {
         this.commonService = new CommonService();
         this.styleService = new StyleService();
         this.orderKeys = new OrderingPanelSettings().GetOrderingKeys();
+    }
+
+    componentWillReceiveProps(nextProps) {
+        this.setState({
+            cards: nextProps.data
+        });
     }
 
     reorderCards(orderKey, ascending) {
@@ -82,40 +88,63 @@ export class Cards extends BaseComponent {
     }
 
     render() {
+        const cards = this.state.cards;
+        const card = this.state.selectedCard;
+        const deleteCallback = this.deleteCardCallback.bind(this);
+        const opened = this.state.cardOpened;
+        const isEdit = this.state.editing;
+        const maxDialogWidth = this.dimensionHelper.GetMaxDialogWidth(this.state.width);
+        const maxDialogHeight = this.dimensionHelper.GetMaxDialogHeight(this.state.width);
+        const closeCallback = this.closeCardModal.bind(this);
+        const columns = this.dimensionHelper.GetColumns(this.state.width);
+        const gridStyles = this.styleService.GetGridStyles();
+        const orderKeys = this.orderKeys;
+        const openCardModal = this.openCardModal.bind(this);
+
+        function RenderCardPopupEdit() {
+            if(card == null) return <span/>;
+            return <CardPopupEdit
+                card = {card}
+                opened = {opened}
+                isEdit = {isEdit}
+                modalWidth = {maxDialogWidth}
+                modalHeight = {maxDialogHeight}
+                closeCallback = {closeCallback}
+                deleteCallback = {deleteCallback}
+            />
+        }
+
+        function RenderCards() {
+            if(cards == null) return <span/>;
+            return <GridList
+                cols = {columns}
+                cellHeight = {230}
+                style = {gridStyles}
+            >
+                {cards.map((item) =>
+                        <Card
+                            key = {item.id}
+                            data = {item}
+                            openCardCallback = {() => openCardModal(item.id)}
+                        />
+                    ,this)}
+                <Card
+                    key = {0}
+                    data = {CardsService.GetAddableCard()}
+                    openCardCallback = {() => openCardModal(0)}
+                />
+            </GridList>
+        }
+
         return (
             <Container>
                 <OrderingPanel
                     orderKey = 'order'
                     ascending = {true}
-                    orderKeys = {this.orderKeys}
+                    orderKeys = {orderKeys}
                     callback = {(orderKey, ascending) => this.reorderCards(orderKey, ascending)}/>
-                <GridList
-                    cols = {this.dimensionHelper.GetColumns(this.state.width)}
-                    cellHeight = {230}
-                    style = {this.styleService.GetGridStyles()}
-                >
-                    {this.state.cards.map((item) =>
-                        <Card
-                            key = {item.id}
-                            data = {item}
-                            openCardCallback = {() => this.openCardModal(item.id)}
-                        />
-                    ,this)}
-                    <Card
-                        key = {0}
-                        data = {CardsService.GetAddableCard()}
-                        openCardCallback = {() => this.openCardModal(0)}
-                    />
-                </GridList>
-                <CardPopupEdit
-                    card = {this.state.selectedCard}
-                    deleteCallback = {this.deleteCardCallback.bind(this)}
-                    opened = {this.state.cardOpened}
-                    isEdit = {this.state.editing}
-                    modalWidth = {this.dimensionHelper.GetMaxDialogWidth(this.state.width)}
-                    modalHeight = {this.dimensionHelper.GetMaxDialogHeight(this.state.width)}
-                    closeCallback = {this.closeCardModal.bind(this)}
-                />
+                <RenderCards/>
+                <RenderCardPopupEdit/>
             </Container>
         );
     }

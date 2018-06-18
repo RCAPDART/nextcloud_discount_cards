@@ -5,6 +5,7 @@ use OCP\AppFramework\App;
 use OCP\AppFramework\Utility\ITimeFactory;
 use OCA\Discount_Cards\Controller\CardsController;
 use OCA\Discount_Cards\Controller\Lib\Cards;
+use OC\Files\Filesystem;
 use OCP\IContainer;
 use OCP\IUser;
 

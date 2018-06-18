@@ -4,6 +4,7 @@ namespace OCA\Discount_Cards\Controller\Lib;
 use OCP\AppFramework\Http\ContentSecurityPolicy;
 use OCP\IDBConnection;
 use OCP\IConfig;
+use \OC\Files\Filesystem;
 
 /**
  * Class CardsController
@@ -15,15 +16,19 @@ class Cards {
 	private $db;
 	/** @var IConfig */
 	private $config;
+	/** @var Filesystem */
+	private $fs;
 
-	public function __construct(IDBConnection $db, IConfig $config) {
+	public function __construct(IDBConnection $db, IConfig $config, Filesystem $fs) {
 		$this->db = $db;
 		$this->config = $config;
+		$this->fs = $fs;
 	}
 
 	public function GetTags($userId) {
 		$qb = $this->db->getQueryBuilder();
-		$qb->select('tag');
+		$qb->selectAlias('tag', 'title');
+		$qb->selectAlias('tag', 'id');
 		$qb->selectAlias($qb->createFunction('COUNT(' . $qb->getColumnName('tags.tag') . ')'), 'count');
 		$qb->from('discount_cards', 'cards');
 		$qb->leftJoin('cards', 'discount_cards_tags', 'tags', $qb->expr()->eq('tags.card_id', 'cards.id'));
@@ -65,7 +70,8 @@ class Cards {
 				array_push($ids, $cardResult['id']);
 			}
 			$qbTags = $this->db->getQueryBuilder();
-			$qbTags->select('tags.tag');
+			$qbTags->selectAlias('tags.tag', 'title');
+			$qbTags->selectAlias('tags.tag', 'id');
 			$qbTags->selectAlias($qbTags->createFunction('COUNT(' . $qbTags->getColumnName('tags.card_id') . ')'), 'count');
 			$qbTags->from('discount_cards_tags', 'tags');
 			$qbTags->where('tags.card_id IN (' . implode (", ", $ids) . ')');
@@ -124,6 +130,52 @@ class Cards {
 		$filterExpression = call_user_func_array([$qb->expr(), 'andX'], $filterExpressions);
 
 		$qb->having($filterExpression);
+	}
+
+	public function uploadFile($title, $file) {
+		$this->storageInit();
+
+		$extension = $this->getExtension($file['type']);
+		$fileName = $this->getFileName($title).'.'.$extension;
+
+		$data = file_get_contents($file['tmp_name'], FILE_USE_INCLUDE_PATH);
+		$this->saveFile($data, $fileName);
+
+		$result = array();
+		array_push($result, $fileName, $file, strlen($data));
+		return '/index.php/remote.php/webdav'.$this->getPath().'/'.$fileName;
+	}
+
+	private function saveFile($data, $fileName) {
+		$this->fs->touch($this->getPath().$fileName);
+		$this->fs->file_put_contents($this->getPath().$fileName, $data);
+	}
+
+	private function getExtension ($mime_type) {
+		$extensions = array(
+			'image/jpeg' => 'jpeg',
+			'image/gif' => 'gif',
+			'image/png' => 'png',
+			'image/svg+xml' => 'svg',
+			'image/webp' => 'webp'
+		);
+		return $extensions[$mime_type];
+	}
+
+	private function getFileName($title = 'empty') {
+		return date('Y-m-d_h-i-s').'_'.$title;
+	}
+
+	private function storageInit() {
+		$this->fs = new Filesystem();
+		if(!$this->fs->file_exists($this->getPath().'/init')){
+			$this->fs->mkdir($this->getPath());
+			$this->fs->touch($this->getPath().'/init');
+		}
+	}
+
+	private function getPath() {
+		return '/.discount_cards';
 	}
 }
 

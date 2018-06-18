@@ -35,9 +35,9 @@ export class CardPopupEdit extends Component {
         isEdit: this.props.isEdit,
         openedCard: this.props.card,
         editedCard: this.props.card,
-        color: this.props.card.color,
-        textColor: this.props.card.textColor,
-        title: this.props.card.title,
+        color: this.props.card != null ? this.props.card.color : null,
+        textColor: this.props.card != null ? this.props.card.textColor : null,
+        title: this.props.card != null ? this.props.card.title : null,
         modalForDeleteCardOpened: false
     };
 
@@ -151,8 +151,8 @@ export class CardPopupEdit extends Component {
                     </Container>
                     <Container className = 'chipTags'>
                         {props.card.tags.map((item) =>
-                                <Chip className = 'chipTag' key = {item.id} style={props.chipStyles}>
-                                    {item.title}
+                                <Chip className = 'chipTag' key = {item} style={props.chipStyles}>
+                                    {item}
                                 </Chip>
                             ,this)}
                     </Container>
@@ -236,7 +236,7 @@ export class CardPopupEdit extends Component {
                     edit = {this.state.isEdit}
                     imageDataStyle = {this.styleService.GetImageDataStyle(this.state.openedCard.color,
                         this.dimensionHelper.GetCardImageHeight(this.props.modalWidth))}
-                    imageStyle = {this.styleService.GetImageStyle(this.state.openedCard.img)}
+                    imageStyle = {this.styleService.GetImageStyle(this.state.openedCard.image)}
                     id = {this.id}
                     editCallback = {this.applyEditChanges.bind(this)}
                     closeModal = {this.closeModal.bind(this)}

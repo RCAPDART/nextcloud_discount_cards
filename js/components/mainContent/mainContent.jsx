@@ -19,58 +19,47 @@ export class MainContent extends Component {
         super(props);
         this.tagsService = new TagsService();
         this.cardsService = new CardsService();
-        this.cards = this.cardsService.GetCards();
         this.requestToken = window.oc_requesttoken;
-        window.console.log(this.requestToken);
     }
 
     componentDidMount() {
-        const tags = this.tagsService.GetTags();
-        this.setState({tags});
-
         window.api = ApiService;
-
-        ApiService.Get('cards/test').then(result=>{
-            window.console.log(result);
-        }).catch(error=>{
-            window.console.log(error);
-        });
-        ApiService.Get('cards/test?tags=Test').then(result=>{
-            window.console.log(result);
-        }).catch(error=>{
-            window.console.log(error);
-        });
-        ApiService.Get('cards/test?tags=Russia,Yaroslavl').then(result=>{
-            window.console.log(result);
-        }).catch(error=>{
-            window.console.log(error);
-        });
-        ApiService.Get('cards/getCards').then(result=>{
-            window.console.log(result);
-        }).catch(error=>{
-            window.console.log(error);
-        });
-
-        ApiService.Get('cards/getTags').then(result=>{
-            window.console.log(result);
-        }).catch(error=>{
-            window.console.log(error);
-        });
+        this.LoadDataFromApi([]);
     }
 
     state = {
         open: false,
         tags: [],
         selectedTags: [],
-        loading: false
+        cards: [],
+        loading: true
     };
 
     handleToggle() {
         this.setState({open: !this.state.open});
     }
 
+    LoadDataFromApi(filterTags){
+        let filter = '';
+        if (filterTags.length > 0){
+            filter = filterTags.map(function(tag){
+                return tag.title;
+            }).join(",");
+        }
+        CardsService.GetCardsFromApi(filter).then(result => {
+            this.setState({
+                tags: result.data.data.tags,
+                cards: CardsService.ProcessCards(result.data.data.cards),
+                loading: false});
+        }).catch(error=>{
+            window.console.log(error);
+        });
+    }
+
     GetUnusedTags() {
-        return this.state.tags;
+        return this.state.tags.filter(
+            tag => this.state.selectedTags.filter(selectedTag => selectedTag.title === tag.title).length === 0
+        );
     }
 
     GetSelectedTags() {
@@ -83,6 +72,7 @@ export class MainContent extends Component {
             const selectedTags = this.state.selectedTags;
             selectedTags.push(foundTag);
             this.setState({selectedTags, loading: true});
+            this.LoadDataFromApi(selectedTags);
         }
     }
 
@@ -91,6 +81,7 @@ export class MainContent extends Component {
         const selectedTags = this.state.selectedTags;
         selectedTags.splice(foundTag, 1);
         this.setState({selectedTags, loading: true});
+        this.LoadDataFromApi(selectedTags);
     }
 
     render() {
@@ -121,17 +112,17 @@ export class MainContent extends Component {
                 {unusedTags.map((tag) =>
                         <Chip
                             className='unselectedTag'
-                            key={tag.id}
+                            key={tag.title}
                             onClick={() => selectTagCallback(tag.title)}
                             style={{margin:3}}
-                        >{tag.title}</Chip>
+                        >{tag.title} <span className={"tagCount"}>{tag.count}</span></Chip>
                     , this)}
             </Container>
         }
 
         return (
             <Container>
-                <Cards data={this.cards}/>
+                <Cards data={this.state.cards}/>
                 <Drawer open={this.state.open}>
                     <Container className='drawerHead'>
                         <IconButton className='closeDrawer' onClick={this.handleToggle.bind(this)}>

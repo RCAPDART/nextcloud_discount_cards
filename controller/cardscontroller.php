@@ -31,8 +31,8 @@ class CardsController extends ApiController  {
 		$userId,
 		IDBConnection
 		$db,
-		Cards
-		$cards) {
+		$cards
+		) {
 			parent::__construct($appName, $request);
 			$this->userId = $userId;
 			$this->db = $db;
@@ -46,11 +46,8 @@ class CardsController extends ApiController  {
 	*
 	* @return JSONResponse
 	*/
-	public function test($tags = null) {
-		$filterTags = $this->cards->AnalyzeTagRequest($tags);
-		$cards = $this->cards->FindCards($this->userId, 'lastmodified', $filterTags);
-		return $cards;
-		return new JSONResponse(array('data' => $cards, 'status' => 'success'));
+	public function test($title='') {
+		return new JSONResponse($this->cards->uploadFile($title, file_get_contents('php://input')));
 	}
 
 	/**
@@ -59,8 +56,20 @@ class CardsController extends ApiController  {
 	*
 	* @return JSONResponse
 	*/
-	public function getCards() {
-		$cards = $this->cards->FindCards($this->userId, 'lastmodified');
+	public function uploadImage($title='') {
+		$image = $_FILES['image'];
+		return $this->cards->uploadFile($title, $image);
+	}
+
+	/**
+	* @NoCSRFRequired
+	* @NoAdminRequired
+	*
+	* @return JSONResponse
+	*/
+	public function getCards($tags = null) {
+		$filterTags = $this->cards->AnalyzeTagRequest($tags);
+		$cards = $this->cards->FindCards($this->userId, 'lastmodified', $filterTags);
 		return new JSONResponse(array('data' => $cards, 'status' => 'success'));
 	}
 

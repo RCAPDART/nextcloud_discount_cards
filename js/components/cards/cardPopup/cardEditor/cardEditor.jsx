@@ -1,5 +1,6 @@
 import AddCircleOutline from 'material-ui/svg-icons/content/add-circle-outline';
 import Chip from 'material-ui/Chip';
+import FormData from 'form-data';
 import Dropzone from 'react-dropzone'
 import IconButton from 'material-ui/IconButton';
 import ModeEdit from 'material-ui/svg-icons/editor/mode-edit';
@@ -14,6 +15,8 @@ import { StyleService } from "./StyleService";
 import { SwatchesPicker } from 'react-color';
 
 import './cardEditor.less';
+import {CardsService} from "../../../../services/cardsService";
+import {Loader} from "../../../common/loader/loader";
 
 export class CardEditor extends Component {
     static propTypes = {
@@ -31,7 +34,8 @@ export class CardEditor extends Component {
         backColor: this.props.card.color,
         textColor: this.props.card.textColor,
         acceptedUploads: [],
-        rejectedUploads: []
+        rejectedUploads: [],
+        loading: false,
     };
 
     // Handlers
@@ -68,8 +72,17 @@ export class CardEditor extends Component {
     handleChangeImage(acceptedUploads, rejectedUploads) {
         if(acceptedUploads.length < 1) return;
         const editableCard = this.getCardState();
-        editableCard.img = CommonService.CloneObject(acceptedUploads[0].preview);
-        this.setState({ acceptedUploads, rejectedUploads, editableCard});
+        editableCard.image = CommonService.CloneObject(acceptedUploads[0].preview);
+        this.setState({ acceptedUploads, rejectedUploads, editableCard, loading: true});
+
+        const data = new FormData();
+        data.append("image", acceptedUploads[0]);
+        data.append("title", this.state.editableCard.title);
+        CardsService.UploadImage(data).then(response => {
+            editableCard.image = response.data;
+            this.setState({loading: false, editableCard});
+            window.console.log(response);
+        })
     }
 
     handleAddNewTag() {
@@ -88,9 +101,9 @@ export class CardEditor extends Component {
         this.setState({editableCard, newTagName: ''});
     }
 
-    handleDeleteTag(id) {
+    handleDeleteTag(title) {
         const editableCard = this.getCardState();
-        const tagToDelete = editableCard.tags.map((tag) => tag.id).indexOf(id);
+        const tagToDelete = editableCard.tags.map((tag) => tag).indexOf(title);
         editableCard.tags.splice(tagToDelete, 1);
         this.setState({editableCard});
     }
@@ -119,7 +132,7 @@ export class CardEditor extends Component {
         }
         return {
             backgroundSize: 'cover',
-            background: 'url("' + this.state.editableCard.img + '") scroll no-repeat center/cover'
+            background: 'url("' + this.state.editableCard.image + '") scroll no-repeat center/cover'
         };
     }
 
@@ -150,10 +163,10 @@ export class CardEditor extends Component {
                         <Container className = 'chipTags'>
                             {this.state.editableCard.tags.map((item) =>
                                     <Chip className = 'chipTag'
-                                          key = {item.id}
-                                          onRequestDelete = {() => this.handleDeleteTag(item.id)}
+                                          key = {item}
+                                          onRequestDelete = {() => this.handleDeleteTag(item)}
                                           style = {StyleService.GetChipStyles()}>
-                                        {item.title}
+                                        {item}
                                     </Chip>
                                 ,this)}
                         </Container>
@@ -206,6 +219,7 @@ export class CardEditor extends Component {
                         <ModeEdit color = {this.state.textColor}/>
                     </IconButton>
                 </Container>
+                <Loader loading={this.state.loading}/>
             </Container>
         );
     }

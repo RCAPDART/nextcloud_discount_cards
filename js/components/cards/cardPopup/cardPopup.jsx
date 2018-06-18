@@ -49,7 +49,7 @@ export class CardPopup extends Component {
 
     imageStyle = {
         backgroundSize: 'cover',
-        background: 'url("' + this.props.card.img + '") scroll no-repeat center/cover'
+        background: 'url("' + this.props.card.image + '") scroll no-repeat center/cover'
     };
 
     render() {

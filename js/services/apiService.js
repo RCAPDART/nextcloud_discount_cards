@@ -11,4 +11,5 @@ export class ApiService {
         }};
 
     static Get = (url) => axios.get(url, ApiService.config);
+    static Post = (url, data) => axios.post(url, data, ApiService.config);
 }

@@ -44,7 +44,7 @@ export class Card extends Component {
 
 	getImageStyle() {
 		return {
-            background: 'url("' + this.props.data.img + '") scroll no-repeat center/cover'
+            background: 'url("' + this.props.data.image + '") scroll no-repeat center/cover'
         }
 	}
 
@@ -58,7 +58,7 @@ export class Card extends Component {
         }
 		return (
             <GridTile
-				key = {data.img}
+				key = {data.image}
 				cols={1}
 				rows={1}
                 titleBackground = {
@@ -73,8 +73,8 @@ export class Card extends Component {
 			>
 				<Container className = 'chipTags'>
 					{this.props.data.tags.map((item) =>
-							<Chip className = 'chipTag' key = {item.id} style={this.styleService.GetChipStyles()}>
-								{item.title}
+							<Chip className = 'chipTag' key = {item} style={this.styleService.GetChipStyles()}>
+								{item}
 							</Chip>
 						,this)}
 				</Container>
