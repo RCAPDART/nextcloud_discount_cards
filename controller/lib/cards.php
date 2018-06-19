@@ -39,6 +39,46 @@ class Cards {
 		return $results;
 	}
 
+	 /**
+	 * @brief Separate Url String at comma character
+	 * @param $userId String of user id
+	 * @param $cardId String of card id
+	 * */
+	public function DeleteCard($userId, $cardId) {
+		$dbType = $this->config->getSystemValue('dbtype', 'sqlite');
+		$qbCard = $this->db->getQueryBuilder();
+		$qbCard->select('id');
+		$qbCard->from('discount_cards', 'cards');
+		$qbCard->where($qbCard->expr()->eq('user_id', $qbCard->createPositionalParameter($userId)));
+		$qbCard->andWhere('cards.id='.$cardId);
+		$cards = $qbCard->execute()->fetchAll();
+
+		if (count($cards) == 0) {
+			// Card is not exist, or user has no access to it
+			return false;
+		}
+
+
+		$qbDeleteCard = $this->db->getQueryBuilder();
+		$qbDeleteCard->delete('discount_cards', 'cards');
+		$qbDeleteCard->where('cards.id='.$cardId);
+		$qbCard->execute();
+
+		$qbDeleteTags = $this->db->getQueryBuilder();
+		$qbDeleteTags->delete('discount_cards_tags', 'tags');
+		$qbDeleteTags->where('tags.card_id='.$cardId);
+		$qbDeleteTags->execute();
+
+		return true;
+	}
+
+	 /**
+	 * @brief Separate Url String at comma character
+	 * @param $userId String of user id
+	 * @param $sqlSortColumn String of name of column, which will be used for sorting
+	 * @param $tags Array (Strings) of Tags
+	 * @return array Array of Tags
+	 * */
 	public function FindCards($userId, $sqlSortColumn, $tags) {
 		$dbType = $this->config->getSystemValue('dbtype', 'sqlite');
 		$qb = $this->db->getQueryBuilder();
@@ -84,7 +124,6 @@ class Cards {
 		}
 
 		return $result;
-		//return $qb->getSQL();
 	}
 
 	 /**
@@ -143,7 +182,7 @@ class Cards {
 
 		$result = array();
 		array_push($result, $fileName, $file, strlen($data));
-		return '/index.php/remote.php/webdav'.$this->getPath().'/'.$fileName;
+		return '/remote.php/webdav'.$this->getPath().$fileName;
 	}
 
 	private function saveFile($data, $fileName) {
@@ -168,35 +207,13 @@ class Cards {
 
 	private function storageInit() {
 		$this->fs = new Filesystem();
-		if(!$this->fs->file_exists($this->getPath().'/init')){
+		if(!$this->fs->file_exists($this->getPath().'init')){
 			$this->fs->mkdir($this->getPath());
-			$this->fs->touch($this->getPath().'/init');
+			$this->fs->touch($this->getPath().'init');
 		}
 	}
 
 	private function getPath() {
-		return '/.discount_cards';
+		return '/.discount_cards/';
 	}
 }
-
-//SELECT * FROM
-//(SELECT cards.title, cards.code, GROUP_CONCAT(tags.tag) AS tags
-//FROM oc_discount_cards AS cards
-//LEFT JOIN oc_discount_cards_tags AS tags
-//ON tags.card_id = cards.id
-//GROUP BY cards.title, cards.code) T
-//WHERE FIND_IN_SET("Russia", tags) > 0
-//AND FIND_IN_SET("Shops", tags) > 0
-
-//SELECT cards.*
-//FROM oc_discount_cards_tags AS tags
-//LEFT JOIN oc_discount_cards AS cards
-//WHERE tags.tag in ("Russia", "Yaroslavl")
-//GROUP BY card_id
-//HAVING count(tag)=2
-
-//SELECT tag, COUNT(card_id) AS 'count'
-//FROM oc_discount_cards_tags
-//WHERE card_id in ('2')
-//GROUP BY tag
-//ORDER BY tag
