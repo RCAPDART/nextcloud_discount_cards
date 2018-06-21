@@ -66,15 +66,17 @@ export class Cards extends BaseComponent {
         if(updatedCard !== null) {
             if(updatedCard.id !== 0) {
                 // Updating existing card
+                const cards = this.state.cards;
                 const card = CardsService.GetCardById(this.state.cards, updatedCard.id);
                 CardsService.UpdateCard(card, updatedCard);
+                this.setState({cards})
             }
             else {
                 // Adding new card
                 if(!CardsService.CardsAreEqual(CardsService.GetAddableCard(), updatedCard)){
-                    const allCards = this.state.cards;
-                    allCards.push(CardsService.AddCard(updatedCard));
-                    this.setState({cards: allCards});
+                    const cards = this.state.cards;
+                    cards.push(CardsService.AddCard(updatedCard));
+                    this.setState({cards});
                 }
             }
         }
