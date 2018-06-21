@@ -90,6 +90,17 @@ class CardsController extends ApiController  {
 	*
 	* @return JSONResponse
 	*/
+	public function addUpdateCard($card) {
+		$result = $this->cards->AddUpdateCard($this->userId, $card);
+		return new JSONResponse(array('data' => result, 'status' => 'success'));
+	}
+
+	/**
+	* @NoCSRFRequired
+	* @NoAdminRequired
+	*
+	* @return JSONResponse
+	*/
 	public function getTags() {
 		$tags = $this->cards->GetTags($this->userId);
 		return new JSONResponse(array('data' => $tags, 'status' => 'success'));

@@ -8,9 +8,13 @@ export class CardsService {
     cards = [];
     static colors = ['#f44336', '#ff9800', '#9c27b0', '#3f51b5', '#2196f3', '#03a9f4', '#009688', '#4caf50', '#cddc39'];
 
-    static GetCardsFromApi = (filter) => ApiService.Get('cards/getCards?tags='+filter);
+    static GetCardsFromApi = (filter) => ApiService.Get('cards/getCards?tags=' + filter);
 
     static UploadImage = (data) => ApiService.Post('cards/uploadImage', data);
+
+    static DeleteCard = (cardId) => ApiService.Get('cards/deleteCard?cardId=' + cardId);
+
+    static AddUpdateCard = (card) => ApiService.Post('cards/addUpdateCard', card);
 
     static ProcessCards(cards) {
         cards.forEach((card) => {
@@ -83,11 +87,6 @@ export class CardsService {
         // ToDo API call add
         newCard.id = CommonService.GetGuid();
         return CommonService.CloneObject(newCard);
-    };
-
-    static DeleteCard = (id) => {
-        // ToDo API call delete
-        return id;
     };
 
     static CardsAreEqual (card1, card2){

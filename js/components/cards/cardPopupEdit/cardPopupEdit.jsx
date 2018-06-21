@@ -18,6 +18,7 @@ import { DimensionHelper } from "../../../services/dimensionHelper";
 import { StyleService } from './StyleService';
 
 import './cardPopupEdit.less';
+import {Loader} from "../../common/loader/loader";
 
 export class CardPopupEdit extends Component {
     static propTypes = {
@@ -38,7 +39,8 @@ export class CardPopupEdit extends Component {
         color: this.props.card != null ? this.props.card.color : null,
         textColor: this.props.card != null ? this.props.card.textColor : null,
         title: this.props.card != null ? this.props.card.title : null,
-        modalForDeleteCardOpened: false
+        modalForDeleteCardOpened: false,
+        loading: false
     };
 
     constructor(props) {
@@ -70,8 +72,12 @@ export class CardPopupEdit extends Component {
     }
 
     applyEditChanges(updatedCard) {
-        this.setState({editedCard: updatedCard});
-        this.applyStateChanges(false, updatedCard);
+        this.setState({loading: true});
+        CardsService.AddUpdateCard({card: updatedCard}).then(response => {
+            window.console.log(response);
+            this.setState({loading: false, card: updatedCard});
+            this.applyStateChanges(false, updatedCard);
+        });
     }
 
     closeModal() {
@@ -105,23 +111,44 @@ export class CardPopupEdit extends Component {
     render() {
         const discardChanges = this.discardChanges.bind(this);
         const toggleEdit = this.toggleEdit.bind(this);
+        const title = this.state.title;
+        const titleStyle = this.styleService.GetTitleStyles(
+            this.state.color,
+            this.state.textColor);
+        const opened = this.props.opened;
+        const windowStyle = this.styleService.GetWindowStyles(this.props.modalWidth, this.props.modalHeight);
+        const cardId = this.state.openedCard.id;
+        const edit = this.state.isEdit;
+        const editCallback = this.applyEditChanges.bind(this);
+        const imageDataStyle = this.styleService.GetImageDataStyle(this.state.openedCard.color,
+                this.dimensionHelper.GetCardImageHeight(this.props.modalWidth));
+        const imageStyle = this.styleService.GetImageStyle(this.state.openedCard.image);
 
-        function DrawEditButtons(props) {
-            if(props.cardId === 0) return null;
-            if(props.edit) {
+        const textColor = this.state.textColor;
+        const card = this.state.openedCard;
+        //const isEdit = this.state.isEdit;
+        const id = this.id;
+        const closeModal = this.closeModal.bind(this);
+        const chipStyles = this.styleService.GetChipStyles();
+        const deleteCard = this.deleteCard.bind(this);
+
+
+        function DrawEditButtons() {
+            if(cardId === 0) return <span/>;
+            if(edit) {
                 return <IconButton className='editButton' onClick = {discardChanges}>
-                    <Undo color={props.textColor}/>
+                    <Undo color={textColor}/>
                 </IconButton>
             }
             return <IconButton className='editButton' onClick = {toggleEdit}>
-                <ModeEdit color={props.textColor}/>
+                <ModeEdit color={textColor}/>
             </IconButton>
         }
 
-        function DrawDeleteButton(props) {
-            if(props.cardId === 0) return null;
-            return <IconButton className = 'editButton' onClick = {props.deleteCard}>
-                <DeleteForever  color = {props.textColor}/>
+        function DrawDeleteButton() {
+            if(cardId === 0) return <span/>;
+            return <IconButton className = 'editButton' onClick = {deleteCard}>
+                <DeleteForever  color = {textColor}/>
             </IconButton>;
         }
 
@@ -129,25 +156,23 @@ export class CardPopupEdit extends Component {
             return <Fragment>
                 <DrawDeleteButton
                     deleteCard = {props.deleteCard}
-                    textColor = {props.textColor}
-                    cardId = {props.card.id}
+                    textColor = {textColor}
                 />
                 <DrawEditButtons
-                    edit = {props.edit}
-                    cardId = {props.card.id}
-                    textColor = {props.textColor}
+                    edit = {edit}
+                    textColor = {textColor}
                 />
-                <IconButton className = 'editButton' onClick = {props.closeModal}>
-                    <Clear color = {props.textColor}/>
+                <IconButton className = 'editButton' onClick = {closeModal}>
+                    <Clear color = {textColor}/>
                 </IconButton>
             </Fragment>
         }
 
         function DrawCard(props) {
-            if (!props.edit) {
+            if (!edit) {
                 return <Container className = 'cardPopup'>
-                    <Container className = 'imageData' style = {props.imageDataStyle}>
-                        <Container className = 'image' style = {props.imageStyle}/>
+                    <Container className = 'imageData' style = {imageDataStyle}>
+                        <Container className = 'image' style = {imageStyle}/>
                     </Container>
                     <Container className = 'chipTags'>
                         {props.card.tags.map((item) =>
@@ -157,33 +182,28 @@ export class CardPopupEdit extends Component {
                             ,this)}
                     </Container>
                     <Container className = 'barcodeData'>
-                        <Barcode code = {props.card.code} id = {props.id}/>
+                        <Barcode code = {card.code} id = {id}/>
                     </Container>
                 </Container>
             }
-            return <CardEditor card={props.card} callBack={props.editCallback}/>
+            return <CardEditor card={card} callBack={editCallback}/>
         }
 
-        function RenderCard(props) {
-            if (props.card != null) {
+        function RenderCard() {
+            if (card != null) {
                 return <Container>
                     <DrawCard
-                        id = {props.id}
-                        edit = {props.edit}
-                        imageDataStyle = {props.imageDataStyle}
-                        imageStyle = {props.imageStyle}
-                        card = {props.card}
-                        editCallback = {props.editCallback}
-                        chipStyles = {props.chipStyles}
+                        id = {id}
+                        card = {card}
+                        chipStyles = {chipStyles}
                     />
                     <Container className = 'buttons'>
                         <DrawButtons
-                            id = {props.id}
-                            textColor = {props.textColor}
-                            edit = {props.edit}
-                            card = {props.card}
-                            deleteCard = {props.deleteCard}
-                            closeModal = {props.closeModal}
+                            id = {id}
+                            textColor = {textColor}
+                            card = {card}
+                            deleteCard = {deleteCard}
+                            closeModal = {closeModal}
                         />
                     </Container>
                 </Container>
@@ -191,14 +211,14 @@ export class CardPopupEdit extends Component {
             return <span/>;
         }
         function RenderDialog(props) {
-            if (!props.opened)
-                return null;
+            if (!opened)
+                return <span/>;
             return <Container className = 'fullDialog'>
                 <Container className = {'back'}>
-                    <Container className = {'dialogWindow'} style = {props.windowStyle}>
+                    <Container className = {'dialogWindow'} style = {windowStyle}>
                         <Container className = 'dialogContent'>
-                            <Container className = 'title' style = {props.titleStyle}>
-                                <h3 style = {props.titleStyle}>{props.title}</h3>
+                            <Container className = 'title' style = {titleStyle}>
+                                <h3 style = {titleStyle}>{title}</h3>
                             </Container>
                             <Container className = 'content'>
                                 {props.children}
@@ -223,26 +243,8 @@ export class CardPopupEdit extends Component {
             />
         ];
         return (
-            <RenderDialog
-                title = {this.state.title}
-                opened = {this.props.opened}
-                titleStyle = {this.styleService.GetTitleStyles(this.state.color,
-                    this.state.textColor)}
-                windowStyle = {this.styleService.GetWindowStyles(this.props.modalWidth, this.props.modalHeight)}
-            >
-                <RenderCard
-                    textColor = {this.state.textColor}
-                    card = {this.state.openedCard}
-                    edit = {this.state.isEdit}
-                    imageDataStyle = {this.styleService.GetImageDataStyle(this.state.openedCard.color,
-                        this.dimensionHelper.GetCardImageHeight(this.props.modalWidth))}
-                    imageStyle = {this.styleService.GetImageStyle(this.state.openedCard.image)}
-                    id = {this.id}
-                    editCallback = {this.applyEditChanges.bind(this)}
-                    closeModal = {this.closeModal.bind(this)}
-                    chipStyles = {this.styleService.GetChipStyles()}
-                    deleteCard = {this.deleteCard.bind(this)}
-                />
+            <RenderDialog>
+                <RenderCard/>
                 <Dialog
                     actions={actions}
                     modal={false}
@@ -251,6 +253,7 @@ export class CardPopupEdit extends Component {
                 >
                     Delete card?
                 </Dialog>
+                <Loader loading={this.state.loading}/>
             </RenderDialog>
         );
     }

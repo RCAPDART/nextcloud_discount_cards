@@ -14,6 +14,7 @@ import { OrderingPanelSettings } from './OrderingPanelSettings.js';
 import { StyleService } from "./StyleService";
 
 import './cards.less';
+import {Loader} from "../common/loader/loader";
 
 export class Cards extends BaseComponent {
     static propTypes = {
@@ -24,7 +25,8 @@ export class Cards extends BaseComponent {
         cards: this.props.data,
         selectedCard: (this.props.data != null && this.props.data.length > 0) ? this.props.data[0] : null,
         cardOpened: false,
-        editing: false
+        editing: false,
+        loading: false
     };
 
     constructor(props) {
@@ -80,11 +82,15 @@ export class Cards extends BaseComponent {
     }
 
     deleteCardCallback(id) {
-        CardsService.DeleteCard(id);
         const cards = this.state.cards.filter((card) => {
             return card.id !== id;
         });
-        this.setState({cards, cardOpened: false})
+        this.setState({cards, cardOpened: false, loading: true})
+
+        CardsService.DeleteCard(id).then(() => {
+           this.setState({loading: false});
+        });
+
     }
 
     render() {
@@ -145,6 +151,7 @@ export class Cards extends BaseComponent {
                     callback = {(orderKey, ascending) => this.reorderCards(orderKey, ascending)}/>
                 <RenderCards/>
                 <RenderCardPopupEdit/>
+                <Loader loading={this.state.loading}/>
             </Container>
         );
     }

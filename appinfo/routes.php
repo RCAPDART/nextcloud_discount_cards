@@ -1,12 +1,5 @@
 <?php
-/**
- * Copyright (c) 2015 Robin Appelman <icewind@owncloud.com>
- * This file is licensed under the Affero General Public License version 3 or
- * later.
- * See the COPYING-README file.
- */
-
-/** @var $this OC\Route\Router */
+/* @var $this OC\Route\Router */
 
 return ['routes' => [
 	// page
@@ -14,5 +7,6 @@ return ['routes' => [
 	['name' => 'cards#test', 'url' => '/cards/test', 'verb' => 'GET'],
 	['name' => 'cards#getCards', 'url' => '/cards/getCards', 'verb' => 'GET'],
 	['name' => 'cards#deleteCard', 'url' => '/cards/deleteCard', 'verb' => 'GET'],
+	['name' => 'cards#addUpdateCard', 'url' => '/cards/addUpdateCard', 'verb' => 'POST'],
 	['name' => 'cards#uploadImage', 'url' => '/cards/uploadImage', 'verb' => 'POST']
 ]];

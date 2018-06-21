@@ -97,7 +97,7 @@ export class CardEditor extends Component {
             return;
         }
 
-        editableCard.tags.push ({id: 0, title: newTagName});
+        editableCard.tags.push (newTagName);
         this.setState({editableCard, newTagName: ''});
     }
 
@@ -141,8 +141,9 @@ export class CardEditor extends Component {
             <Container className = 'cardEditor'>
                 <Accordion style = {this.getContainerStyle()}
                            title = {'Title'} checked={true}>
-                    <input type = 'text' value={this.state.editableCard.title}
-                           onChange={this.handleChangeTitle.bind(this)}/>
+                    <input type = 'text'
+                           value = {this.state.editableCard.title}
+                           onChange = {this.handleChangeTitle.bind(this)}/>
                 </Accordion>
 
                 <Accordion style = {this.getContainerStyle()}
@@ -185,7 +186,8 @@ export class CardEditor extends Component {
 
                 <Accordion style = {this.getContainerStyle()}
                            title = 'BarCode'>
-                    <input type = 'text' value={this.state.editableCard.code}
+                    <input type = 'text'
+                           value = {this.state.editableCard.code}
                            onChange = {this.handleChangeCode.bind(this)}/>
                     <Barcode code = {this.state.editableCard.code}
                              textColor = {this.state.textColor}

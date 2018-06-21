@@ -2,7 +2,7 @@ import Clear from 'material-ui/svg-icons/content/clear';
 import IconButton from 'material-ui/IconButton';
 import ModeEdit from 'material-ui/svg-icons/editor/mode-edit';
 import PropTypes from 'prop-types';
-import React, {Component} from 'react';
+import React, {Component, Fragment} from 'react';
 
 import { Barcode } from "../../common/barcode/barcode";
 import { CardEditor } from "./cardEditor/cardEditor";
@@ -11,6 +11,8 @@ import { Container } from "../../../baseComponents/container/container";
 import { DimensionHelper } from "../../../services/dimensionHelper";
 
 import './cardPopup.less';
+import {CardsService} from "../../../services/cardsService";
+import {Loader} from "../../common/loader/loader";
 
 export class CardPopup extends Component {
     static propTypes = {
@@ -18,6 +20,10 @@ export class CardPopup extends Component {
         applyColorChanges: PropTypes.func.isRequired,
         isEdit: PropTypes.bool.isRequired,
         screenWidth: PropTypes.number
+    };
+
+    state = {
+        loading: false
     };
     id = '';
 
@@ -42,9 +48,13 @@ export class CardPopup extends Component {
         this.props.applyColorChanges(updateCard, isEdit);
     }
 
-    applyEditChanges(updatedCard){
-        this.setState({card: updatedCard});
-        this.toggleEdit();
+    applyEditChanges(updatedCard) {
+        this.setState({loading: true});
+        CardsService.AddUpdateCard(updatedCard).then(response => {
+            window.console.log(response);
+            this.setState({loading: false, card: updatedCard});
+            this.toggleEdit();
+        });
     }
 
     imageStyle = {
@@ -109,14 +119,17 @@ export class CardPopup extends Component {
         }
 
         return (
-            <RenderCard card={this.props.card}
-                        edit={this.props.isEdit}
-                        imageDataStyle={this.getImageDataStyle()}
-                        imageStyle={this.imageStyle} id={this.id}
-                        editCallback={this.applyEditChanges.bind(this)}
-                        applyChanges={this.applyChanges.bind(this)}
-                        toggleEdit={this.toggleEdit.bind(this)}
-            />
+            <Fragment>
+                <RenderCard card={this.props.card}
+                            edit={this.props.isEdit}
+                            imageDataStyle={this.getImageDataStyle()}
+                            imageStyle={this.imageStyle} id={this.id}
+                            editCallback={this.applyEditChanges.bind(this)}
+                            applyChanges={this.applyChanges.bind(this)}
+                            toggleEdit={this.toggleEdit.bind(this)}
+                />
+                <Loader loading={this.state.loading}/>
+            </Fragment>
         );
     }
 }
