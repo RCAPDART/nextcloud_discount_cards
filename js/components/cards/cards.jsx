@@ -122,28 +122,6 @@ export class Cards extends BaseComponent {
             />
         }
 
-        function RenderCards() {
-            if(cards == null) return <span/>;
-            return <GridList
-                cols = {columns}
-                cellHeight = {230}
-                style = {gridStyles}
-            >
-                {cards.map((item) =>
-                        <Card
-                            key = {item.id}
-                            data = {item}
-                            openCardCallback = {() => openCardModal(item.id)}
-                        />
-                    ,this)}
-                <Card
-                    key = {0}
-                    data = {CardsService.GetAddableCard()}
-                    openCardCallback = {() => openCardModal(0)}
-                />
-            </GridList>
-        }
-
         return (
             <Container>
                 <OrderingPanel
@@ -151,7 +129,24 @@ export class Cards extends BaseComponent {
                     ascending = {true}
                     orderKeys = {orderKeys}
                     callback = {(orderKey, ascending) => this.reorderCards(orderKey, ascending)}/>
-                <RenderCards/>
+                <GridList
+                    cols = {columns}
+                    cellHeight = {230}
+                    style = {gridStyles}
+                >
+                    {cards.map((item) =>
+                            <Card
+                                key = {item.id}
+                                data = {item}
+                                openCardCallback = {() => openCardModal(item.id)}
+                            />
+                        ,this)}
+                    <Card
+                        key = {0}
+                        data = {CardsService.GetAddableCard()}
+                        openCardCallback = {() => openCardModal(0)}
+                    />
+                </GridList>
                 <RenderCardPopupEdit/>
                 <Loader loading={this.state.loading}/>
             </Container>

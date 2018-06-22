@@ -60,14 +60,15 @@ export class CardPopupEdit extends Component {
             editedCard: nextProps.card,
             textColor: nextProps.card.textColor,
             title: nextProps.card.title,
-            isEdit: nextProps.isEdit});
+            isEdit: nextProps.isEdit
+        });
     }
 
     toggleEdit() {
         this.applyStateChanges(true, CardsService.CloneCard(this.state.editedCard));
     }
 
-    discardChanges(){
+    discardChanges() {
         this.applyStateChanges(false, CardsService.CloneCard(this.props.card));
     }
 
@@ -88,11 +89,11 @@ export class CardPopupEdit extends Component {
         this.setState({modalForDeleteCardOpened: true});
     }
 
-    cancelDelete(){
+    cancelDelete() {
         this.setState({modalForDeleteCardOpened: false});
     }
 
-    acceptDelete(){
+    acceptDelete() {
         this.props.deleteCallback(this.props.card.id);
     }
 
@@ -100,7 +101,7 @@ export class CardPopupEdit extends Component {
         let title = card.title;
         let color = card.color;
         let textColor = card.textColor;
-        if(isEdit){
+        if (isEdit) {
             title = 'Editing "' + title + '"';
             color = 'black';
             textColor = 'white';
@@ -121,7 +122,7 @@ export class CardPopupEdit extends Component {
         const edit = this.state.isEdit;
         const editCallback = this.applyEditChanges.bind(this);
         const imageDataStyle = this.styleService.GetImageDataStyle(this.state.openedCard.color,
-                this.dimensionHelper.GetCardImageHeight(this.props.modalWidth));
+            this.dimensionHelper.GetCardImageHeight(this.props.modalWidth));
         const imageStyle = this.styleService.GetImageStyle(this.state.openedCard.image);
 
         const textColor = this.state.textColor;
@@ -132,129 +133,123 @@ export class CardPopupEdit extends Component {
         const chipStyles = this.styleService.GetChipStyles();
         const deleteCard = this.deleteCard.bind(this);
 
+        const actions = [
+            <FlatButton
+                key='Delete'
+                label="Delete"
+                primary={true}
+                onClick={this.acceptDelete.bind(this)}
+            />,
+            <FlatButton
+                key='Cancel'
+                label="Cancel"
+                primary={true}
+                onClick={this.cancelDelete.bind(this)}
+            />
+        ];
+
 
         function DrawEditButtons() {
-            if(cardId === 0) return <span/>;
-            if(edit) {
-                return <IconButton className='editButton' onClick = {discardChanges}>
+            if (cardId === 0) return <span/>;
+            if (edit) {
+                return <IconButton className='editButton' onClick={discardChanges}>
                     <Undo color={textColor}/>
                 </IconButton>
             }
-            return <IconButton className='editButton' onClick = {toggleEdit}>
+            return <IconButton className='editButton' onClick={toggleEdit}>
                 <ModeEdit color={textColor}/>
             </IconButton>
         }
 
         function DrawDeleteButton() {
-            if(cardId === 0) return <span/>;
-            return <IconButton className = 'editButton' onClick = {deleteCard}>
-                <DeleteForever  color = {textColor}/>
+            if (cardId === 0) return <span/>;
+            return <IconButton className='editButton' onClick={deleteCard}>
+                <DeleteForever color={textColor}/>
             </IconButton>;
         }
 
         function DrawButtons(props) {
             return <Fragment>
                 <DrawDeleteButton
-                    deleteCard = {props.deleteCard}
-                    textColor = {textColor}
+                    deleteCard={props.deleteCard}
+                    textColor={textColor}
                 />
                 <DrawEditButtons
-                    edit = {edit}
-                    textColor = {textColor}
+                    edit={edit}
+                    textColor={textColor}
                 />
-                <IconButton className = 'editButton' onClick = {closeModal}>
-                    <Clear color = {textColor}/>
+                <IconButton className='editButton' onClick={closeModal}>
+                    <Clear color={textColor}/>
                 </IconButton>
             </Fragment>
         }
 
-        function DrawCard(props) {
-            if (!edit) {
-                return <Container className = 'cardPopup'>
-                    <Container className = 'imageData' style = {imageDataStyle}>
-                        <Container className = 'image' style = {imageStyle}/>
-                    </Container>
-                    <Container className = 'chipTags'>
-                        {props.card.tags.map((item) =>
-                                <Chip className = 'chipTag' key = {item} style={props.chipStyles}>
-                                    {item}
-                                </Chip>
-                            ,this)}
-                    </Container>
-                    <Container className = 'barcodeData'>
-                        <Barcode code = {card.code} id = {id}/>
-                    </Container>
-                </Container>
-            }
-            return <CardEditor card={card} callBack={editCallback}/>
-        }
+        return (
+            opened === true ? (
+                    <Container className='fullDialog'>
+                        <Container className={'back'}>
+                            <Container className={'dialogWindow'} style={windowStyle}>
+                                <Container className='dialogContent'>
+                                    <Container className='title' style={titleStyle}>
+                                        <h3 style={titleStyle}>{title}</h3>
+                                    </Container>
+                                    <Container className='content'>
+                                        {
+                                            card != null ? (
+                                                    <Container>
+                                                        {
+                                                            edit === false ? (
+                                                                <Container className='cardPopup'>
+                                                                    <Container className='imageData'
+                                                                               style={imageDataStyle}>
+                                                                        <Container className='image'
+                                                                                   style={imageStyle}/>
+                                                                    </Container>
+                                                                    <Container className='chipTags'>
+                                                                        {card.tags.map((item) =>
+                                                                                <Chip className='chipTag' key={item}
+                                                                                      style={chipStyles}>
+                                                                                    {item}
+                                                                                </Chip>
+                                                                            , this)}
+                                                                    </Container>
+                                                                    <Container className='barcodeData'>
+                                                                        <Barcode code={card.code} id={id}/>
+                                                                    </Container>
+                                                                </Container>
+                                                            ) : (
+                                                                <CardEditor card={card} callBack={editCallback}/>
+                                                            )
 
-        function RenderCard() {
-            if (card != null) {
-                return <Container>
-                    <DrawCard
-                        id = {id}
-                        card = {card}
-                        chipStyles = {chipStyles}
-                    />
-                    <Container className = 'buttons'>
-                        <DrawButtons
-                            id = {id}
-                            textColor = {textColor}
-                            card = {card}
-                            deleteCard = {deleteCard}
-                            closeModal = {closeModal}
-                        />
-                    </Container>
-                </Container>
-            }
-            return <span/>;
-        }
-        function RenderDialog(props) {
-            if (!opened)
-                return <span/>;
-            return <Container className = 'fullDialog'>
-                <Container className = {'back'}>
-                    <Container className = {'dialogWindow'} style = {windowStyle}>
-                        <Container className = 'dialogContent'>
-                            <Container className = 'title' style = {titleStyle}>
-                                <h3 style = {titleStyle}>{title}</h3>
-                            </Container>
-                            <Container className = 'content'>
-                                {props.children}
+                                                        }
+                                                        <Container className='buttons'>
+                                                            <DrawButtons
+                                                                id={id}
+                                                                textColor={textColor}
+                                                                card={card}
+                                                                deleteCard={deleteCard}
+                                                                closeModal={closeModal}
+                                                            />
+                                                        </Container>
+                                                    </Container>)
+                                                : (<span/>)
+
+                                        }
+                                        <Dialog
+                                            actions={actions}
+                                            modal={false}
+                                            open={this.state.modalForDeleteCardOpened}
+                                            onRequestClose={this.cancelDelete.bind(this)}
+                                        >
+                                            Delete card?
+                                        </Dialog>
+                                        <Loader loading={this.state.loading}/>
+                                    </Container>
+                                </Container>
                             </Container>
                         </Container>
-                    </Container>
-                </Container>
-            </Container>
-        }
-        const actions = [
-            <FlatButton
-                key = 'Delete'
-                label = "Delete"
-                primary = {true}
-                onClick = {this.acceptDelete.bind(this)}
-            />,
-            <FlatButton
-                key = 'Cancel'
-                label = "Cancel"
-                primary = {true}
-                onClick = {this.cancelDelete.bind(this)}
-            />
-        ];
-        return (
-            <RenderDialog>
-                <RenderCard/>
-                <Dialog
-                    actions={actions}
-                    modal={false}
-                    open={this.state.modalForDeleteCardOpened}
-                    onRequestClose={this.cancelDelete.bind(this)}
-                >
-                    Delete card?
-                </Dialog>
-                <Loader loading={this.state.loading}/>
-            </RenderDialog>
+                    </Container>)
+                : (<span/>)
         );
     }
 }
