@@ -72,7 +72,7 @@ export class CardsService {
 
     static UpdateCard = (prevState, newState) => {
         prevState.title = newState.title;
-        prevState.link = newState.link;
+        prevState.url = newState.url;
         prevState.code = newState.code;
         prevState.order = newState.order;
         prevState.image = newState.image;

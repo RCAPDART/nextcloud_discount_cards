@@ -69,11 +69,10 @@ class Cards {
     * */
 	public function DeleteCard($userId, $cardId) {
 		// Check, that card is exist and user has access to it
-		$card = $this->GetCardById($userId, $cardId)
-		if($card == null){
+		if($this->CardExists($userId, $cardId) == false){
 			return false;
 		}
-		$this->DeleteCardById($cardId, $card['image']);
+		$this->DeleteCardById($cardId);
 		return true;
 	}
 
@@ -222,21 +221,6 @@ class Cards {
 		return '/.discount_cards/';
 	}
 
-	private function GetCardById($userId, $cardId){
-		$qbCard = $this->db->getQueryBuilder();
-		$qbCard->select('*');
-		$qbCard->from('discount_cards');
-		$qbCard->where($qbCard->expr()->eq('user_id', $qbCard->createPositionalParameter($userId)));
-		$qbCard->andWhere($qbCard->expr()->eq('id', $qbCard->createPositionalParameter($cardId)));
-		$cards = $qbCard->execute()->fetchAll();
-
-		if (count($cards) == 0) {
-			// Card is not exist, or user has no access to it
-			return null;
-		}
-		return $cards[0];
-	}
-
 	private function CardExists($userId, $cardId){
 		$qbCard = $this->db->getQueryBuilder();
 		$qbCard->select('id');
@@ -283,10 +267,6 @@ class Cards {
 	private function AddCard($card, $userId){
 		$card = $this -> FillUndefinedCardValues($card);
 		$tags = $card["tags"];
-		unset($card["tags"]);
-		unset($card["textColor"]);
-		unset($card["order"]);
-		unset($card["id"]);
 		$qbCard = $this->db->getQueryBuilder();
 		$qbCard->insert('discount_cards');
 		$qbCard->values(array(
@@ -304,7 +284,7 @@ class Cards {
 			'description' => $this->GetValue($card['description']),
 			'code' => $this->GetValue($card['code']),
 			'color' => $this->GetValue($card['color']),
-			'url' => $this->GetValue($card['url']),
+			'url' => $this->GetValue($card['link']),
 			'image' => $this->GetValue($card['image']),
 			'user_id' => $this->GetValue($userId)
 		));
@@ -328,7 +308,7 @@ class Cards {
 		$qbCard->set('description', $qbCard->createNamedParameter($this->GetValue($card['description'])));
 		$qbCard->set('code', $qbCard->createNamedParameter($this->GetValue($card['code'])));
 		$qbCard->set('color', $qbCard->createNamedParameter($this->GetValue($card['color'])));
-		$qbCard->set('url', $qbCard->createNamedParameter($this->GetValue($card['url'])));
+		$qbCard->set('url', $qbCard->createNamedParameter($this->GetValue($card['link'])));
 		$qbCard->set('image', $qbCard->createNamedParameter($this->GetValue($card['image'])));
 
 		$qbCard->where($qbCard->expr()->eq('id', $qbCard->createNamedParameter($card['id'])));
@@ -346,8 +326,8 @@ class Cards {
 			$card['code'] = '';
 		if(!array_key_exists('color', $card))
 			$card['color'] = '';
-		if(!array_key_exists('url', $card))
-			$card['url'] = '';
+		if(!array_key_exists('link', $card))
+			$card['link'] = '';
 		if(!array_key_exists('image', $card))
 			$card['image'] = '';
 

@@ -53,7 +53,7 @@ export class CardEditor extends Component {
 
     handleChangeLink(event) {
         const editableCard = this.getCardState();
-        editableCard.link = event.target.value;
+        editableCard.url = event.target.value;
         this.setState({editableCard});
     }
 
@@ -195,13 +195,13 @@ export class CardEditor extends Component {
 
                 <Accordion style = {this.getContainerStyle()}
                            title = 'Link'>
-                    <a href = {this.state.editableCard.link}>
+                    <a href = {this.state.editableCard.url}>
                         <h2 style = {{color: this.state.textColor}}>
                             {'Link to ' + this.state.editableCard.title}
                         </h2>
                     </a>
                     <input type = 'text'
-                           value = {this.state.editableCard.link}
+                           value = {this.state.editableCard.url}
                            onChange = {this.handleChangeLink.bind(this)}/>
                 </Accordion>
 
