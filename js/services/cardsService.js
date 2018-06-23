@@ -23,27 +23,6 @@ export class CardsService {
         return cards;
     }
 
-    GetCards() {
-        this.cards = CardsService.GetCardsFromApi();
-        this.cards = CardsService.FillCardsColors(this.cards);
-        return this.cards;
-    }
-
-    static GetDefaultCard() {
-        const card = {
-            id: 0,
-            title: "New card",
-            link: '',
-            code: '1234',
-            order: 999999,
-            img: '',
-            tags: [],
-            color: this.colors[Math.floor(Math.random() * this.colors.length)]
-        };
-        CardsService.FillCardColors(card);
-        return card;
-    }
-
     static GetAddableCard() {
         const card =  {
             id: 0,
