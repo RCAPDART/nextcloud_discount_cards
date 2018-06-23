@@ -4,7 +4,6 @@
 return ['routes' => [
 	// page
 	['name' => 'page#index', 'url' => '/', 'verb' => 'GET'],
-	['name' => 'cards#test', 'url' => '/cards/test', 'verb' => 'GET'],
 	['name' => 'cards#getCards', 'url' => '/cards/getCards', 'verb' => 'GET'],
 	['name' => 'cards#deleteCard', 'url' => '/cards/deleteCard', 'verb' => 'GET'],
 	['name' => 'cards#addUpdateCard', 'url' => '/cards/addUpdateCard', 'verb' => 'POST'],

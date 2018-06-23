@@ -69,10 +69,11 @@ class Cards {
     * */
 	public function DeleteCard($userId, $cardId) {
 		// Check, that card is exist and user has access to it
-		if($this->CardExists($userId, $cardId) == false){
+		$card = $this->GetCardById($userId, $cardId)
+		if($card == null){
 			return false;
 		}
-		$this->DeleteCardById($cardId);
+		$this->DeleteCardById($cardId, $card['image']);
 		return true;
 	}
 
@@ -101,7 +102,7 @@ class Cards {
 		$qb->where($qb->expr()->eq('user_id', $qb->createPositionalParameter($userId)));
 		$qb->groupBy(array_merge($tableAttributes, [$sqlSortColumn]));
 		if (count($tags) > 0) {
-			$this->findCardsBuildFilter($qb, $tags);
+			$this->FindCardsBuildFilter($qb, $tags);
 		}
 
 		$cardsResults = $qb->execute()->fetchAll();
@@ -150,7 +151,7 @@ class Cards {
 	 * @param array $filters
 	 * @param bool $filterTagOnly
 	 */
-	private function findCardsBuildFilter(&$qb, $filters) {
+	private function FindCardsBuildFilter(&$qb, $filters) {
 		if (count($filters) == 0)
 			return;
 
@@ -175,26 +176,26 @@ class Cards {
 		$qb->having($filterExpression);
 	}
 
-	public function uploadFile($title, $file) {
-		$this->storageInit();
+	public function UploadFile($title, $file) {
+		$this->StorageInit();
 
-		$extension = $this->getExtension($file['type']);
-		$fileName = $this->getFileName($title).'.'.$extension;
+		$extension = $this->GetExtension($file['type']);
+		$fileName = $this->GetFileName($title).'.'.$extension;
 
 		$data = file_get_contents($file['tmp_name'], FILE_USE_INCLUDE_PATH);
 		$this->saveFile($data, $fileName);
 
 		$result = array();
 		array_push($result, $fileName, $file, strlen($data));
-		return '/remote.php/webdav'.$this->getPath().$fileName;
+		return '/remote.php/webdav'.$this->GetPath().$fileName;
 	}
 
-	private function saveFile($data, $fileName) {
-		$this->fs->touch($this->getPath().$fileName);
-		$this->fs->file_put_contents($this->getPath().$fileName, $data);
+	private function SaveFile($data, $fileName) {
+		$this->fs->touch($this->GetPath().$fileName);
+		$this->fs->file_put_contents($this->GetPath().$fileName, $data);
 	}
 
-	private function getExtension ($mime_type) {
+	private function GetExtension ($mime_type) {
 		$extensions = array(
 			'image/jpeg' => 'jpeg',
 			'image/gif' => 'gif',
@@ -205,20 +206,35 @@ class Cards {
 		return $extensions[$mime_type];
 	}
 
-	private function getFileName($title = 'empty') {
+	private function GetFileName($title = 'empty') {
 		return date('Y-m-d_h-i-s').'_'.$title;
 	}
 
-	private function storageInit() {
+	private function StorageInit() {
 		$this->fs = new Filesystem();
-		if(!$this->fs->file_exists($this->getPath().'init')){
-			$this->fs->mkdir($this->getPath());
-			$this->fs->touch($this->getPath().'init');
+		if(!$this->fs->file_exists($this->GetPath().'init')){
+			$this->fs->mkdir($this->GetPath());
+			$this->fs->touch($this->GetPath().'init');
 		}
 	}
 
-	private function getPath() {
+	private function GetPath() {
 		return '/.discount_cards/';
+	}
+
+	private function GetCardById($userId, $cardId){
+		$qbCard = $this->db->getQueryBuilder();
+		$qbCard->select('*');
+		$qbCard->from('discount_cards');
+		$qbCard->where($qbCard->expr()->eq('user_id', $qbCard->createPositionalParameter($userId)));
+		$qbCard->andWhere($qbCard->expr()->eq('id', $qbCard->createPositionalParameter($cardId)));
+		$cards = $qbCard->execute()->fetchAll();
+
+		if (count($cards) == 0) {
+			// Card is not exist, or user has no access to it
+			return null;
+		}
+		return $cards[0];
 	}
 
 	private function CardExists($userId, $cardId){

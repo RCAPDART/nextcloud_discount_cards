@@ -46,19 +46,9 @@ class CardsController extends ApiController  {
 	*
 	* @return JSONResponse
 	*/
-	public function test($title='') {
-		return new JSONResponse($this->cards->uploadFile($title, file_get_contents('php://input')));
-	}
-
-	/**
-	* @NoCSRFRequired
-	* @NoAdminRequired
-	*
-	* @return JSONResponse
-	*/
 	public function uploadImage($title='') {
 		$image = $_FILES['image'];
-		return $this->cards->uploadFile($title, $image);
+		return $this->cards->UploadFile($title, $image);
 	}
 
 	/**
