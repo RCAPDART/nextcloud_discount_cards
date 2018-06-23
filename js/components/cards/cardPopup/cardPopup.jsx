@@ -51,7 +51,6 @@ export class CardPopup extends Component {
     applyEditChanges(updatedCard) {
         this.setState({loading: true});
         CardsService.AddUpdateCard(updatedCard).then(response => {
-            window.console.log(response);
             this.setState({loading: false, card: updatedCard});
             this.toggleEdit();
         });

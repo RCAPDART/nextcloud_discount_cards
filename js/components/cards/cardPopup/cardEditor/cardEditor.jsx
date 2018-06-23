@@ -81,7 +81,6 @@ export class CardEditor extends Component {
         CardsService.UploadImage(data).then(response => {
             editableCard.image = response.data;
             this.setState({loading: false, editableCard});
-            window.console.log(response);
         })
     }
 

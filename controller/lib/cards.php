@@ -53,16 +53,20 @@ class Cards {
 
 		if($card['id'] != "0")
 		{
+			// If card is not exists and it is not 0 (adding new card) - user tried
+			// to update deleted card, or card, which is related to other user.
+			// This is not allowed
 			return false;
 		}
 
 		$this->AddCard($card, $userId);
+		return true;
 	}
 
-	 /**
-	 * @param $userId String of user id
-	 * @param $cardId String of card id
-	 * */
+    /**
+    * @param $userId String of user id
+    * @param $cardId String of card id
+    * */
 	public function DeleteCard($userId, $cardId) {
 		// Check, that card is exist and user has access to it
 		if($this->CardExists($userId, $cardId) == false){
@@ -72,13 +76,13 @@ class Cards {
 		return true;
 	}
 
-	 /**
-	 * @brief Separate Url String at comma character
-	 * @param $userId String of user id
-	 * @param $sqlSortColumn String of name of column, which will be used for sorting
-	 * @param $tags Array (Strings) of Tags
-	 * @return array Array of Tags
-	 * */
+    /**
+    * @brief Separate Url String at comma character
+    * @param $userId String of user id
+    * @param $sqlSortColumn String of name of column, which will be used for sorting
+    * @param $tags Array (Strings) of Tags
+    * @return array Array of Tags
+    * */
 	public function FindCards($userId, $sqlSortColumn, $tags) {
 		$dbType = $this->config->getSystemValue('dbtype', 'sqlite');
 		$qb = $this->db->getQueryBuilder();
@@ -126,11 +130,11 @@ class Cards {
 		return $result;
 	}
 
-	 /**
-	 * @brief Separate Url String at comma character
-	 * @param $line String of Tags
-	 * @return array Array of Tags
-	 * */
+    /**
+    * @brief Separate Url String at comma character
+    * @param $line String of Tags
+    * @return array Array of Tags
+    * */
 	public function AnalyzeTagRequest($line) {
 		$tags = explode(',', $line);
 		$filterTags = array();
@@ -261,6 +265,7 @@ class Cards {
 	}
 
 	private function AddCard($card, $userId){
+		$card = $this -> FillUndefinedCardValues($card);
 		$tags = $card["tags"];
 		unset($card["tags"]);
 		unset($card["textColor"]);
@@ -269,13 +274,25 @@ class Cards {
 		$qbCard = $this->db->getQueryBuilder();
 		$qbCard->insert('discount_cards');
 		$qbCard->values(array(
-			'title'=>$this->GetValue($card['title']),
-			'code'=>$this->GetValue($card['code']),
-			'color'=>$this->GetValue($card['color']),
-			'url'=>$this->GetValue($card['link']),
-			'image'=>$this->GetValue($card['image']),
-			'user_id'=>$this->GetValue($userId)
+			'title'=>$qbCard->createParameter('title'),
+			'description'=>$qbCard->createParameter('description'),
+			'code'=>$qbCard->createParameter('code'),
+			'color'=>$qbCard->createParameter('color'),
+			'url'=>$qbCard->createParameter('url'),
+			'image'=>$qbCard->createParameter('image'),
+			'user_id'=>$qbCard->createParameter('user_id')
 		));
+
+		$qbCard->setParameters(array(
+			'title' => $this->GetValue($card['title']),
+			'description' => $this->GetValue($card['description']),
+			'code' => $this->GetValue($card['code']),
+			'color' => $this->GetValue($card['color']),
+			'url' => $this->GetValue($card['url']),
+			'image' => $this->GetValue($card['image']),
+			'user_id' => $this->GetValue($userId)
+		));
+
 		$qbCard->execute();
 		$insertId = $qbCard->getLastInsertId();
 
@@ -285,6 +302,7 @@ class Cards {
 	}
 
 	private function UpdateCard($card){
+		$card = $this -> FillUndefinedCardValues($card);
 		$this->DeleteTagsByCardId($card['id']);
 		$this->InsertTags($card['tags'], $card['id']);
 
@@ -301,6 +319,23 @@ class Cards {
 		$cards = $qbCard->execute();
 
 		return true;
+	}
+
+	private function FillUndefinedCardValues($card){
+		if(!array_key_exists('title', $card))
+			$card['title'] = '';
+		if(!array_key_exists('description', $card))
+			$card['description'] = '';
+		if(!array_key_exists('code', $card))
+			$card['code'] = '';
+		if(!array_key_exists('color', $card))
+			$card['color'] = '';
+		if(!array_key_exists('url', $card))
+			$card['url'] = '';
+		if(!array_key_exists('image', $card))
+			$card['image'] = '';
+
+		return $card;
 	}
 
 	private function GetValue($value){

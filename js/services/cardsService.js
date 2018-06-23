@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 'use strict';
 import { cloneDeep, find, orderBy } from 'lodash';
 import { CommonService } from "./commonService";
@@ -18,8 +17,9 @@ export class CardsService {
 
     static ProcessCards(cards) {
         cards.forEach((card) => {
-            card.tags = card.tags.split(',');
+            card.tags = card.tags != null ? card.tags.split(',') : [];
         });
+        cards = CardsService.FillCardsColors(cards);
         return cards;
     }
 
@@ -71,7 +71,6 @@ export class CardsService {
     }
 
     static UpdateCard = (prevState, newState) => {
-        // ToDo API call update
         prevState.title = newState.title;
         prevState.link = newState.link;
         prevState.code = newState.code;
@@ -84,7 +83,6 @@ export class CardsService {
     };
 
     static AddCard = (newCard) => {
-        // ToDo API call add
         newCard.id = CommonService.GetGuid();
         return CommonService.CloneObject(newCard);
     };

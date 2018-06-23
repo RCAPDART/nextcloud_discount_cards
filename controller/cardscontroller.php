@@ -92,7 +92,7 @@ class CardsController extends ApiController  {
 	*/
 	public function addUpdateCard($card) {
 		$result = $this->cards->AddUpdateCard($this->userId, $card);
-		return new JSONResponse(array('data' => result, 'status' => 'success'));
+		return new JSONResponse(array('data' => $result, 'status' => 'success'));
 	}
 
 	/**

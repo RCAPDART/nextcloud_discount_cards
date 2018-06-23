@@ -51,8 +51,6 @@ export class MainContent extends Component {
                 tags: result.data.data.tags,
                 cards: CardsService.ProcessCards(result.data.data.cards),
                 loading: false});
-        }).catch(error=>{
-            window.console.log(error);
         });
     }
 
