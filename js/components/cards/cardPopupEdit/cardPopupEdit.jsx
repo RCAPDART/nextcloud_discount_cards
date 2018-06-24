@@ -1,4 +1,3 @@
-import Chip from 'material-ui/Chip';
 import Clear from 'material-ui/svg-icons/content/clear';
 import DeleteForever from 'material-ui/svg-icons/action/delete-forever';
 import Dialog from 'material-ui/Dialog';
@@ -9,16 +8,15 @@ import PropTypes from 'prop-types';
 import React, {Component, Fragment} from 'react';
 import Undo from 'material-ui/svg-icons/content/undo';
 
-import { Barcode } from "../../common/barcode/barcode";
-import { CardEditor } from "../cardPopup/cardEditor/cardEditor";
+import { CardEditor } from "./cardEditor/cardEditor";
 import { CardsService } from '../../../services/cardsService.js';
-import { CommonService } from "../../../services/commonService";
 import { Container } from "../../../baseComponents/container/container";
 import { DimensionHelper } from "../../../services/dimensionHelper";
+import { Loader } from "../../common/loader/loader";
 import { StyleService } from './StyleService';
 
 import './cardPopupEdit.less';
-import {Loader} from "../../common/loader/loader";
+import {CardStatic} from "./cardStatic/cardStatic";
 
 export class CardPopupEdit extends Component {
     static propTypes = {
@@ -30,7 +28,6 @@ export class CardPopupEdit extends Component {
         closeCallback: PropTypes.func.isRequired,
         deleteCallback: PropTypes.func.isRequired
     };
-    id = '';
 
     state = {
         isEdit: this.props.isEdit,
@@ -46,7 +43,6 @@ export class CardPopupEdit extends Component {
     constructor(props) {
         super(props);
         this.dimensionHelper = new DimensionHelper();
-        this.id = CommonService.GetGuid();
         this.styleService = new StyleService();
         this.cardsService = new CardsService();
     }
@@ -120,16 +116,10 @@ export class CardPopupEdit extends Component {
         const cardId = this.state.openedCard.id;
         const edit = this.state.isEdit;
         const editCallback = this.applyEditChanges.bind(this);
-        const imageDataStyle = this.styleService.GetImageDataStyle(this.state.openedCard.color,
-            this.dimensionHelper.GetCardImageHeight(this.props.modalWidth));
-        const imageStyle = this.styleService.GetImageStyle(this.state.openedCard.image);
 
         const textColor = this.state.textColor;
         const card = this.state.openedCard;
-        //const isEdit = this.state.isEdit;
-        const id = this.id;
         const closeModal = this.closeModal.bind(this);
-        const chipStyles = this.styleService.GetChipStyles();
         const deleteCard = this.deleteCard.bind(this);
 
         const actions = [
@@ -167,16 +157,10 @@ export class CardPopupEdit extends Component {
             </IconButton>;
         }
 
-        function DrawButtons(props) {
+        function DrawButtons() {
             return <Fragment>
-                <DrawDeleteButton
-                    deleteCard={props.deleteCard}
-                    textColor={textColor}
-                />
-                <DrawEditButtons
-                    edit={edit}
-                    textColor={textColor}
-                />
+                <DrawDeleteButton/>
+                <DrawEditButtons/>
                 <IconButton className='editButton' onClick={closeModal}>
                     <Clear color={textColor}/>
                 </IconButton>
@@ -195,44 +179,25 @@ export class CardPopupEdit extends Component {
                                     <Container className='content'>
                                         {
                                             card != null ? (
-                                                    <Container>
-                                                        {
-                                                            edit === false ? (
-                                                                <Container className='cardPopup'>
-                                                                    <Container className='imageData'
-                                                                               style={imageDataStyle}>
-                                                                        <Container className='image'
-                                                                                   style={imageStyle}/>
-                                                                    </Container>
-                                                                    <Container className='chipTags'>
-                                                                        {card.tags.map((item) =>
-                                                                                <Chip className='chipTag' key={item}
-                                                                                      style={chipStyles}>
-                                                                                    {item}
-                                                                                </Chip>
-                                                                            , this)}
-                                                                    </Container>
-                                                                    <Container className='barcodeData'>
-                                                                        <Barcode code={card.code} id={id}/>
-                                                                    </Container>
-                                                                </Container>
-                                                            ) : (
-                                                                <CardEditor card={card} callBack={editCallback}/>
-                                                            )
+                                                    <Fragment> {
+                                                        edit === false ? (
+                                                            <CardStatic card={card}
+                                                                        modalWidth={this.props.modalWidth}
+                                                                        modalHeight={this.props.modalHeight}/>
+                                                        ) : (
+                                                            <CardEditor card={card} callBack={editCallback}/>
+                                                        )
 
-                                                        }
+                                                    }
                                                         <Container className='buttons'>
                                                             <DrawButtons
-                                                                id={id}
                                                                 textColor={textColor}
                                                                 card={card}
-                                                                deleteCard={deleteCard}
                                                                 closeModal={closeModal}
                                                             />
                                                         </Container>
-                                                    </Container>)
+                                                    </Fragment>)
                                                 : (<span/>)
-
                                         }
                                         <Dialog
                                             actions={actions}

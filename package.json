@@ -8,10 +8,7 @@
   "scripts": {
     "build": "webpack --config webpack/dev.config.js --mode development",
     "deploy": "node ./deployment/all.js",
-    "deploy-frontend": "node ./deployment/frontend.js",
-    "deploy-backend": "node ./deployment/backend.js",
-    "build-deploy": "npm run build && npm run deploy",
-    "build-f-deploy": "npm run build && npm run deploy-frontend"
+    "build-deploy": "npm run build && npm run deploy"
   },
   "devDependencies": {
     "babel-core": "^6.26.3",
