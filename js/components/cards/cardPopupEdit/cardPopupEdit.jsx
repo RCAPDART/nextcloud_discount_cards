@@ -1,12 +1,7 @@
-import Clear from 'material-ui/svg-icons/content/clear';
-import DeleteForever from 'material-ui/svg-icons/action/delete-forever';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
-import IconButton from 'material-ui/IconButton';
-import ModeEdit from 'material-ui/svg-icons/editor/mode-edit';
 import PropTypes from 'prop-types';
 import React, {Component, Fragment} from 'react';
-import Undo from 'material-ui/svg-icons/content/undo';
 
 import { CardEditor } from "./cardEditor/cardEditor";
 import { CardsService } from '../../../services/cardsService.js';
@@ -17,6 +12,7 @@ import { StyleService } from './StyleService';
 
 import './cardPopupEdit.less';
 import {CardStatic} from "./cardStatic/cardStatic";
+import {ActionButtons} from "./actionButtons/actionButtons";
 
 export class CardPopupEdit extends Component {
     static propTypes = {
@@ -137,36 +133,6 @@ export class CardPopupEdit extends Component {
             />
         ];
 
-
-        function DrawEditButtons() {
-            if (cardId === 0) return <span/>;
-            if (edit) {
-                return <IconButton className='editButton' onClick={discardChanges}>
-                    <Undo color={textColor}/>
-                </IconButton>
-            }
-            return <IconButton className='editButton' onClick={toggleEdit}>
-                <ModeEdit color={textColor}/>
-            </IconButton>
-        }
-
-        function DrawDeleteButton() {
-            if (cardId === 0) return <span/>;
-            return <IconButton className='editButton' onClick={deleteCard}>
-                <DeleteForever color={textColor}/>
-            </IconButton>;
-        }
-
-        function DrawButtons() {
-            return <Fragment>
-                <DrawDeleteButton/>
-                <DrawEditButtons/>
-                <IconButton className='editButton' onClick={closeModal}>
-                    <Clear color={textColor}/>
-                </IconButton>
-            </Fragment>
-        }
-
         return (
             opened === true ? (
                     <Container className='fullDialog'>
@@ -189,13 +155,14 @@ export class CardPopupEdit extends Component {
                                                         )
 
                                                     }
-                                                        <Container className='buttons'>
-                                                            <DrawButtons
-                                                                textColor={textColor}
-                                                                card={card}
-                                                                closeModal={closeModal}
-                                                            />
-                                                        </Container>
+                                                        <ActionButtons
+                                                            cardId={cardId}
+                                                            edit={edit}
+                                                            textColor={textColor}
+                                                            deleteCard={deleteCard}
+                                                            discardChanges={discardChanges}
+                                                            toggleEdit={toggleEdit}
+                                                            closeModal={closeModal}/>
                                                     </Fragment>)
                                                 : (<span/>)
                                         }
