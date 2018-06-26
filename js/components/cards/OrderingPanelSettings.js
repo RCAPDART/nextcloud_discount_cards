@@ -3,13 +3,13 @@ export class OrderingPanelSettings {
         return [
             {
                 id: 1,
-                title: 'Custom',
-                key: 'order'
+                title: 'Title',
+                key: 'title'
             },
             {
                 id: 2,
-                title: 'Title',
-                key: 'title'
+                title: 'Color',
+                key: 'color'
             }
         ]
     }

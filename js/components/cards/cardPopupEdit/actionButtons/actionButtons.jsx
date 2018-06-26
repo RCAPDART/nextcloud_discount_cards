@@ -10,7 +10,7 @@ import { Container } from "../../../../baseComponents/container/container";
 
 export class ActionButtons extends Component {
     static propTypes = {
-        cardId: PropTypes.string.isRequired,
+        cardId: PropTypes.number.isRequired,
         edit: PropTypes.bool.isRequired,
         textColor: PropTypes.string.isRequired,
         deleteCard: PropTypes.func.isRequired,

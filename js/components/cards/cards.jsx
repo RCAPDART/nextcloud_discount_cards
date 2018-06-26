@@ -18,7 +18,8 @@ import {Loader} from "../common/loader/loader";
 
 export class Cards extends BaseComponent {
     static propTypes = {
-        data: PropTypes.array.isRequired
+        data: PropTypes.array.isRequired,
+        refreshDataCallback: PropTypes.func.isRequired
     };
 
     state = {
@@ -81,6 +82,7 @@ export class Cards extends BaseComponent {
             }
         }
         this.setState({cardOpened: false});
+        this.props.refreshDataCallback();
     }
 
     deleteCardCallback(id) {
@@ -92,18 +94,18 @@ export class Cards extends BaseComponent {
         CardsService.DeleteCard(id).then(() => {
            this.setState({loading: false});
         });
-
+        this.props.refreshDataCallback();
     }
 
     render() {
         const cards = this.state.cards;
         const card = this.state.selectedCard;
-        const deleteCallback = this.deleteCardCallback.bind(this);
         const opened = this.state.cardOpened;
         const isEdit = this.state.editing;
         const maxDialogWidth = this.dimensionHelper.GetMaxDialogWidth(this.state.width);
         const maxDialogHeight = this.dimensionHelper.GetMaxDialogHeight(this.state.width);
         const closeCallback = this.closeCardModal.bind(this);
+        const deleteCallback = this.deleteCardCallback.bind(this);
         const columns = this.dimensionHelper.GetColumns(this.state.width);
         const gridStyles = this.styleService.GetGridStyles();
         const orderKeys = this.orderKeys;

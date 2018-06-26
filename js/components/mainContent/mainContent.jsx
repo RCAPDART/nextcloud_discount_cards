@@ -39,7 +39,7 @@ export class MainContent extends Component {
         this.setState({open: !this.state.open});
     }
 
-    LoadDataFromApi(filterTags){
+    LoadDataFromApi(filterTags) {
         let filter = '';
         if (filterTags.length > 0){
             filter = filterTags.map(function(tag){
@@ -52,6 +52,10 @@ export class MainContent extends Component {
                 cards: CardsService.ProcessCards(result.data.data.cards),
                 loading: false});
         });
+    }
+
+    RefreshData() {
+        this.LoadDataFromApi(this.state.selectedTags);
     }
 
     GetUnusedTags() {
@@ -87,6 +91,7 @@ export class MainContent extends Component {
         const unusedTags = this.GetUnusedTags();
         const deselectTagCallback = this.DeselectTag.bind(this);
         const selectTagCallback = this.SelectTag.bind(this);
+        const refreshDataCallback = this.RefreshData.bind(this);
 
         function RenderFilter() {
             if (selectedTags.length === 0) return <span/>;
@@ -120,7 +125,8 @@ export class MainContent extends Component {
 
         return (
             <Container>
-                <Cards data={this.state.cards}/>
+                <Cards data={this.state.cards}
+                       refreshDataCallback={refreshDataCallback}/>
                 <Drawer open={this.state.open}>
                     <Container className='drawerHead'>
                         <IconButton className='closeDrawer' onClick={this.handleToggle.bind(this)}>

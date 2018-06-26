@@ -26,7 +26,6 @@ export class CardEditor extends Component {
 
     constructor(props) {
         super(props);
-        this.newTagName = '';
     }
 
     state = {
@@ -36,6 +35,7 @@ export class CardEditor extends Component {
         acceptedUploads: [],
         rejectedUploads: [],
         loading: false,
+        newTagName: ''
     };
 
     // Handlers

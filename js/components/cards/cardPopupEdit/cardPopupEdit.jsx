@@ -156,7 +156,7 @@ export class CardPopupEdit extends Component {
 
                                                     }
                                                         <ActionButtons
-                                                            cardId={cardId}
+                                                            cardId={parseInt(cardId)}
                                                             edit={edit}
                                                             textColor={textColor}
                                                             deleteCard={deleteCard}
