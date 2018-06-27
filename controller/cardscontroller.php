@@ -59,8 +59,8 @@ class CardsController extends ApiController  {
 	*/
 	public function getCards($tags = null) {
 		$filterTags = $this->cards->AnalyzeTagRequest($tags);
-		$cards = $this->cards->FindCards($this->userId, 'lastmodified', $filterTags);
-		return new JSONResponse(array('data' => $cards, 'status' => 'success'));
+		$result = $this->cards->FindCards($this->userId, 'lastmodified', $filterTags);
+		return new JSONResponse(array('data' => $result, 'status' => 'success'));
 	}
 
 	/**
@@ -91,8 +91,8 @@ class CardsController extends ApiController  {
 	*
 	* @return JSONResponse
 	*/
-	public function getTags() {
-		$tags = $this->cards->GetTags($this->userId);
-		return new JSONResponse(array('data' => $tags, 'status' => 'success'));
+	public function click($cardId) {
+		$result = $this->cards->Click($this->userId, $cardId);
+		return new JSONResponse(array('data' => $result, 'status' => 'success'));
 	}
 }

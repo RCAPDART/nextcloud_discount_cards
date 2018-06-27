@@ -63,6 +63,21 @@ class Cards {
 		return true;
 	}
 
+	 /**
+	 * @brief Separate Url String at comma character
+	 * @param $userId String of user id
+	 * @param $cardId String of card id
+	 * */
+	public function Click($userId, $cardId) {
+		if($this->CardExists($userId, $cardId) == false) {
+			// Card is not exists, or user has no access to it
+			return false;
+		}
+
+		$this->ClickCard($cardId);
+		return true;
+	}
+
     /**
     * @param $userId String of user id
     * @param $cardId String of card id
@@ -100,6 +115,7 @@ class Cards {
 		$qb->leftJoin('cards', 'discount_cards_tags', 'tags', $qb->expr()->eq('tags.card_id', 'cards.id'));
 		$qb->where($qb->expr()->eq('user_id', $qb->createPositionalParameter($userId)));
 		$qb->groupBy(array_merge($tableAttributes, [$sqlSortColumn]));
+		$qb->orderBy('cards.clickcount', 'DESC');
 		if (count($tags) > 0) {
 			$this->FindCardsBuildFilter($qb, $tags);
 		}
@@ -262,6 +278,21 @@ class Cards {
 			));
 			$qbTag = $qbTag->execute();
 		}
+	}
+
+	private function ClickCard($cardId) {
+		$qbCard = $this->db->getQueryBuilder();
+		$qbCard->select('clickcount');
+		$qbCard->from('discount_cards');
+		$qbCard->where($qbCard->expr()->eq('id', $qbCard->createPositionalParameter($cardId)));
+		$card = $qbCard->execute()->fetchAll();
+		$clickCount = intval($card['clickcount']) + 1;
+
+        $qbCardUpdate = $this->db->getQueryBuilder();
+        $qbCardUpdate->update('discount_cards');
+        $qbCardUpdate->set('clickcount', $qbCardUpdate->createNamedParameter($clickCount));
+        $qbCardUpdate->where($qbCardUpdate->expr()->eq('id', $qbCardUpdate->createNamedParameter($cardId)));
+        $qbCardUpdate->execute();
 	}
 
 	private function AddCard($card, $userId){

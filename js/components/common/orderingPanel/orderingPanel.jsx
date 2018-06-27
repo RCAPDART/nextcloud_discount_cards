@@ -23,6 +23,12 @@ export class OrderingPanel extends Component {
 		this.orderAscIconClass = 'icon-triangle-n';
 		this.orderDescIconClass = 'icon-triangle-s';
 		this.orderKeys = this.props.orderKeys;
+    }
+
+    componentDidMount() {
+        this.orderKeys.map((orderKey) => {
+            if (orderKey.defaultValue !== null) this.onOrderChange(orderKey.key, orderKey.default);
+        });
 	}
 	
 	onOrderChange (orderKey) {

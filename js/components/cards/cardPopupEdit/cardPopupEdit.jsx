@@ -20,7 +20,7 @@ export class CardPopupEdit extends Component {
         card: PropTypes.object,
         isEdit: PropTypes.bool.isRequired,
         modalWidth: PropTypes.number.isRequired,
-        modalHeight: PropTypes.any.isRequired,
+        modalHeight: PropTypes.number.isRequired,
         closeCallback: PropTypes.func.isRequired,
         deleteCallback: PropTypes.func.isRequired
     };
@@ -148,8 +148,7 @@ export class CardPopupEdit extends Component {
                                                     <Fragment> {
                                                         edit === false ? (
                                                             <CardStatic card={card}
-                                                                        modalWidth={this.props.modalWidth}
-                                                                        modalHeight={this.props.modalHeight}/>
+                                                                        modalWidth={this.props.modalWidth}/>
                                                         ) : (
                                                             <CardEditor card={card} callBack={editCallback}/>
                                                         )

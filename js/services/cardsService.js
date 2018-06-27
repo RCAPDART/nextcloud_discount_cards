@@ -13,6 +13,8 @@ export class CardsService {
 
     static DeleteCard = (cardId) => ApiService.Get('cards/deleteCard?cardId=' + cardId);
 
+    static ClickCard = (cardId) => ApiService.Post('cards/click?cardId=' + cardId);
+
     static AddUpdateCard = (card) => ApiService.Post('cards/addUpdateCard', card);
 
     static ProcessCards(cards) {

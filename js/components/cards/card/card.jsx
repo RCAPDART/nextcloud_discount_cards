@@ -17,73 +17,75 @@ export class Card extends Component {
         openCardCallback: PropTypes.func
     };
 
-	constructor(props) {
-		super(props);
+    constructor(props) {
+        super(props);
         this.commonService = new CommonService();
         this.styleService = new StyleService();
-	}
+    }
 
-	getRGB(){
-		return CommonService.HexToRgb(this.props.data.color);
-	}
+    getRGB() {
+        return CommonService.HexToRgb(this.props.data.color);
+    }
 
-    openCard () {
-		if(this.props.openCardCallback===null || this.props.openCardCallback===undefined)
-			return;
+    openCard() {
+        if (this.props.openCardCallback === null || this.props.openCardCallback === undefined)
+            return;
         this.props.openCardCallback(this.props.data.id);
     }
 
     getTileStyle() {
-		return {
+        return {
             titleStyle: {
                 color: this.props.data.textColor,
                 fontWeight: 'bold'
             }
-		}
-	}
+        }
+    }
 
-	getImageStyle() {
-		return {
+    getImageStyle() {
+        return {
             background: 'url("' + this.props.data.image + '") scroll no-repeat center/cover'
         }
-	}
+    }
 
-	render () {
-        const { data } = this.props;
-		function RenderCardImage () {
-			if(data.id !== 0 ) return null;
-			return <div className='newCardIcon'>
+    render() {
+        const {data} = this.props;
+
+        function RenderCardImage() {
+            if (data.id !== 0) return <span/>;
+            return <div className='newCardIcon'>
                 <IconButton><AddCircleOutline/></IconButton>
-			</div>
+            </div>
         }
-		return (
+
+        return (
             <GridTile
-				key = {data.image}
-				cols={1}
-				rows={1}
-                titleBackground = {
-					'linear-gradient(to bottom, ' +
-					'rgba('+this.getRGB().r+','+this.getRGB().g+','+this.getRGB().b+',0.9) 0%, ' +
-                    'rgba('+this.getRGB().r+','+this.getRGB().g+','+this.getRGB().b+',0.5) 70%, ' +
-                    'rgba('+this.getRGB().r+','+this.getRGB().g+','+this.getRGB().b+',0) 100%)'
+                key={data.image}
+                cols={1}
+                rows={1}
+                titleBackground={
+                    'linear-gradient(to bottom, ' +
+                    'rgba(' + this.getRGB().r + ',' + this.getRGB().g + ',' + this.getRGB().b + ',0.9) 0%, ' +
+                    'rgba(' + this.getRGB().r + ',' + this.getRGB().g + ',' + this.getRGB().b + ',0.5) 70%, ' +
+                    'rgba(' + this.getRGB().r + ',' + this.getRGB().g + ',' + this.getRGB().b + ',0) 100%)'
                 }
-				title = {data.title}
-                titleStyle = {this.getTileStyle().titleStyle}
-				subtitle = {''}
-			>
-				<Container className = 'chipTags'>
-					{this.props.data.tags.map((item) =>
-							<Chip className = 'chipTag' key = {item} style={this.styleService.GetChipStyles()}>
-								{item}
-							</Chip>
-						,this)}
-				</Container>
-				<Container
-					style = {this.getImageStyle()}
-                    onClick = {this.openCard.bind(this)}
-					className = 'cardImage'/>
-				<RenderCardImage/>
-			</GridTile>
-		);
-	}
+                title={data.title}
+                titleStyle={this.getTileStyle().titleStyle}
+                subtitle={''}
+            >
+                <Container className='chipTags'>
+                    {this.props.data.tags.map((item) =>
+                            <Chip className='chipTag' key={item} style={this.styleService.GetChipStyles()}>
+                                {item}
+                            </Chip>
+                        , this)}
+                </Container>
+                <Container
+                    style={this.getImageStyle()}
+                    onClick={this.openCard.bind(this)}
+                    className='cardImage'/>
+                <RenderCardImage/>
+            </GridTile>
+        );
+    }
 }

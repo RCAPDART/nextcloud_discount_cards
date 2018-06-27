@@ -11,8 +11,7 @@ import { StyleService } from "../StyleService";
 export class CardStatic extends Component {
     static propTypes = {
         card: PropTypes.object.isRequired,
-        modalWidth: PropTypes.number.isRequired,
-        modalHeight: PropTypes.any.isRequired,
+        modalWidth: PropTypes.number.isRequired
     };
 
     constructor(props) {

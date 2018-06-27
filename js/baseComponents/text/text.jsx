@@ -1,11 +1,12 @@
-import React, {Component} from 'react';
-import './container.less';
 import PropTypes from "prop-types";
+import React, {Component} from 'react';
+
+import './text.less';
 
 export class Text extends Component {
 
     static propTypes = {
-        children: PropTypes.object.isRequired,
+        text: PropTypes.string.isRequired,
         isTitle: PropTypes.bool,
         isInline: PropTypes.bool,
         fontSize: PropTypes.number,

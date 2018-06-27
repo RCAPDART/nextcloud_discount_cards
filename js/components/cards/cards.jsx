@@ -58,6 +58,7 @@ export class Cards extends BaseComponent {
         if (id !== 0) {
             card = CardsService.CloneCard(CardsService.GetCardById(this.state.cards, id));
             isEdit = false;
+            CardsService.ClickCard(id);
         }
 
         this.setState({ cardOpened: true, editing: isEdit,selectedCard: card });
@@ -89,7 +90,7 @@ export class Cards extends BaseComponent {
         const cards = this.state.cards.filter((card) => {
             return card.id !== id;
         });
-        this.setState({cards, cardOpened: false, loading: true})
+        this.setState({cards, cardOpened: false, loading: true});
 
         CardsService.DeleteCard(id).then(() => {
            this.setState({loading: false});

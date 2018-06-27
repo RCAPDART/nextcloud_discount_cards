@@ -18,16 +18,17 @@ export class Loader extends Component {
 
     render() {
         const { loading } = this.props;
-        function RenderLoader() {
-            if(!loading) return <span/>;
-            return <Container className='loaderBackground'>
-                <Container className='loaderContainer'>
-                    <CircularProgress size={80} thickness={5} />
-                </Container>
-            </Container>;
-        }
+
         return (
-            <RenderLoader/>
+            loading === true ? (
+                <Container className='loaderBackground'>
+                    <Container className='loaderContainer'>
+                        <CircularProgress size={80} thickness={5} />
+                    </Container>
+                </Container>
+            ) : (
+                null
+            )
         )
     }
 }

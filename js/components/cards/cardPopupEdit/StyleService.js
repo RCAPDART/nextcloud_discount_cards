@@ -14,7 +14,7 @@ export class StyleService {
             marginLeft = (100 - width) / 2;
         }
 
-        if(modalHeight && modalHeight.height !== 100){
+        if(modalHeight !== 100){
             const height = modalHeight;
             return {
                 width: width + '%',

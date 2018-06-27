@@ -32,13 +32,13 @@ export class DimensionHelper {
     }
 
     GetMaxDialogHeight(width){
-        if(width>this.uHdWidth) return {height: 75, top: 5};
-        if(width>this.quadHdWidth) return {height: 80, top: 5};
-        if(width>this.fullHdWidth) return {height: 85, top: 5};
-        if(width>this.mediumWidth) return {height: 85, top: 5};
-        if(width>this.laptopWidth) return {height: 91, top: 1};
-        if(width>this.smallWidth) return {height: 100, top: 0};
-        if(width>this.extraSmallWidth) return {height: 100, top: 0};
+        if(width>this.uHdWidth) return 75;
+        if(width>this.quadHdWidth) return 80;
+        if(width>this.fullHdWidth) return 85;
+        if(width>this.mediumWidth) return 85;
+        if(width>this.laptopWidth) return 91;
+        if(width>this.smallWidth) return 100;
+        if(width>this.extraSmallWidth) return 100;
         return 100;
     }
 

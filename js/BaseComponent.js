@@ -19,6 +19,7 @@ export class BaseComponent extends Component {
 
     constructor(props) {
         super(props);
+        this.onResize = this.onResize.bind(this);
     }
 
     componentDidMount() {
@@ -27,7 +28,7 @@ export class BaseComponent extends Component {
 
     componentWillMount () {
         if(!this.eventListenerEnabled) {
-            window.addEventListener('resize', () => this.onResize());
+            window.addEventListener('resize', this.onResize);
             this.eventListenerEnabled = true;
         }
     }

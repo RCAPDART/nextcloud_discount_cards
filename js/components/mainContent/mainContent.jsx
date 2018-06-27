@@ -1,29 +1,24 @@
 import Clear from 'material-ui/svg-icons/content/clear';
-import Chip from 'material-ui/Chip';
 import Drawer from 'material-ui/Drawer';
 import FilterList from 'material-ui/svg-icons/content/filter-list';
 import IconButton from 'material-ui/IconButton';
 import React, {Component} from 'react';
 
-import {CardsService} from '../../services/cardsService.js';
-import {Container} from "../../baseComponents/container/container";
-import {Cards} from '../cards/cards.jsx';
+import { CardsService } from '../../services/cardsService.js';
+import { Container } from "../../baseComponents/container/container";
+import { Cards } from '../cards/cards.jsx';
+import { Loader } from "../common/loader/loader";
+import { TagsService } from "../../services/tagsService";
 
 import './mainContent.less';
-import {TagsService} from "../../services/tagsService";
-import {Loader} from "../common/loader/loader";
-import {ApiService} from "../../services/apiService";
+import {TagsBlock} from "../tagsBlock/tagsBlock";
 
 export class MainContent extends Component {
     constructor(props) {
         super(props);
-        this.tagsService = new TagsService();
-        this.cardsService = new CardsService();
-        this.requestToken = window.oc_requesttoken;
     }
 
     componentDidMount() {
-        window.api = ApiService;
         this.LoadDataFromApi([]);
     }
 
@@ -93,36 +88,6 @@ export class MainContent extends Component {
         const selectTagCallback = this.SelectTag.bind(this);
         const refreshDataCallback = this.RefreshData.bind(this);
 
-        function RenderFilter() {
-            if (selectedTags.length === 0) return <span/>;
-
-            return <Container className='filteredTags'>
-                <h2>Filter</h2>
-                {selectedTags.map((tag) =>
-                        <Chip
-                            className='selectedTag'
-                            key={tag.id}
-                            onRequestDelete={() => deselectTagCallback(tag.title)}
-                            style={{margin:3}}
-                        >{tag.title}</Chip>
-                    , this)}
-            </Container>
-        }
-
-        function RenderUnusedTags() {
-            return <Container className='allTags'>
-                <h2>Tags</h2>
-                {unusedTags.map((tag) =>
-                        <Chip
-                            className='unselectedTag'
-                            key={tag.title}
-                            onClick={() => selectTagCallback(tag.title)}
-                            style={{margin:3}}
-                        >{tag.title} <span className={"tagCount"}>{tag.count}</span></Chip>
-                    , this)}
-            </Container>
-        }
-
         return (
             <Container>
                 <Cards data={this.state.cards}
@@ -133,8 +98,14 @@ export class MainContent extends Component {
                             <Clear/>
                         </IconButton>
                     </Container>
-                    <RenderFilter/>
-                    <RenderUnusedTags/>
+                    <TagsBlock tags={selectedTags}
+                               isDelete={true}
+                               deselectTagCallback={deselectTagCallback}
+                               className='filteredTags'/>
+                    <TagsBlock tags={unusedTags}
+                               isDelete={false}
+                               onClickCallback={selectTagCallback}
+                               className='allTags'/>
                 </Drawer>
                 <IconButton className='filterToggle' onClick={this.handleToggle.bind(this)}>
                     <FilterList/>
