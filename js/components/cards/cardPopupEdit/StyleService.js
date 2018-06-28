@@ -1,58 +1,58 @@
 export class StyleService {
-    GetTitleStyles(color, textColor){
-        return {
-            backgroundColor: color,
-            color: textColor
-        };
+  GetTitleStyles (color, textColor) {
+    return {
+      backgroundColor: color,
+      color: textColor
+    };
+  }
+
+  GetWindowStyles (modalWidth, modalHeight) {
+    let width = 80;
+    let marginLeft = 10;
+    if (modalWidth) {
+      width = modalWidth;
+      marginLeft = (100 - width) / 2;
     }
 
-    GetWindowStyles(modalWidth, modalHeight){
-        let width = 80;
-        let marginLeft = 10;
-        if(modalWidth){
-            width = modalWidth;
-            marginLeft = (100 - width) / 2;
-        }
-
-        if(modalHeight !== 100){
-            const height = modalHeight;
-            return {
-                width: width + '%',
-                marginLeft: marginLeft + '%',
-                height: height.height+'%',
-                top: height.top+'%'
-            };
-        }
-
-        return {
-            width: width + '%',
-            marginLeft: marginLeft + '%'
-        };
+    if (modalHeight !== 100) {
+      const height = modalHeight;
+      return {
+        width: width + '%',
+        marginLeft: marginLeft + '%',
+        height: height.height + '%',
+        top: height.top + '%'
+      };
     }
 
-    GetImageStyle(img) {
-        return {
-            backgroundSize: 'cover',
-            background: 'url("' + img + '") scroll no-repeat center/cover'
-        }
-    }
+    return {
+      width: width + '%',
+      marginLeft: marginLeft + '%'
+    };
+  }
 
-    GetImageDataStyle(color, height) {
-        return {
-            background: color,
-            height: height + 'vh'
-        };
+  GetImageStyle (img) {
+    return {
+      backgroundSize: 'cover',
+      background: 'url("' + img + '") scroll no-repeat center/cover'
     }
+  }
 
-    GetChipStyles() {
-        return {
-            chip: {
-                margin: 4,
-            },
-            wrapper: {
-                display: 'flex',
-                flexWrap: 'wrap',
-            },
-        };
-    }
+  GetImageDataStyle (color, height) {
+    return {
+      background: color,
+      height: height + 'vh'
+    };
+  }
+
+  GetChipStyles () {
+    return {
+      chip: {
+        margin: 4
+      },
+      wrapper: {
+        display: 'flex',
+        flexWrap: 'wrap'
+      }
+    };
+  }
 }

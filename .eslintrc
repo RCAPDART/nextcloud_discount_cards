@@ -1,5 +1,5 @@
 {
-  parser: "babel-eslint",
+  "parser": "babel-eslint",
   "plugins": [
     "react"
   ],
@@ -7,8 +7,9 @@
     "window": true
   },
   "rules": {
-    "max-len": [1, 120, 2, {ignoreComments: true}],
+    "semi": "off",
     "react/prop-types": [2]
   },
-  "extends": ["eslint:recommended", "plugin:react/recommended"]
+  // Powered by https://github.com/standard/eslint-config-standard
+  "extends": ["standard", "plugin:react/recommended"]
 }

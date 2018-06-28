@@ -1,7 +1,7 @@
 export class StyleService {
-    GetGridStyles() {
-        return {
-            display: 'flex'
-        };
-    }
+  GetGridStyles () {
+    return {
+      display: 'flex'
+    };
+  }
 }
