@@ -13,6 +13,11 @@ export class OrderItem extends Component {
     getItemClassState: PropTypes.func.isRequired
   };
 
+  constructor (props) {
+    super(props);
+    this.onOrderChange = this.onOrderChange.bind(this);
+  }
+
   onOrderChange () {
     this.props.onOrderChangeCallback(this.props.orderKey);
   }
@@ -22,10 +27,14 @@ export class OrderItem extends Component {
   }
 
   render () {
+    const { title } = this.props;
+    const orderClass = this.getOrderingClass();
+    const onOrderChange = this.onOrderChange;
+
     return (
-      <Container className='orderLink' onClick={this.onOrderChange.bind(this)}>
-        <span className='name unselectable'>{this.props.title}</span>
-        <span className={'sort-indicator unselectable ' + this.getOrderingClass()} />
+      <Container className='orderLink' onClick={onOrderChange}>
+        <span className='name unselectable'>{title}</span>
+        <span className={'sort-indicator unselectable ' + orderClass} />
       </Container>
     );
   }

@@ -1,5 +1,5 @@
 export class OrderingPanelSettings {
-  GetOrderingKeys () {
+  static GetOrderingKeys () {
     return [
       {
         id: 1,

@@ -2,7 +2,7 @@ import CircularProgress from 'material-ui/CircularProgress';
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 
-import {Container} from '../../../baseComponents/container/container';
+import { Container } from '../../../baseComponents/container/container';
 
 import './loader.less';
 

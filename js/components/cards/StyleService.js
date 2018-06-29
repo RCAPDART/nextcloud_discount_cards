@@ -1,5 +1,5 @@
 export class StyleService {
-  GetGridStyles () {
+  static GetGridStyles () {
     return {
       display: 'flex'
     };

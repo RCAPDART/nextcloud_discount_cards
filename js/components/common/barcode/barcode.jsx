@@ -1,8 +1,10 @@
+import bwipjs from 'bwip-js';
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import bwipjs from 'bwip-js';
+
+import { Container } from '../../../baseComponents/container/container';
+
 import './barcode.less';
-import {Container} from '../../../baseComponents/container/container';
 
 const defaultType = 'code128';
 const defaultScale = 10;
@@ -61,12 +63,15 @@ export class Barcode extends Component {
   }
 
   render () {
+    const { id, textColor, showText } = this.props;
+    const text = this.GetText();
+
     return (
-      <Container className='barcode' id={idPrefix + this.props.id}>
-        <canvas className='barcodeCanvas' id={this.props.id} />
-        <h2 style={{ color: this.props.textColor }}
-          className={(this.props.showText == null ? true : this.props.showText) ? '' : 'hide'}>
-          {this.GetText()}
+      <Container className='barcode' id={idPrefix + id}>
+        <canvas className='barcodeCanvas' id={id} />
+        <h2 style={{ color: textColor }}
+          className={(showText == null ? true : showText) ? '' : 'hide'}>
+          {text}
         </h2>
       </Container>
     );

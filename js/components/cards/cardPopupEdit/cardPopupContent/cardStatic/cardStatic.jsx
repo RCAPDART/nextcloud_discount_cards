@@ -2,11 +2,11 @@ import Chip from 'material-ui/Chip';
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 
-import { Barcode } from '../../../common/barcode/barcode';
-import { CommonService } from '../../../../services/commonService';
-import { Container } from '../../../../baseComponents/container/container';
-import { DimensionHelper } from '../../../../services/dimensionHelper';
-import { StyleService } from '../StyleService';
+import { Barcode } from '../../../../common/barcode/barcode';
+import { CommonService } from '../../../../../services/commonService';
+import { Container } from '../../../../../baseComponents/container/container';
+import { DimensionHelper } from '../../../../../services/dimensionHelper';
+import { StyleService } from '../../StyleService';
 
 export class CardStatic extends Component {
   static propTypes = {
@@ -16,16 +16,16 @@ export class CardStatic extends Component {
 
   constructor (props) {
     super(props);
-    this.styleService = new StyleService();
-    this.dimensionHelper = new DimensionHelper();
+    this.id = CommonService.GetGuid();
   }
 
   render () {
-    const chipStyles = this.styleService.GetChipStyles();
-    const imageStyle = this.styleService.GetImageStyle(this.props.card.image);
-    const imageDataStyle = this.styleService.GetImageDataStyle(this.props.card.color,
-      this.dimensionHelper.GetCardImageHeight(this.props.modalWidth));
-    const id = CommonService.GetGuid();
+    const { card, modalWidth } = this.props;
+    const chipStyles = StyleService.GetChipStyles();
+    const imageStyle = StyleService.GetImageStyle(card.image);
+    const imageDataStyle = StyleService.GetImageDataStyle(card.color,
+      DimensionHelper.GetCardImageHeight(modalWidth));
+    const id = this.id;
 
     return (
       <Container className='cardPopup'>
@@ -35,7 +35,7 @@ export class CardStatic extends Component {
             style={imageStyle} />
         </Container>
         <Container className='chipTags'> {
-          this.props.card.tags.map((item) =>
+          card.tags.map((item) =>
             <Chip className='chipTag' key={item}
               style={chipStyles}>
               {item}
@@ -43,7 +43,7 @@ export class CardStatic extends Component {
             , this)}
         </Container>
         <Container className='barcodeData'>
-          <Barcode code={this.props.card.code} id={id} />
+          <Barcode code={card.code} id={id} />
         </Container>
       </Container>
     );

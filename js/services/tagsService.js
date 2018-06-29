@@ -1,6 +1,6 @@
 'use strict';
-import { find } from 'lodash';
 import { CommonService } from './commonService';
+import { find } from 'lodash';
 
 export class TagsService {
   tags = [];

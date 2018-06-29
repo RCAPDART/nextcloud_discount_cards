@@ -20,13 +20,7 @@ export class ActionButtons extends Component {
   };
 
   render () {
-    const cardId = this.props.cardId;
-    const edit = this.props.edit;
-    const textColor = this.props.textColor;
-    const deleteCard = this.props.deleteCard;
-    const discardChanges = this.props.discardChanges;
-    const toggleEdit = this.props.toggleEdit;
-    const closeModal = this.props.closeModal;
+    const { cardId, edit, textColor, deleteCard, discardChanges, toggleEdit, closeModal } = this.props;
 
     function DrawDeleteButton () {
       if (cardId === 0) return <span />;

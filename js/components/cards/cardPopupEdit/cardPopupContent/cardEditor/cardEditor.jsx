@@ -5,18 +5,18 @@ import Dropzone from 'react-dropzone'
 import IconButton from 'material-ui/IconButton';
 import ModeEdit from 'material-ui/svg-icons/editor/mode-edit';
 import PropTypes from 'prop-types';
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 
-import { Accordion } from '../../../common/accordion/accordion';
-import { Barcode } from '../../../common/barcode/barcode';
-import { CommonService } from '../../../../services/commonService';
-import { Container } from '../../../../baseComponents/container/container';
+import { Accordion } from '../../../../common/accordion/accordion';
+import { Barcode } from '../../../../common/barcode/barcode';
+import { CardsService } from '../../../../../services/cardsService';
+import { CommonService } from '../../../../../services/commonService';
+import { Container } from '../../../../../baseComponents/container/container';
+import { Loader } from '../../../../common/loader/loader';
 import { StyleService } from './StyleService';
 import { SwatchesPicker } from 'react-color';
 
 import './cardEditor.less';
-import {CardsService} from '../../../../services/cardsService';
-import {Loader} from '../../../common/loader/loader';
 
 export class CardEditor extends Component {
   static propTypes = {
@@ -34,21 +34,35 @@ export class CardEditor extends Component {
     newTagName: ''
   };
 
+  constructor (props) {
+    super(props);
+    this.handleChangeColor = this.handleChangeColor.bind(this);
+    this.handleChangeTitle = this.handleChangeTitle.bind(this);
+    this.handleChangeNewTagName = this.handleChangeNewTagName.bind(this);
+    this.handleAddNewTag = this.handleAddNewTag.bind(this);
+    this.handleChangeCode = this.handleChangeCode.bind(this);
+    this.handleChangeLink = this.handleChangeLink.bind(this);
+    this.handleChangeColor = this.handleChangeColor.bind(this);
+    this.applyChanges = this.applyChanges.bind(this);
+    this.handleDeleteTag = this.handleDeleteTag.bind(this);
+    this.handleChangeImage = this.handleChangeImage.bind(this);
+  }
+
   // Handlers
   handleChangeTitle (event) {
-    const editableCard = this.getCardState();
+    const editableCard = this.state.editableCard;
     editableCard.title = event.target.value;
     this.setState({ editableCard });
   }
 
   handleChangeCode (event) {
-    const editableCard = this.getCardState();
+    const editableCard = this.state.editableCard;
     editableCard.code = event.target.value;
     this.setState({ editableCard });
   }
 
   handleChangeLink (event) {
-    const editableCard = this.getCardState();
+    const editableCard = this.state.editableCard;
     editableCard.url = event.target.value;
     this.setState({ editableCard });
   }
@@ -58,7 +72,7 @@ export class CardEditor extends Component {
   }
 
   handleChangeColor (color) {
-    const editableCard = this.getCardState();
+    const editableCard = this.state.editableCard;
     editableCard.color = color.hex;
     editableCard.textColor = CommonService.GetTextColor(this.state.editableCard.color);
     this.setState({ backColor: editableCard.color, textColor: editableCard.textColor });
@@ -67,7 +81,7 @@ export class CardEditor extends Component {
 
   handleChangeImage (acceptedUploads, rejectedUploads) {
     if (acceptedUploads.length < 1) return;
-    const editableCard = this.getCardState();
+    const editableCard = this.state.editableCard;
     editableCard.image = CommonService.CloneObject(acceptedUploads[0].preview);
     this.setState({ acceptedUploads, rejectedUploads, editableCard, loading: true });
 
@@ -97,127 +111,120 @@ export class CardEditor extends Component {
   }
 
   handleDeleteTag (title) {
-    const editableCard = this.getCardState();
+    const editableCard = this.state.editableCard;
     const tagToDelete = editableCard.tags.map((tag) => tag).indexOf(title);
     editableCard.tags.splice(tagToDelete, 1);
     this.setState({ editableCard });
   }
 
-  // Helpers
-  getCardState () {
-    return this.state.editableCard;
-  }
-
   applyChanges () {
-    this.props.callBack(this.getCardState());
+    this.props.callBack(this.state.editableCard);
     this.setState({ acceptedUploads: [], rejectedUploads: [] });
   }
 
-  // Style helpers
-  getContainerStyle () {
-    return StyleService.GetContainerStyle(this.state.backColor, this.state.textColor);
-  }
-
-  getImagePreview () {
-    if (this.state.acceptedUploads.length > 0) {
-      return {
-        backgroundSize: 'cover',
-        background: 'url("' + this.state.acceptedUploads[0].preview + '") scroll no-repeat center/cover'
-      }
-    }
-    return {
-      backgroundSize: 'cover',
-      background: 'url("' + this.state.editableCard.image + '") scroll no-repeat center/cover'
-    };
-  }
-
   render () {
+    const { editableCard, acceptedUploads, backColor, textColor, loading, newTagName } = this.state;
+
+    const imagePreviewStyles = StyleService.GetImagePreview(acceptedUploads, editableCard);
+    const containerStyles = StyleService.GetContainerStyle(backColor, textColor);
+    const chipStyles = StyleService.GetChipStyles();
+
+    const handleChangeImage = this.handleChangeImage;
+    const handleChangeTitle = this.handleChangeTitle;
+    const handleChangeNewTagName = this.handleChangeNewTagName;
+    const handleAddNewTag = this.handleAddNewTag;
+    const handleChangeCode = this.handleChangeCode;
+    const handleChangeLink = this.handleChangeLink;
+    const handleChangeColor = this.handleChangeColor;
+    const handleDeleteTag = this.handleDeleteTag;
+    const applyChanges = this.applyChanges;
+
     return (
       <Container className='cardEditor'>
-        <Accordion style={this.getContainerStyle()}
+        <Accordion style={containerStyles}
           title={'Title'} checked={true}>
           <input type='text'
-            value={this.state.editableCard.title}
-            onChange={this.handleChangeTitle.bind(this)} />
+            value={editableCard.title}
+            onChange={handleChangeTitle} />
         </Accordion>
 
-        <Accordion style={this.getContainerStyle()}
+        <Accordion style={containerStyles}
           title='Image'>
           <Dropzone
             className='dragZoneImage'
             accept='image/jpeg, image/png'
             onDrop={(acceptedUploads, rejectedUploads) => {
-              this.handleChangeImage(acceptedUploads, rejectedUploads)
+              handleChangeImage(acceptedUploads, rejectedUploads)
             }}
           >
-            <div className='image' style={this.getImagePreview()} />
+            <div className='image' style={imagePreviewStyles} />
           </Dropzone>
         </Accordion>
 
-        <Accordion style={this.getContainerStyle()}
+        <Accordion style={containerStyles}
           title='Tags'>
           <Container className='tags'>
             <Container className='chipTags'>
-              {this.state.editableCard.tags.map((item) =>
+              {editableCard.tags.map((item) =>
                 <Chip className='chipTag'
                   key={item}
-                  onRequestDelete={() => this.handleDeleteTag(item)}
-                  style={StyleService.GetChipStyles()}>
+                  onRequestDelete={() => handleDeleteTag(item)}
+                  style={chipStyles}>
                   {item}
                 </Chip>
                 , this)}
             </Container>
             <Container className='newTag'>
               <input type='text'
-                value={this.state.newTagName}
-                onChange={this.handleChangeNewTagName.bind(this)} />
+                value={newTagName}
+                onChange={handleChangeNewTagName} />
               <IconButton className='addNewTagButton'
-                onClick={this.handleAddNewTag.bind(this)}>
+                onClick={handleAddNewTag}>
                 <AddCircleOutline
-                  color={this.state.textColor} />
+                  color={textColor} />
               </IconButton>
             </Container>
           </Container>
         </Accordion>
 
-        <Accordion style={this.getContainerStyle()}
+        <Accordion style={containerStyles}
           title='BarCode'>
           <input type='text'
-            value={this.state.editableCard.code}
-            onChange={this.handleChangeCode.bind(this)} />
-          <Barcode code={this.state.editableCard.code}
-            textColor={this.state.textColor}
+            value={editableCard.code}
+            onChange={handleChangeCode} />
+          <Barcode code={editableCard.code}
+            textColor={textColor}
             id='editableBarcode' />
         </Accordion>
 
-        <Accordion style={this.getContainerStyle()}
+        <Accordion style={containerStyles}
           title='Link'>
-          <a href={this.state.editableCard.url}>
-            <h2 style={{ color: this.state.textColor }}>
-              {'Link to ' + this.state.editableCard.title}
+          <a href={editableCard.url}>
+            <h2 style={{ color: textColor }}>
+              {'Link to ' + editableCard.title}
             </h2>
           </a>
           <input type='text'
-            value={this.state.editableCard.url}
-            onChange={this.handleChangeLink.bind(this)} />
+            value={editableCard.url}
+            onChange={handleChangeLink} />
         </Accordion>
 
-        <Accordion style={this.getContainerStyle()}
+        <Accordion style={containerStyles}
           title='Color'>
-          <SwatchesPicker onChange={this.handleChangeColor.bind(this)} />
+          <SwatchesPicker onChange={handleChangeColor} />
         </Accordion>
 
-        <Container style={{ background: this.state.backColor }}
+        <Container style={{ background: backColor }}
           className='confirmButton'
-          onClick={this.applyChanges.bind(this)}>
-          <span style={{ color: this.state.textColor }}>
+          onClick={applyChanges}>
+          <span style={{ color: textColor }}>
               Save changes
           </span>
           <IconButton className='editButton'>
-            <ModeEdit color={this.state.textColor} />
+            <ModeEdit color={textColor} />
           </IconButton>
         </Container>
-        <Loader loading={this.state.loading} />
+        <Loader loading={loading} />
       </Container>
     );
   }

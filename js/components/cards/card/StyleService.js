@@ -1,5 +1,5 @@
 export class StyleService {
-  GetChipStyles () {
+  static GetChipStyles () {
     return {
       chip: {
         margin: 4
@@ -9,5 +9,18 @@ export class StyleService {
         flexWrap: 'wrap'
       }
     };
+  }
+
+  static GetTileStyle (textColor) {
+    return {
+      color: textColor,
+      fontWeight: 'bold'
+    }
+  }
+
+  static GetImageStyle (image) {
+    return {
+      background: 'url("' + image + '") scroll no-repeat center/cover'
+    }
   }
 }

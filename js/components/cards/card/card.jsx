@@ -5,55 +5,38 @@ import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 
 import { CommonService } from '../../../services/commonService';
+import { Container } from '../../../baseComponents/container/container';
 import { GridTile } from 'material-ui/GridList';
 import { StyleService } from './StyleService';
 
 import './card.less';
-import {Container} from '../../../baseComponents/container/container';
 
 export class Card extends Component {
   static propTypes = {
-    data: PropTypes.object.isRequired,
+    card: PropTypes.object.isRequired,
     openCardCallback: PropTypes.func
   };
 
   constructor (props) {
     super(props);
-    this.commonService = new CommonService();
-    this.styleService = new StyleService();
+    this.openCardCallback = this.openCardCallback.bind(this);
   }
 
-  getRGB () {
-    return CommonService.HexToRgb(this.props.data.color);
-  }
-
-  openCard () {
+  openCardCallback () {
     if (this.props.openCardCallback === null || this.props.openCardCallback === undefined) {
       return;
     }
-    this.props.openCardCallback(this.props.data.id);
-  }
 
-  getTileStyle () {
-    return {
-      titleStyle: {
-        color: this.props.data.textColor,
-        fontWeight: 'bold'
-      }
-    }
-  }
-
-  getImageStyle () {
-    return {
-      background: 'url("' + this.props.data.image + '") scroll no-repeat center/cover'
-    }
+    this.props.openCardCallback(this.props.card.id);
   }
 
   render () {
-    const { data } = this.props;
+    const { card } = this.props;
+    const openCardCallback = this.openCardCallback;
+    const rgbColor = CommonService.HexToRgb(card.color);
 
     function RenderCardImage () {
-      if (data.id !== 0) return <span />;
+      if (card.id !== 0) return <span />;
       return <div className='newCardIcon'>
         <IconButton><AddCircleOutline /></IconButton>
       </div>
@@ -61,29 +44,29 @@ export class Card extends Component {
 
     return (
       <GridTile
-        key={data.image}
+        key={card.image}
         cols={1}
         rows={1}
         titleBackground={
           'linear-gradient(to bottom, ' +
-          'rgba(' + this.getRGB().r + ',' + this.getRGB().g + ',' + this.getRGB().b + ',0.9) 0%, ' +
-          'rgba(' + this.getRGB().r + ',' + this.getRGB().g + ',' + this.getRGB().b + ',0.5) 70%, ' +
-          'rgba(' + this.getRGB().r + ',' + this.getRGB().g + ',' + this.getRGB().b + ',0) 100%)'
+          'rgba(' + rgbColor.r + ',' + rgbColor.g + ',' + rgbColor.b + ',0.9) 0%, ' +
+          'rgba(' + rgbColor.r + ',' + rgbColor.g + ',' + rgbColor.b + ',0.5) 70%, ' +
+          'rgba(' + rgbColor.r + ',' + rgbColor.g + ',' + rgbColor.b + ',0) 100%)'
         }
-        title={data.title}
-        titleStyle={this.getTileStyle().titleStyle}
+        title={card.title}
+        titleStyle={StyleService.GetTileStyle(card.textColor)}
         subtitle={''}
       >
         <Container className='chipTags'>
-          {this.props.data.tags.map((item) =>
-            <Chip className='chipTag' key={item} style={this.styleService.GetChipStyles()}>
+          {card.tags.map((item) =>
+            <Chip className='chipTag' key={item} style={StyleService.GetChipStyles()}>
               {item}
             </Chip>
             , this)}
         </Container>
         <Container
-          style={this.getImageStyle()}
-          onClick={this.openCard.bind(this)}
+          style={StyleService.GetImageStyle(card.image)}
+          onClick={openCardCallback}
           className='cardImage' />
         <RenderCardImage />
       </GridTile>

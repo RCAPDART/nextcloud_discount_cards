@@ -6,7 +6,6 @@ import { BaseComponent } from '../../BaseComponent';
 import { Card } from './card/card.jsx';
 import { CardPopupEdit } from './cardPopupEdit/cardPopupEdit';
 import { CardsService } from '../../services/cardsService.js';
-import { CommonService } from '../../services/commonService';
 import { Container } from '../../baseComponents/container/container';
 import { DimensionHelper } from '../../services/dimensionHelper.js';
 import { Loader } from '../common/loader/loader';
@@ -32,11 +31,13 @@ export class Cards extends BaseComponent {
 
     constructor (props) {
       super(props);
-      this.cardsService = new CardsService();
-      this.dimensionHelper = new DimensionHelper();
-      this.commonService = new CommonService();
-      this.styleService = new StyleService();
-      this.orderKeys = new OrderingPanelSettings().GetOrderingKeys();
+      this.orderKeys = OrderingPanelSettings.GetOrderingKeys();
+
+      this.openCardModal = this.openCardModal.bind(this);
+      this.deleteCardCallback = this.deleteCardCallback.bind(this);
+      this.closeCardModal = this.closeCardModal.bind(this);
+
+      this.gridStyles = StyleService.GetGridStyles();
     }
 
     componentWillReceiveProps (nextProps) {
@@ -99,31 +100,16 @@ export class Cards extends BaseComponent {
     }
 
     render () {
-      const cards = this.state.cards;
-      const card = this.state.selectedCard;
-      const opened = this.state.cardOpened;
-      const isEdit = this.state.editing;
-      const maxDialogWidth = this.dimensionHelper.GetMaxDialogWidth(this.state.width);
-      const maxDialogHeight = this.dimensionHelper.GetMaxDialogHeight(this.state.width);
-      const closeCallback = this.closeCardModal.bind(this);
-      const deleteCallback = this.deleteCardCallback.bind(this);
-      const columns = this.dimensionHelper.GetColumns(this.state.width);
-      const gridStyles = this.styleService.GetGridStyles();
+      const { cards, selectedCard, cardOpened, editing, width, loading } = this.state;
       const orderKeys = this.orderKeys;
-      const openCardModal = this.openCardModal.bind(this);
+      const maxDialogWidth = DimensionHelper.GetMaxDialogWidth(width);
+      const maxDialogHeight = DimensionHelper.GetMaxDialogHeight(width);
+      const columns = DimensionHelper.GetColumns(width);
+      const gridStyles = this.gridStyles;
 
-      function RenderCardPopupEdit () {
-        if (card == null) return <span/>;
-        return <CardPopupEdit
-          card = {card}
-          opened = {opened}
-          isEdit = {isEdit}
-          modalWidth = {maxDialogWidth}
-          modalHeight = {maxDialogHeight}
-          closeCallback = {closeCallback}
-          deleteCallback = {deleteCallback}
-        />
-      }
+      const openCardModal = this.openCardModal;
+      const closeCardModal = this.closeCardModal;
+      const deleteCardCallback = this.deleteCardCallback;
 
       return (
         <Container>
@@ -140,17 +126,26 @@ export class Cards extends BaseComponent {
             {cards.map((item) =>
               <Card
                 key = {item.id}
-                data = {item}
+                card = {item}
                 openCardCallback = {() => openCardModal(item.id)}
               />, this)}
             <Card
               key = {0}
-              data = {CardsService.GetAddableCard()}
+              card = {CardsService.GetAddableCard()}
               openCardCallback = {() => openCardModal(0)}
             />
           </GridList>
-          <RenderCardPopupEdit/>
-          <Loader loading={this.state.loading}/>
+          {selectedCard == null ? null
+            : (<CardPopupEdit
+              card = {selectedCard}
+              opened = {cardOpened}
+              isEdit = {editing}
+              modalWidth = {maxDialogWidth}
+              modalHeight = {maxDialogHeight}
+              closeCallback = {closeCardModal}
+              deleteCallback = {deleteCardCallback}
+            />)}
+          <Loader loading={loading}/>
         </Container>
       );
     }

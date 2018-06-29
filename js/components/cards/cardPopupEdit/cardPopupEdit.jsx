@@ -1,18 +1,16 @@
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import PropTypes from 'prop-types';
-import React, {Component, Fragment} from 'react';
+import React, { Component } from 'react';
 
-import { CardEditor } from './cardEditor/cardEditor';
+import { ActionButtons } from './actionButtons/actionButtons';
+import { CardPopupContent } from './cardPopupContent/cardPopupContent';
 import { CardsService } from '../../../services/cardsService.js';
 import { Container } from '../../../baseComponents/container/container';
-import { DimensionHelper } from '../../../services/dimensionHelper';
 import { Loader } from '../../common/loader/loader';
 import { StyleService } from './StyleService';
 
 import './cardPopupEdit.less';
-import {CardStatic} from './cardStatic/cardStatic';
-import {ActionButtons} from './actionButtons/actionButtons';
 
 export class CardPopupEdit extends Component {
   static propTypes = {
@@ -38,9 +36,13 @@ export class CardPopupEdit extends Component {
 
   constructor (props) {
     super(props);
-    this.dimensionHelper = new DimensionHelper();
-    this.styleService = new StyleService();
-    this.cardsService = new CardsService();
+    this.closeModal = this.closeModal.bind(this);
+    this.deleteCard = this.deleteCard.bind(this);
+    this.discardChanges = this.discardChanges.bind(this);
+    this.toggleEdit = this.toggleEdit.bind(this);
+    this.editCallback = this.editCallback.bind(this);
+    this.acceptDelete = this.acceptDelete.bind(this);
+    this.cancelDelete = this.cancelDelete.bind(this);
   }
 
   componentWillReceiveProps (nextProps) {
@@ -64,7 +66,7 @@ export class CardPopupEdit extends Component {
     this.applyStateChanges(false, CardsService.CloneCard(this.props.card));
   }
 
-  applyEditChanges (updatedCard) {
+  editCallback (updatedCard) {
     this.setState({ loading: true });
     CardsService.AddUpdateCard({ card: updatedCard }).then(() => {
       this.setState({ loading: false, editedCard: updatedCard });
@@ -101,35 +103,32 @@ export class CardPopupEdit extends Component {
   }
 
   render () {
-    const discardChanges = this.discardChanges.bind(this);
-    const toggleEdit = this.toggleEdit.bind(this);
-    const title = this.state.title;
-    const titleStyle = this.styleService.GetTitleStyles(
-      this.state.color,
-      this.state.textColor);
-    const opened = this.props.opened;
-    const windowStyle = this.styleService.GetWindowStyles(this.props.modalWidth, this.props.modalHeight);
-    const cardId = this.state.openedCard.id;
-    const edit = this.state.isEdit;
-    const editCallback = this.applyEditChanges.bind(this);
+    const { textColor, isEdit, title, openedCard, loading } = this.state;
+    const { opened, modalWidth } = this.props;
 
-    const textColor = this.state.textColor;
-    const card = this.state.openedCard;
-    const closeModal = this.closeModal.bind(this);
-    const deleteCard = this.deleteCard.bind(this);
+    const windowStyle = StyleService.GetWindowStyles(this.props.modalWidth, this.props.modalHeight);
+    const titleStyle = StyleService.GetTitleStyles(this.state.color, this.state.textColor);
+
+    const closeModal = this.closeModal;
+    const deleteCard = this.deleteCard;
+    const discardChanges = this.discardChanges;
+    const toggleEdit = this.toggleEdit;
+    const editCallback = this.editCallback;
+    const acceptDelete = this.acceptDelete;
+    const cancelDelete = this.cancelDelete;
 
     const actions = [
       <FlatButton
         key='Delete'
         label="Delete"
         primary={true}
-        onClick={this.acceptDelete.bind(this)}
+        onClick={acceptDelete}
       />,
       <FlatButton
         key='Cancel'
         label="Cancel"
         primary={true}
-        onClick={this.cancelDelete.bind(this)}
+        onClick={cancelDelete}
       />
     ];
 
@@ -143,43 +142,38 @@ export class CardPopupEdit extends Component {
                   <h3 style={titleStyle}>{title}</h3>
                 </Container>
                 <Container className='content'>
-                  {
-                    card != null ? (
-                      <Fragment> {
-                        edit === false ? (
-                          <CardStatic card={card}
-                            modalWidth={this.props.modalWidth} />
-                        ) : (
-                          <CardEditor card={card} callBack={editCallback} />
-                        )
-
-                      }
-                      <ActionButtons
-                        cardId={parseInt(cardId)}
-                        edit={edit}
-                        textColor={textColor}
-                        deleteCard={deleteCard}
-                        discardChanges={discardChanges}
-                        toggleEdit={toggleEdit}
-                        closeModal={closeModal} />
-                      </Fragment>)
-                      : (<span />)
-                  }
+                  <CardPopupContent
+                    card={openedCard}
+                    edit={isEdit}
+                    deleteCard={deleteCard}
+                    discardChanges={discardChanges}
+                    editCallback={editCallback}
+                    toggleEdit={toggleEdit}
+                    closeModal={closeModal}
+                    modalWidth={modalWidth}/>
+                  <ActionButtons
+                    cardId={parseInt(openedCard.id)}
+                    edit={isEdit}
+                    textColor={textColor}
+                    deleteCard={deleteCard}
+                    discardChanges={discardChanges}
+                    toggleEdit={toggleEdit}
+                    closeModal={closeModal} />
                   <Dialog
                     actions={actions}
                     modal={false}
                     open={this.state.modalForDeleteCardOpened}
-                    onRequestClose={this.cancelDelete.bind(this)}
+                    onRequestClose={cancelDelete}
                   >
                       Delete card?
                   </Dialog>
-                  <Loader loading={this.state.loading} />
+                  <Loader loading={loading} />
                 </Container>
               </Container>
             </Container>
           </Container>
         </Container>)
-        : (<span />)
+        : null
     );
   }
 }

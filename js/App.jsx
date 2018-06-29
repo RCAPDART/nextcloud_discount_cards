@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+
+import { Container } from './baseComponents/container/container';
 import { MainContent } from './components/mainContent/mainContent.jsx';
+
 import './App.less';
-import {Container} from './baseComponents/container/container';
-window.process = { env: { PUBLIC_URL: 'public' } }
+
+window.process = { env: { PUBLIC_URL: 'public' } };
 
 export class App extends Component {
     state = {
@@ -11,10 +14,12 @@ export class App extends Component {
     };
 
     render () {
+      const { page } = this.state;
+
       return (
         <MuiThemeProvider>
           <Container className='discountCardsMainContainer'>
-            <MainContent name={this.state.page}/>
+            <MainContent name={page}/>
           </Container>
         </MuiThemeProvider>
       )

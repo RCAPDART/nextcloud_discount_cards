@@ -1,55 +1,55 @@
 'use strict';
 
 export class DimensionHelper {
-  uHdWidth = 4300;
-  quadHdWidth = 2500;
-  fullHdWidth = 1900;
-  mediumWidth = 1500;
-  laptopWidth = 1100;
-  smallWidth = 800;
-  extraSmallWidth = 500;
+  static uHdWidth = 4300;
+  static quadHdWidth = 2500;
+  static fullHdWidth = 1900;
+  static mediumWidth = 1500;
+  static laptopWidth = 1100;
+  static smallWidth = 800;
+  static extraSmallWidth = 500;
 
-  GetColumns (width) {
-    if (width > this.uHdWidth) return 7;
-    if (width > this.quadHdWidth) return 6;
-    if (width > this.fullHdWidth) return 5;
-    if (width > this.mediumWidth) return 4;
-    if (width > this.laptopWidth) return 3;
-    if (width > this.smallWidth) return 3;
-    if (width > this.extraSmallWidth) return 2;
+  static GetColumns (width) {
+    if (width > DimensionHelper.uHdWidth) return 7;
+    if (width > DimensionHelper.quadHdWidth) return 6;
+    if (width > DimensionHelper.fullHdWidth) return 5;
+    if (width > DimensionHelper.mediumWidth) return 4;
+    if (width > DimensionHelper.laptopWidth) return 3;
+    if (width > DimensionHelper.smallWidth) return 3;
+    if (width > DimensionHelper.extraSmallWidth) return 2;
     return 1;
   }
 
-  GetMaxDialogWidth (width) {
-    if (width > this.uHdWidth) return 30;
-    if (width > this.quadHdWidth) return 40;
-    if (width > this.fullHdWidth) return 50;
-    if (width > this.mediumWidth) return 60;
-    if (width > this.laptopWidth) return 70;
-    if (width > this.smallWidth) return 80;
-    if (width > this.extraSmallWidth) return 100;
+  static GetMaxDialogWidth (width) {
+    if (width > DimensionHelper.uHdWidth) return 30;
+    if (width > DimensionHelper.quadHdWidth) return 40;
+    if (width > DimensionHelper.fullHdWidth) return 50;
+    if (width > DimensionHelper.mediumWidth) return 60;
+    if (width > DimensionHelper.laptopWidth) return 70;
+    if (width > DimensionHelper.smallWidth) return 80;
+    if (width > DimensionHelper.extraSmallWidth) return 100;
     return 100;
   }
 
-  GetMaxDialogHeight (width) {
-    if (width > this.uHdWidth) return 75;
-    if (width > this.quadHdWidth) return 80;
-    if (width > this.fullHdWidth) return 85;
-    if (width > this.mediumWidth) return 85;
-    if (width > this.laptopWidth) return 91;
-    if (width > this.smallWidth) return 100;
-    if (width > this.extraSmallWidth) return 100;
+  static GetMaxDialogHeight (width) {
+    if (width > DimensionHelper.uHdWidth) return 75;
+    if (width > DimensionHelper.quadHdWidth) return 80;
+    if (width > DimensionHelper.fullHdWidth) return 85;
+    if (width > DimensionHelper.mediumWidth) return 85;
+    if (width > DimensionHelper.laptopWidth) return 91;
+    if (width > DimensionHelper.smallWidth) return 100;
+    if (width > DimensionHelper.extraSmallWidth) return 100;
     return 100;
   }
 
-  GetCardImageHeight (width) {
-    if (width > this.uHdWidth) return 40;
-    if (width > this.quadHdWidth) return 35;
-    if (width > this.fullHdWidth) return 35;
-    if (width > this.mediumWidth) return 35;
-    if (width > this.laptopWidth) return 35;
-    if (width > this.smallWidth) return 35;
-    if (width > this.extraSmallWidth) return 30;
+  static GetCardImageHeight (width) {
+    if (width > DimensionHelper.uHdWidth) return 40;
+    if (width > DimensionHelper.quadHdWidth) return 35;
+    if (width > DimensionHelper.fullHdWidth) return 35;
+    if (width > DimensionHelper.mediumWidth) return 35;
+    if (width > DimensionHelper.laptopWidth) return 35;
+    if (width > DimensionHelper.smallWidth) return 35;
+    if (width > DimensionHelper.extraSmallWidth) return 30;
     return 30;
   }
 }

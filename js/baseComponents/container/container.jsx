@@ -14,8 +14,6 @@ export class Container extends Component {
     onClick: PropTypes.func
   };
 
-  style = null;
-
   render () {
     return (
       <div className={this.props.className} style={this.props.style} onClick={this.props.onClick}>

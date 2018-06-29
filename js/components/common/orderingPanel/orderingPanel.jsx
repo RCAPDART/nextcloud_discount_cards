@@ -25,6 +25,8 @@ export class OrderingPanel extends Component {
     this.orderAscIconClass = 'icon-triangle-n';
     this.orderDescIconClass = 'icon-triangle-s';
     this.orderKeys = this.props.orderKeys;
+    this.getOrderingClass = this.getOrderingClass.bind(this);
+    this.onOrderChange = this.onOrderChange.bind(this);
   }
 
   componentDidMount () {
@@ -61,16 +63,20 @@ export class OrderingPanel extends Component {
   }
 
   render () {
+    const orderKeys = this.orderKeys;
+    const onOrderChange = this.onOrderChange;
+    const getOrderingClass = this.getOrderingClass;
+
     return (
       <Container className='orderingPanel'>
         {
-          this.orderKeys.map((orderKey) =>
+          orderKeys.map((orderKey) =>
             <OrderItem
               key={orderKey.id}
               title={orderKey.title}
               orderKey={orderKey.key}
-              onOrderChangeCallback={(orderKey) => this.onOrderChange(orderKey)}
-              getItemClassState={(orderKey) => this.getOrderingClass(orderKey)}
+              onOrderChangeCallback={(orderKey) => onOrderChange(orderKey)}
+              getItemClassState={(orderKey) => getOrderingClass(orderKey)}
             />
           )
         }

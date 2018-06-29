@@ -2,10 +2,11 @@ import Chip from 'material-ui/Chip';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 
-import {Container} from '../../baseComponents/container/container';
+import { Container } from '../../../baseComponents/container/container';
 
 export class TagsBlock extends Component {
   static propTypes = {
+    title: PropTypes.string.isRequired,
     tags: PropTypes.array.isRequired,
     isDelete: PropTypes.bool.isRequired,
     deselectTagCallback: PropTypes.func,
@@ -14,7 +15,7 @@ export class TagsBlock extends Component {
   };
 
   render () {
-    const { tags, isDelete, deselectTagCallback, onClickCallback } = this.props;
+    const { className, title, tags, isDelete, deselectTagCallback, onClickCallback } = this.props;
 
     function RenderTag (props) {
       if (isDelete) {
@@ -32,8 +33,8 @@ export class TagsBlock extends Component {
     }
 
     return (
-      <Container className={this.props.className}>
-        <h2>Filter</h2>
+      <Container className={className}>
+        <h2>{title}</h2>
         {tags.map((tag) =>
           <RenderTag key={tag.id} tag={tag} />
           , this)}

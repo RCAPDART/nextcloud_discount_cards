@@ -1,12 +1,12 @@
 export class StyleService {
-  GetTitleStyles (color, textColor) {
+  static GetTitleStyles (color, textColor) {
     return {
       backgroundColor: color,
       color: textColor
     };
   }
 
-  GetWindowStyles (modalWidth, modalHeight) {
+  static GetWindowStyles (modalWidth, modalHeight) {
     let width = 80;
     let marginLeft = 10;
     if (modalWidth) {
@@ -30,21 +30,21 @@ export class StyleService {
     };
   }
 
-  GetImageStyle (img) {
+  static GetImageStyle (img) {
     return {
       backgroundSize: 'cover',
       background: 'url("' + img + '") scroll no-repeat center/cover'
     }
   }
 
-  GetImageDataStyle (color, height) {
+  static GetImageDataStyle (color, height) {
     return {
       background: color,
       height: height + 'vh'
     };
   }
 
-  GetChipStyles () {
+  static GetChipStyles () {
     return {
       chip: {
         margin: 4

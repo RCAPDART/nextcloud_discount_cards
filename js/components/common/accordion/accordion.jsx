@@ -1,8 +1,10 @@
-import React, {Component} from 'react';
 import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+
+import { CommonService } from '../../../services/commonService';
+import { Container } from '../../../baseComponents/container/container';
+
 import './accordion.less';
-import {CommonService} from '../../../services/commonService';
-import {Container} from '../../../baseComponents/container/container';
 
 export class Accordion extends Component {
   static propTypes = {
@@ -22,15 +24,19 @@ export class Accordion extends Component {
   }
 
   render () {
+    const { title, style, children } = this.props;
+    const { expanded } = this.state;
+    const id = this.id;
+
     return (
       <Container className='accordion'
-        style={this.props.style}>
+        style={style}>
         <input className='accordionInput'
-          id={this.id} type='checkbox' name='tabs'
-          defaultChecked={this.state.expanded} />
-        <label htmlFor={this.id}>{this.props.title}</label>
+          id={id} type='checkbox' name='tabs'
+          defaultChecked={expanded} />
+        <label htmlFor={id}>{title}</label>
         <Container className='tab-container'>
-          {this.props.children}
+          {children}
         </Container>
       </Container>
     );
