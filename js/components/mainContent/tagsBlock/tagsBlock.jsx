@@ -1,8 +1,8 @@
-import Chip from 'material-ui/Chip';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 
 import { Container } from '../../../baseComponents/container/container';
+import { Tag } from './tag';
 
 export class TagsBlock extends Component {
   static propTypes = {
@@ -17,26 +17,16 @@ export class TagsBlock extends Component {
   render () {
     const { className, title, tags, isDelete, deselectTagCallback, onClickCallback } = this.props;
 
-    function RenderTag (props) {
-      if (isDelete) {
-        return <Chip
-          className='selectedTag'
-          onRequestDelete={() => deselectTagCallback(props.tag.title)}
-          style={{ margin: 3 }}
-        >{props.tag.title}</Chip>
-      }
-      return <Chip
-        className='unselectedTag'
-        onClick={() => onClickCallback(props.tag.title)}
-        style={{ margin: 3 }}
-      >{props.tag.title}</Chip>
-    }
-
     return (
       <Container className={className}>
         <h2>{title}</h2>
         {tags.map((tag) =>
-          <RenderTag key={tag.id} tag={tag} />
+          <Tag
+            key={tag.id}
+            tag={tag}
+            isDelete={isDelete}
+            deselectTagCallback={deselectTagCallback}
+            onClickCallback={onClickCallback} />
           , this)}
       </Container>
     )
