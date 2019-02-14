@@ -44,6 +44,13 @@
                 <length>256</length>
             </field>
             <field>
+                <name>codetype</name>
+                <type>text</type>
+                <default></default>
+                <notnull>true</notnull>
+                <length>256</length>
+            </field>
+            <field>
                 <name>color</name>
                 <type>text</type>
                 <default></default>
