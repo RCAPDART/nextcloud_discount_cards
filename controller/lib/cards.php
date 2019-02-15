@@ -101,7 +101,7 @@ class Cards {
 	public function FindCards($userId, $sqlSortColumn, $tags) {
 		$dbType = $this->config->getSystemValue('dbtype', 'sqlite');
 		$qb = $this->db->getQueryBuilder();
-		$tableAttributes = array('id', 'user_id', 'title', 'description', 'code',
+		$tableAttributes = array('id', 'user_id', 'title', 'description', 'code', 'codeType',
 			'color', 'url', 'added', 'lastmodified', 'clickcount', 'image');
 		$qb->select($tableAttributes);
 

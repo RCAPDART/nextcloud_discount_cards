@@ -43,7 +43,7 @@ export class CardStatic extends Component {
             , this)}
         </Container>
         <Container className='barcodeData'>
-          <Barcode code={card.code} id={id} />
+          <Barcode code={card.code} codeType={card.codeType} id={id} />
         </Container>
       </Container>
     );

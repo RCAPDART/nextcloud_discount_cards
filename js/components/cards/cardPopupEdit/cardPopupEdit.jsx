@@ -108,6 +108,7 @@ export class CardPopupEdit extends Component {
 
     const windowStyle = StyleService.GetWindowStyles(this.props.modalWidth, this.props.modalHeight);
     const titleStyle = StyleService.GetTitleStyles(this.state.color, this.state.textColor);
+    const titleH3Style = StyleService.GetTitleH3Styles(this.state.color, this.state.textColor);
 
     const closeModal = this.closeModal;
     const deleteCard = this.deleteCard;
@@ -139,7 +140,7 @@ export class CardPopupEdit extends Component {
             <Container className={'dialogWindow'} style={windowStyle}>
               <Container className='dialogContent'>
                 <Container className='title' style={titleStyle}>
-                  <h3 style={titleStyle}>{title}</h3>
+                  <h3 style={titleH3Style}>{title}</h3>
                 </Container>
                 <Container className='content'>
                   <CardPopupContent

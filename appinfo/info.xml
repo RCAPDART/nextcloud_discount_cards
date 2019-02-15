@@ -7,6 +7,7 @@
 	<author>Artem Malozemov</author>
 
 	<dependencies>
-		<owncloud min-version="12.0"/>
+		<nextcloud min-version="13" max-version="15"/>
+		<owncloud min-version="12" max-version="13"/>
 	</dependencies>
 </info>

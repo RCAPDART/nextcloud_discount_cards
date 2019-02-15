@@ -20,6 +20,9 @@ export class CardsService {
   static ProcessCards (cards) {
     cards.forEach((card) => {
       card.tags = card.tags != null ? card.tags.split(',') : [];
+      if (card.codeType == null) {
+        card.codeType = 'code128';
+      }
     });
     cards = CardsService.FillCardsColors(cards);
     return cards;
@@ -31,6 +34,7 @@ export class CardsService {
       title: 'Add card',
       url: '',
       code: '1234',
+      codeType: 'code128',
       order: 999999,
       img: '',
       tags: [],
@@ -55,6 +59,7 @@ export class CardsService {
     prevState.title = newState.title;
     prevState.url = newState.url;
     prevState.code = newState.code;
+    prevState.codeType = newState.codeType;
     prevState.order = newState.order;
     prevState.image = newState.image;
     prevState.color = newState.color;

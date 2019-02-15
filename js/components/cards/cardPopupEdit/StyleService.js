@@ -6,6 +6,18 @@ export class StyleService {
     };
   }
 
+  static GetTitleH3Styles (color, textColor) {
+    return {
+      backgroundColor: color,
+      color: textColor,
+      width: 'calc(100% - 144px)',
+      textOverflow: 'ellipsis',
+      overflow: 'hidden',
+      whiteSpace: 'nowrap',
+      height: '54px'
+    };
+  }
+
   static GetWindowStyles (modalWidth, modalHeight) {
     let width = 80;
     let marginLeft = 10;

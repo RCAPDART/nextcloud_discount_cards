@@ -9,6 +9,7 @@ import React, { Component } from 'react';
 
 import { Accordion } from '../../../../common/accordion/accordion';
 import { Barcode } from '../../../../common/barcode/barcode';
+import { BarcodeTypes } from '../../../../common/barcodeTypes';
 import { CardsService } from '../../../../../services/cardsService';
 import { CommonService } from '../../../../../services/commonService';
 import { Container } from '../../../../../baseComponents/container/container';
@@ -46,6 +47,7 @@ export class CardEditor extends Component {
     this.applyChanges = this.applyChanges.bind(this);
     this.handleDeleteTag = this.handleDeleteTag.bind(this);
     this.handleChangeImage = this.handleChangeImage.bind(this);
+    this.handleChangeCodeType = this.handleChangeCodeType.bind(this);
   }
 
   // Handlers
@@ -58,6 +60,12 @@ export class CardEditor extends Component {
   handleChangeCode (event) {
     const editableCard = this.state.editableCard;
     editableCard.code = event.target.value;
+    this.setState({ editableCard });
+  }
+
+  handleChangeCodeType (event) {
+    const editableCard = this.state.editableCard;
+    editableCard.codeType = event.target.value;
     this.setState({ editableCard });
   }
 
@@ -134,6 +142,7 @@ export class CardEditor extends Component {
     const handleChangeNewTagName = this.handleChangeNewTagName;
     const handleAddNewTag = this.handleAddNewTag;
     const handleChangeCode = this.handleChangeCode;
+    const handleChangeCodeType = this.handleChangeCodeType;
     const handleChangeLink = this.handleChangeLink;
     const handleChangeColor = this.handleChangeColor;
     const handleDeleteTag = this.handleDeleteTag;
@@ -192,9 +201,23 @@ export class CardEditor extends Component {
           <input type='text'
             value={editableCard.code}
             onChange={handleChangeCode} />
-          <Barcode code={editableCard.code}
+          <Barcode
+            code={editableCard.code}
             textColor={textColor}
-            id='editableBarcode' />
+            id='editableBarcode'
+            codeType={editableCard.codeType}/>
+          <select value={editableCard.codeType}
+            className='codeTypeSelector'
+            style={containerStyles}
+            onChange={handleChangeCodeType} >
+            {BarcodeTypes.map(option => (
+              <option key={option}
+                value={option}
+                style={containerStyles}>
+                {option}
+              </option>
+            ))}
+          </select>
         </Accordion>
 
         <Accordion style={containerStyles}

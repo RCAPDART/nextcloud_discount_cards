@@ -16,6 +16,7 @@ export class Barcode extends Component {
   static propTypes = {
     code: PropTypes.string.isRequired,
     id: PropTypes.string.isRequired,
+    codeType: PropTypes.string.isRequired,
     type: PropTypes.string,
     scale: PropTypes.number,
     height: PropTypes.number,
@@ -24,7 +25,8 @@ export class Barcode extends Component {
   };
 
   state = {
-    code: ''
+    code: '',
+    codeType: ''
   };
 
   componentDidMount () {
@@ -36,15 +38,15 @@ export class Barcode extends Component {
   }
 
   TrySetBarcode () {
-    if (this.state.code !== this.props.code) {
+    if (this.state.code !== this.props.code || this.state.codeType !== this.props.codeType) {
       this.SetBarcode();
-      this.setState({ code: this.props.code });
+      this.setState({ code: this.props.code, codeType: this.props.codeType });
     }
   }
 
   SetBarcode () {
     bwipjs(this.props.id, {
-      bcid: this.props.type != null ? this.props.type : defaultType,
+      bcid: this.props.codeType != null ? this.props.codeType : defaultType,
       text: this.props.code != null ? this.props.code : defaultCode,
       scale: this.props.scale != null ? this.props.scale : defaultScale,
       height: this.props.height != null ? this.props.height : defaultHeight,

@@ -44,7 +44,7 @@
                 <length>256</length>
             </field>
             <field>
-                <name>codetype</name>
+                <name>codeType</name>
                 <type>text</type>
                 <default></default>
                 <notnull>true</notnull>
