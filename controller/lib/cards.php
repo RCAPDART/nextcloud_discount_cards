@@ -359,7 +359,7 @@ class Cards {
 		if(!array_key_exists('code', $card))
 			$card['code'] = '';
 		if(!array_key_exists('codeType', $card))
-			$card['codeType'] = '';
+			$card['codeType'] = 'code128';
 		if(!array_key_exists('color', $card))
 			$card['color'] = '';
 		if(!array_key_exists('url', $card))

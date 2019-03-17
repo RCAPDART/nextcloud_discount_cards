@@ -76,6 +76,7 @@ export class CardsService {
   static CardsAreEqual (card1, card2) {
     if (card1.title !== card2.title) return false;
     if (card1.code !== card2.code) return false;
+    if (card1.codeType !== card2.codeType) return false;
     if (card1.image !== card2.image) return false;
 
     return true;
