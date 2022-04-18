@@ -7,25 +7,33 @@ export class Tag extends Component {
     tag: PropTypes.object.isRequired,
     isDelete: PropTypes.bool.isRequired,
     deselectTagCallback: PropTypes.func,
-    onClickCallback: PropTypes.func
+    onClickCallback: PropTypes.func,
   };
 
-  render () {
+  render() {
     const { tag, isDelete, deselectTagCallback, onClickCallback } = this.props;
 
-    return (
-      isDelete === true ? (
+    function RenderSelectedTag() {
+      return (
         <Chip
-          className='selectedTag'
+          className="selectedTag"
           onRequestDelete={() => deselectTagCallback(tag.title)}
-          style={{ margin: 3 }}
-        >{tag.title}</Chip>
-      ) : (
+          style={{ margin: 3 }}>{tag.title}</Chip>
+      );
+    }
+    function RenderUnSelectedTag() {
+      return (
         <Chip
-          className='unselectedTag'
+          className="unselectedTag"
           onClick={() => onClickCallback(tag.title)}
-          style={{ margin: 3 }}
-        >{tag.title}</Chip>)
-    )
+          style={{ margin: 3 }}>{tag.title}</Chip>
+      );
+    }
+
+    return isDelete === true ? (
+      <RenderSelectedTag/>
+    ) : (
+      <RenderUnSelectedTag/>
+    );
   }
 }

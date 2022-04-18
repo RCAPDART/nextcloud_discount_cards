@@ -1,22 +1,22 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import './container.less';
+import './container.scss';
 
 export class Container extends Component {
   static propTypes = {
-    children: PropTypes.oneOfType([
-      PropTypes.object,
-      PropTypes.array
-    ]),
+    children: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
     className: PropTypes.string,
     style: PropTypes.any,
-    onClick: PropTypes.func
+    onClick: PropTypes.func,
   };
 
-  render () {
+  render() {
     return (
-      <div className={this.props.className} style={this.props.style} onClick={this.props.onClick}>
+      <div
+        className={this.props.className}
+        style={this.props.style}
+        onClick={this.props.onClick}>
         {this.props.children}
       </div>
     );

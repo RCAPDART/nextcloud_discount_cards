@@ -1,10 +1,10 @@
 import bwipjs from 'bwip-js';
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import { Container } from '../../../baseComponents/container/container';
 
-import './barcode.less';
+import './barcode.scss';
 
 const defaultType = 'code128';
 const defaultScale = 10;
@@ -21,57 +21,64 @@ export class Barcode extends Component {
     scale: PropTypes.number,
     height: PropTypes.number,
     showText: PropTypes.bool,
-    textColor: PropTypes.string
+    textColor: PropTypes.string,
   };
 
   state = {
     code: '',
-    codeType: ''
+    codeType: '',
   };
 
-  componentDidMount () {
+  componentDidMount() {
     this.TrySetBarcode();
   }
 
-  componentDidUpdate () {
+  componentDidUpdate() {
     this.TrySetBarcode();
   }
 
-  TrySetBarcode () {
-    if (this.state.code !== this.props.code || this.state.codeType !== this.props.codeType) {
+  TrySetBarcode() {
+    if (
+      this.state.code !== this.props.code ||
+      this.state.codeType !== this.props.codeType
+    ) {
       this.SetBarcode();
       this.setState({ code: this.props.code, codeType: this.props.codeType });
     }
   }
 
-  SetBarcode () {
-    bwipjs(this.props.id, {
-      bcid: this.props.codeType != null ? this.props.codeType : defaultType,
-      text: this.props.code != null ? this.props.code : defaultCode,
-      scale: this.props.scale != null ? this.props.scale : defaultScale,
-      height: this.props.height != null ? this.props.height : defaultHeight,
-      includetext: false
-    }, function () {
-    });
+  SetBarcode() {
+    bwipjs(
+      this.props.id,
+      {
+        bcid: this.props.codeType != null ? this.props.codeType : defaultType,
+        text: this.props.code != null ? this.props.code : defaultCode,
+        scale: this.props.scale != null ? this.props.scale : defaultScale,
+        height: this.props.height != null ? this.props.height : defaultHeight,
+        includetext: false,
+      },
+      function () {}
+    );
   }
 
-  GetText () {
+  GetText() {
     const groups = this.props.code.match(/.{1,4}/g);
     let result = '';
-    for (let index in groups) {
+    for (const index in groups) {
       result += groups[index] + '-';
     }
     return result.substr(0, result.length - 1);
   }
 
-  render () {
+  render() {
     const { id, textColor, showText } = this.props;
     const text = this.GetText();
 
     return (
-      <Container className='barcode' id={idPrefix + id}>
-        <canvas className='barcodeCanvas' id={id} />
-        <h2 style={{ color: textColor }}
+      <Container className="barcode" id={idPrefix + id}>
+        <canvas className="barcodeCanvas" id={id} />
+        <h2
+          style={{ color: textColor }}
           className={(showText == null ? true : showText) ? '' : 'hide'}>
           {text}
         </h2>

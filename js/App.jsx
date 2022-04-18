@@ -4,24 +4,24 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import { Container } from './baseComponents/container/container';
 import { MainContent } from './components/mainContent/mainContent.jsx';
 
-import './App.less';
+import './App.scss';
 
 window.process = { env: { PUBLIC_URL: 'public' } };
 
 export class App extends Component {
-    state = {
-      page: 'Main'
-    };
+  state = {
+    page: 'Main',
+  };
 
-    render () {
-      const { page } = this.state;
+  render() {
+    const { page } = this.state;
 
-      return (
-        <MuiThemeProvider>
-          <Container className='discountCardsMainContainer'>
-            <MainContent name={page}/>
-          </Container>
-        </MuiThemeProvider>
-      )
-    }
+    return (
+      <MuiThemeProvider>
+        <Container className="discountCardsMainContainer">
+          <MainContent name={page} />
+        </Container>
+      </MuiThemeProvider>
+    );
+  }
 }

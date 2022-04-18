@@ -9,9 +9,7 @@ import {App} from './App.jsx';
 //Enable React devtools
 window.React = React;
 
-$(document).ready(() => {
-	ReactDOM.render(
-	<App />,  
-	document.getElementById('cardsContent')
-	);
-});
+ReactDOM.render(
+<App />,
+document.getElementById('cardsContent')
+);

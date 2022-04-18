@@ -1,15 +1,19 @@
-'use strict';
-
 export class DimensionHelper {
   static uHdWidth = 4300;
+
   static quadHdWidth = 2500;
+
   static fullHdWidth = 1900;
+
   static mediumWidth = 1500;
+
   static laptopWidth = 1100;
+
   static smallWidth = 800;
+
   static extraSmallWidth = 500;
 
-  static GetColumns (width) {
+  static GetColumns(width) {
     if (width > DimensionHelper.uHdWidth) return 7;
     if (width > DimensionHelper.quadHdWidth) return 6;
     if (width > DimensionHelper.fullHdWidth) return 5;
@@ -20,7 +24,7 @@ export class DimensionHelper {
     return 1;
   }
 
-  static GetMaxDialogWidth (width) {
+  static GetMaxDialogWidth(width) {
     if (width > DimensionHelper.uHdWidth) return 30;
     if (width > DimensionHelper.quadHdWidth) return 40;
     if (width > DimensionHelper.fullHdWidth) return 50;
@@ -31,7 +35,7 @@ export class DimensionHelper {
     return 100;
   }
 
-  static GetMaxDialogHeight (width) {
+  static GetMaxDialogHeight(width) {
     if (width > DimensionHelper.uHdWidth) return 75;
     if (width > DimensionHelper.quadHdWidth) return 80;
     if (width > DimensionHelper.fullHdWidth) return 85;
@@ -42,7 +46,7 @@ export class DimensionHelper {
     return 100;
   }
 
-  static GetCardImageHeight (width) {
+  static GetCardImageHeight(width) {
     if (width > DimensionHelper.uHdWidth) return 40;
     if (width > DimensionHelper.quadHdWidth) return 35;
     if (width > DimensionHelper.fullHdWidth) return 35;

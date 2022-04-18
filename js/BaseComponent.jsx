@@ -2,11 +2,13 @@ import { Component } from 'react';
 
 export class BaseComponent extends Component {
   eventListenerEnabled = false;
+
   lastResize = 0;
+
   delay = 50;
 
-  onResize () {
-    if (this.lastClick >= (Date.now() - this.delay)) {
+  onResize() {
+    if (this.lastClick >= Date.now() - this.delay) {
       return;
     }
     this.lastClick = Date.now();
@@ -14,27 +16,27 @@ export class BaseComponent extends Component {
     const width = window.innerWidth;
     if (this.state.width === width) return;
     this.setState({
-      width: width
+      width,
     });
   }
 
-  constructor (props) {
+  constructor(props) {
     super(props);
     this.onResize = this.onResize.bind(this);
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.onResize();
   }
 
-  componentWillMount () {
+  UNSAFE_componentWillMount() {
     if (!this.eventListenerEnabled) {
       window.addEventListener('resize', this.onResize);
       this.eventListenerEnabled = true;
     }
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     if (this.eventListenerEnabled) {
       window.removeEventListener('resize', this.onResize);
     }

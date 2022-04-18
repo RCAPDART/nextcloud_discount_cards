@@ -90,7 +90,7 @@ export const BarcodeTypes = [
   // 'qrcode',
   // 'rationalizedCodabar',
   // 'raw',
-  'royalmail'
+  'royalmail',
   // 'sscc18',
   // 'symbol',
   // 'telepen',

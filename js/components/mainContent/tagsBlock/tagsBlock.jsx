@@ -11,24 +11,34 @@ export class TagsBlock extends Component {
     isDelete: PropTypes.bool.isRequired,
     deselectTagCallback: PropTypes.func,
     onClickCallback: PropTypes.func,
-    className: PropTypes.string
+    className: PropTypes.string,
   };
 
-  render () {
-    const { className, title, tags, isDelete, deselectTagCallback, onClickCallback } = this.props;
+  render() {
+    const {
+      className,
+      title,
+      tags,
+      isDelete,
+      deselectTagCallback,
+      onClickCallback,
+    } = this.props;
 
     return (
       <Container className={className}>
         <h2>{title}</h2>
-        {tags.map((tag) =>
-          <Tag
-            key={tag.id}
-            tag={tag}
-            isDelete={isDelete}
-            deselectTagCallback={deselectTagCallback}
-            onClickCallback={onClickCallback} />
-          , this)}
+        {tags.map(
+          tag => (
+            <Tag
+              key={tag.id}
+              tag={tag}
+              isDelete={isDelete}
+              deselectTagCallback={deselectTagCallback}
+              onClickCallback={onClickCallback}/>
+          ),
+          this
+        )}
       </Container>
-    )
+    );
   }
 }

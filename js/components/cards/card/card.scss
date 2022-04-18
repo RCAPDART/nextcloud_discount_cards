@@ -1,13 +1,15 @@
-@card-height: 100px;
-@card-width: 200px;
-@text-height: 25px;
+$card-height: 100px;
+$card-top-offset: 50px;
+$card-width: 200px;
+$text-height: 25px;
+$text-top-margin-offset: -12.5px;
 
 .card {
 	display: block;
 	position: relative;
 	float: left;
-	width: @card-width;
-	height: @card-height;
+	width: $card-width;
+	height: $card-height;
 	background: gray;
 	border-radius: 7%;
 	text-align: center;
@@ -17,15 +19,15 @@
 	a, h3 {
 		color: white;
 	}
-	
+
 	h3{
 		position: relative;
-		font-size: @text-height;
-		height: @text-height;
-		top: calc(@card-height / 2);
-		margin-top: calc(@text-height / -2);
+		font-size: $text-height;
+		height: $text-height;
+		top: $card-top-offset;
+		margin-top: $text-top-margin-offset;
 	}
-	
+
 	a{
 		position: absolute;
 		bottom:2px;

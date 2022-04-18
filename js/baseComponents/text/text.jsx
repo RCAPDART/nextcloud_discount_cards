@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 
-import './text.less';
+import './text.scss';
 
 export class Text extends Component {
 

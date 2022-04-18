@@ -11,7 +11,7 @@ import { Loader } from '../common/loader/loader';
 import { TagsBlock } from './tagsBlock/tagsBlock';
 import { TagsService } from '../../services/tagsService';
 
-import './mainContent.less';
+import './mainContent.scss';
 
 export class MainContent extends Component {
   state = {
@@ -19,10 +19,10 @@ export class MainContent extends Component {
     tags: [],
     selectedTags: [],
     cards: [],
-    loading: true
+    loading: true,
   };
 
-  constructor (props) {
+  constructor(props) {
     super(props);
     this.DeselectTagCallback = this.DeselectTagCallback.bind(this);
     this.SelectTagCallback = this.SelectTagCallback.bind(this);
@@ -30,96 +30,101 @@ export class MainContent extends Component {
     this.HandleToggleCallback = this.HandleToggleCallback.bind(this);
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.LoadDataFromApi([]);
   }
 
-  LoadDataFromApi (filterTags) {
+  LoadDataFromApi(filterTags) {
     let filter = '';
     if (filterTags.length > 0) {
-      filter = filterTags.map(function (tag) {
-        return tag.title;
-      }).join(',');
+      filter = filterTags
+        .map(function (tag) {
+          return tag.title;
+        })
+        .join(',');
     }
 
     CardsService.GetCardsFromApi(filter).then(result => {
       this.setState({
         tags: result.data.data.tags,
         cards: CardsService.ProcessCards(result.data.data.cards),
-        loading: false
+        loading: false,
       });
     });
   }
 
-  GetSelectedTags () {
+  GetSelectedTags() {
     return this.state.selectedTags;
   }
 
-  GetUnusedTags () {
+  GetUnusedTags() {
     return this.state.tags.filter(
-      tag => this.state.selectedTags.filter(selectedTag => selectedTag.title === tag.title).length === 0
+      tag =>
+        this.state.selectedTags.filter(
+          selectedTag => selectedTag.title === tag.title
+        ).length === 0
     );
   }
 
-  HandleToggleCallback () {
+  HandleToggleCallback() {
     this.setState({ open: !this.state.open });
   }
 
-  RefreshDataCallback () {
+  RefreshDataCallback() {
     this.LoadDataFromApi(this.state.selectedTags);
   }
 
-  SelectTagCallback (title) {
+  SelectTagCallback(title) {
     const foundTag = TagsService.GetTagByTitle(this.state.tags, title);
     if (!TagsService.TagsContainsByTitle(this.state.selectedTags, title)) {
-      const selectedTags = this.state.selectedTags;
+      const { selectedTags } = this.state;
       selectedTags.push(foundTag);
       this.setState({ selectedTags, loading: true });
       this.LoadDataFromApi(selectedTags);
     }
   }
 
-  DeselectTagCallback (title) {
+  DeselectTagCallback(title) {
     const foundTag = TagsService.GetTagByTitle(this.state.selectedTags, title);
-    const selectedTags = this.state.selectedTags;
+    const { selectedTags } = this.state;
     selectedTags.splice(foundTag, 1);
     this.setState({ selectedTags, loading: true });
     this.LoadDataFromApi(selectedTags);
   }
 
-  render () {
-    const { loading, open, cards } = this.state;
-
+  render() {
+    const { loading, open } = this.state;
     const selectedTags = this.GetSelectedTags();
     const unusedTags = this.GetUnusedTags();
 
-    const DeselectTagCallback = this.DeselectTagCallback;
-    const SelectTagCallback = this.SelectTagCallback;
-    const RefreshDataCallback = this.RefreshDataCallback;
-    const HandleToggleCallback = this.HandleToggleCallback;
+    const { DeselectTagCallback } = this;
+    const { SelectTagCallback } = this;
+    const { RefreshDataCallback } = this;
+    const { HandleToggleCallback } = this;
 
     return (
       <Container>
-        <Cards data={cards}
-          refreshDataCallback={RefreshDataCallback} />
+        <Cards cards={this.state.cards} refreshDataCallback={RefreshDataCallback} />
         <Drawer open={open}>
-          <Container className='drawerHead'>
-            <IconButton className='closeDrawer' onClick={HandleToggleCallback}>
+          <Container className="drawerHead">
+            <IconButton className="closeDrawer" onClick={HandleToggleCallback}>
               <Clear />
             </IconButton>
           </Container>
-          <TagsBlock tags={selectedTags}
-            title={'Filter'}
-            isDelete={true}
+          <TagsBlock
+            tags={selectedTags}
+            title="Filter"
+            isDelete
             deselectTagCallback={DeselectTagCallback}
-            className='filteredTags' />
-          <TagsBlock tags={unusedTags}
-            title={'Tags'}
+            className="filteredTags"/>
+          <TagsBlock
+            tags={unusedTags}
+            title="Tags"
             isDelete={false}
             onClickCallback={SelectTagCallback}
-            className='allTags' />
+            className="allTags"/>
         </Drawer>
-        <IconButton className='filterToggle' onClick={HandleToggleCallback}>
+        <IconButton className="filterToggle" onClick={HandleToggleCallback}>
           <FilterList />
         </IconButton>
         <Loader loading={loading} />

@@ -1,26 +1,26 @@
 export class StyleService {
-  static GetChipStyles () {
+  static GetChipStyles() {
     return {
       chip: {
-        margin: 4
+        margin: 4,
       },
       wrapper: {
         display: 'flex',
-        flexWrap: 'wrap'
-      }
+        flexWrap: 'wrap',
+      },
     };
   }
 
-  static GetTileStyle (textColor) {
+  static GetTileStyle(textColor) {
     return {
       color: textColor,
-      fontWeight: 'bold'
-    }
+      fontWeight: 'bold',
+    };
   }
 
-  static GetImageStyle (image) {
+  static GetImageStyle(image) {
     return {
-      background: 'url("' + image + '") scroll no-repeat center/cover'
-    }
+      background: 'url("' + image + '") scroll no-repeat center/cover',
+    };
   }
 }

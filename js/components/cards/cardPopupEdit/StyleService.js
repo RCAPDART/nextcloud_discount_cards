@@ -1,12 +1,12 @@
 export class StyleService {
-  static GetTitleStyles (color, textColor) {
+  static GetTitleStyles(color, textColor) {
     return {
       backgroundColor: color,
-      color: textColor
+      color: textColor,
     };
   }
 
-  static GetTitleH3Styles (color, textColor) {
+  static GetTitleH3Styles(color, textColor) {
     return {
       backgroundColor: color,
       color: textColor,
@@ -14,11 +14,11 @@ export class StyleService {
       textOverflow: 'ellipsis',
       overflow: 'hidden',
       whiteSpace: 'nowrap',
-      height: '54px'
+      height: '54px',
     };
   }
 
-  static GetWindowStyles (modalWidth, modalHeight) {
+  static GetWindowStyles(modalWidth, modalHeight) {
     let width = 80;
     let marginLeft = 10;
     if (modalWidth) {
@@ -32,39 +32,39 @@ export class StyleService {
         width: width + '%',
         marginLeft: marginLeft + '%',
         height: height.height + '%',
-        top: height.top + '%'
+        top: height.top + '%',
       };
     }
 
     return {
       width: width + '%',
-      marginLeft: marginLeft + '%'
+      marginLeft: marginLeft + '%',
     };
   }
 
-  static GetImageStyle (img) {
+  static GetImageStyle(img) {
     return {
       backgroundSize: 'cover',
-      background: 'url("' + img + '") scroll no-repeat center/cover'
-    }
-  }
-
-  static GetImageDataStyle (color, height) {
-    return {
-      background: color,
-      height: height + 'vh'
+      background: 'url("' + img + '") scroll no-repeat center/cover',
     };
   }
 
-  static GetChipStyles () {
+  static GetImageDataStyle(color, height) {
+    return {
+      background: color,
+      height: height + 'vh',
+    };
+  }
+
+  static GetChipStyles() {
     return {
       chip: {
-        margin: 4
+        margin: 4,
       },
       wrapper: {
         display: 'flex',
-        flexWrap: 'wrap'
-      }
+        flexWrap: 'wrap',
+      },
     };
   }
 }

@@ -3,37 +3,37 @@ import React, { Component } from 'react';
 
 import { Container } from '../../../../baseComponents/container/container';
 
-import './orderItem.less';
+import './orderItem.scss';
 
 export class OrderItem extends Component {
   static propTypes = {
     orderKey: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
     onOrderChangeCallback: PropTypes.func.isRequired,
-    getItemClassState: PropTypes.func.isRequired
+    getItemClassState: PropTypes.func.isRequired,
   };
 
-  constructor (props) {
+  constructor(props) {
     super(props);
     this.onOrderChange = this.onOrderChange.bind(this);
   }
 
-  onOrderChange () {
+  onOrderChange() {
     this.props.onOrderChangeCallback(this.props.orderKey);
   }
 
-  getOrderingClass () {
+  getOrderingClass() {
     return this.props.getItemClassState(this.props.orderKey);
   }
 
-  render () {
+  render() {
     const { title } = this.props;
     const orderClass = this.getOrderingClass();
-    const onOrderChange = this.onOrderChange;
+    const { onOrderChange } = this;
 
     return (
-      <Container className='orderLink' onClick={onOrderChange}>
-        <span className='name unselectable'>{title}</span>
+      <Container className="orderLink" onClick={onOrderChange}>
+        <span className="name unselectable">{title}</span>
         <span className={'sort-indicator unselectable ' + orderClass} />
       </Container>
     );

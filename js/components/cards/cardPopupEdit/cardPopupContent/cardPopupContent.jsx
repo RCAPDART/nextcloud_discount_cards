@@ -9,24 +9,21 @@ export class CardPopupContent extends Component {
     card: PropTypes.object.isRequired,
     edit: PropTypes.bool.isRequired,
     editCallback: PropTypes.func.isRequired,
-    modalWidth: PropTypes.number.isRequired
+    modalWidth: PropTypes.number.isRequired,
   };
 
-  render () {
+  render() {
     const { card, edit, editCallback, modalWidth } = this.props;
 
-    return (
-      card != null ? (
-        <Fragment> {
-          edit === false ? (
-            <CardStatic card={card}
-              modalWidth={modalWidth} />
-          ) : (
-            <CardEditor card={card} callBack={editCallback} />
-          )
-        }
-        </Fragment>)
-        : null
-    )
+    return card != null ? (
+      <>
+        {' '}
+        {edit === false ? (
+          <CardStatic card={card} modalWidth={modalWidth} />
+        ) : (
+          <CardEditor card={card} callBack={editCallback} />
+        )}
+      </>
+    ) : null;
   }
 }

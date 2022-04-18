@@ -10,7 +10,7 @@ import { Container } from '../../../baseComponents/container/container';
 import { Loader } from '../../common/loader/loader';
 import { StyleService } from './StyleService';
 
-import './cardPopupEdit.less';
+import './cardPopupEdit.scss';
 
 export class CardPopupEdit extends Component {
   static propTypes = {
@@ -20,7 +20,7 @@ export class CardPopupEdit extends Component {
     modalWidth: PropTypes.number.isRequired,
     modalHeight: PropTypes.number.isRequired,
     closeCallback: PropTypes.func.isRequired,
-    deleteCallback: PropTypes.func.isRequired
+    deleteCallback: PropTypes.func.isRequired,
   };
 
   state = {
@@ -31,10 +31,10 @@ export class CardPopupEdit extends Component {
     textColor: this.props.card != null ? this.props.card.textColor : null,
     title: this.props.card != null ? this.props.card.title : null,
     modalForDeleteCardOpened: false,
-    loading: false
+    loading: false,
   };
 
-  constructor (props) {
+  constructor(props) {
     super(props);
     this.closeModal = this.closeModal.bind(this);
     this.deleteCard = this.deleteCard.bind(this);
@@ -45,7 +45,7 @@ export class CardPopupEdit extends Component {
     this.cancelDelete = this.cancelDelete.bind(this);
   }
 
-  componentWillReceiveProps (nextProps) {
+  componentWillReceiveProps(nextProps) {
     if (this.props.opened) return;
     this.setState({
       modalForDeleteCardOpened: false,
@@ -54,19 +54,19 @@ export class CardPopupEdit extends Component {
       editedCard: nextProps.card,
       textColor: nextProps.card.textColor,
       title: nextProps.card.title,
-      isEdit: nextProps.isEdit
+      isEdit: nextProps.isEdit,
     });
   }
 
-  toggleEdit () {
+  toggleEdit() {
     this.applyStateChanges(true, CardsService.CloneCard(this.state.editedCard));
   }
 
-  discardChanges () {
+  discardChanges() {
     this.applyStateChanges(false, CardsService.CloneCard(this.props.card));
   }
 
-  editCallback (updatedCard) {
+  editCallback(updatedCard) {
     this.setState({ loading: true });
     CardsService.AddUpdateCard({ card: updatedCard }).then(() => {
       this.setState({ loading: false, editedCard: updatedCard });
@@ -74,26 +74,26 @@ export class CardPopupEdit extends Component {
     });
   }
 
-  closeModal () {
+  closeModal() {
     this.props.closeCallback(this.state.editedCard);
   }
 
-  deleteCard () {
+  deleteCard() {
     this.setState({ modalForDeleteCardOpened: true });
   }
 
-  cancelDelete () {
+  cancelDelete() {
     this.setState({ modalForDeleteCardOpened: false });
   }
 
-  acceptDelete () {
+  acceptDelete() {
     this.props.deleteCallback(this.props.card.id);
   }
 
-  applyStateChanges (isEdit, card) {
-    let title = card.title;
-    let color = card.color;
-    let textColor = card.textColor;
+  applyStateChanges(isEdit, card) {
+    let { title } = card;
+    let { color } = card;
+    let { textColor } = card;
     if (isEdit) {
       title = 'Editing "' + title + '"';
       color = 'black';
@@ -102,79 +102,76 @@ export class CardPopupEdit extends Component {
     this.setState({ title, color, textColor, isEdit, openedCard: card });
   }
 
-  render () {
+  render() {
     const { textColor, isEdit, title, openedCard, loading } = this.state;
     const { opened, modalWidth } = this.props;
 
-    const windowStyle = StyleService.GetWindowStyles(this.props.modalWidth, this.props.modalHeight);
-    const titleStyle = StyleService.GetTitleStyles(this.state.color, this.state.textColor);
-    const titleH3Style = StyleService.GetTitleH3Styles(this.state.color, this.state.textColor);
+    const windowStyle = StyleService.GetWindowStyles(
+      this.props.modalWidth,
+      this.props.modalHeight
+    );
+    const titleStyle = StyleService.GetTitleStyles(
+      this.state.color,
+      this.state.textColor
+    );
+    const titleH3Style = StyleService.GetTitleH3Styles(
+      this.state.color,
+      this.state.textColor
+    );
 
-    const closeModal = this.closeModal;
-    const deleteCard = this.deleteCard;
-    const discardChanges = this.discardChanges;
-    const toggleEdit = this.toggleEdit;
-    const editCallback = this.editCallback;
-    const acceptDelete = this.acceptDelete;
-    const cancelDelete = this.cancelDelete;
+    const { closeModal } = this;
+    const { deleteCard } = this;
+    const { discardChanges } = this;
+    const { toggleEdit } = this;
+    const { editCallback } = this;
+    const { acceptDelete } = this;
+    const { cancelDelete } = this;
 
     const actions = [
-      <FlatButton
-        key='Delete'
-        label="Delete"
-        primary={true}
-        onClick={acceptDelete}
-      />,
-      <FlatButton
-        key='Cancel'
-        label="Cancel"
-        primary={true}
-        onClick={cancelDelete}
-      />
+      <FlatButton key="Delete" label="Delete" primary onClick={acceptDelete} />,
+      <FlatButton key="Cancel" label="Cancel" primary onClick={cancelDelete} />,
     ];
 
-    return (
-      opened === true ? (
-        <Container className='fullDialog'>
-          <Container className={'back'}>
-            <Container className={'dialogWindow'} style={windowStyle}>
-              <Container className='dialogContent'>
-                <Container className='title' style={titleStyle}>
-                  <h3 style={titleH3Style}>{title}</h3>
-                </Container>
-                <Container className='content'>
-                  <CardPopupContent
-                    card={openedCard}
-                    edit={isEdit}
-                    deleteCard={deleteCard}
-                    discardChanges={discardChanges}
-                    editCallback={editCallback}
-                    toggleEdit={toggleEdit}
-                    closeModal={closeModal}
-                    modalWidth={modalWidth}/>
-                  <ActionButtons
-                    cardId={parseInt(openedCard.id)}
-                    edit={isEdit}
-                    textColor={textColor}
-                    deleteCard={deleteCard}
-                    discardChanges={discardChanges}
-                    toggleEdit={toggleEdit}
-                    closeModal={closeModal} />
-                  <Dialog
-                    actions={actions}
-                    modal={false}
-                    open={this.state.modalForDeleteCardOpened}
-                    onRequestClose={cancelDelete}
-                  >
-                      Delete card?
-                  </Dialog>
-                  <Loader loading={loading} />
-                </Container>
+    return opened === true ? (
+      <Container className="fullDialog">
+        <Container className="back">
+          <Container className="dialogWindow" style={windowStyle}>
+            <Container className="dialogContent">
+              <Container className="title" style={titleStyle}>
+                <h3 style={titleH3Style}>{title}</h3>
+              </Container>
+              <Container className="content">
+                <CardPopupContent
+                  card={openedCard}
+                  edit={isEdit}
+                  deleteCard={deleteCard}
+                  discardChanges={discardChanges}
+                  editCallback={editCallback}
+                  toggleEdit={toggleEdit}
+                  closeModal={closeModal}
+                  modalWidth={modalWidth}/>
+                <ActionButtons
+                  cardId={parseInt(openedCard.id)}
+                  edit={isEdit}
+                  textColor={textColor}
+                  deleteCard={deleteCard}
+                  discardChanges={discardChanges}
+                  toggleEdit={toggleEdit}
+                  closeModal={closeModal}/>
+                <Dialog
+                  actions={actions}
+                  modal={false}
+                  open={this.state.modalForDeleteCardOpened}
+                  onRequestClose={cancelDelete}
+                >
+                  Delete card?
+                </Dialog>
+                <Loader loading={loading} />
               </Container>
             </Container>
           </Container>
-        </Container>)
-        : null
-    );
+        </Container>
+      </Container>
+    ) : null;
   }
 }
