@@ -8,9 +8,9 @@ const commonPaths = require('./paths');
 module.exports = {
   mode: 'production',
   output: {
-    filename: `${commonPaths.jsFolder}/[name].js`,
-    path: commonPaths.outputPath,
-    chunkFilename: `${commonPaths.jsFolder}/[name].[chunkhash].js`,
+    filename: '[name].js',
+    path: commonPaths.jsFolder,
+    chunkFilename: `$[name].[chunkhash].js`,
   },
   optimization: {
     minimizer: [

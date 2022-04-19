@@ -5,7 +5,7 @@ module.exports = {
   mode: 'development',
   output: {
     filename: '[name].js',
-    path: commonPaths.outputPath,
+    path: commonPaths.jsFolder,
     chunkFilename: '[name].js',
   },
   module: {
@@ -43,7 +43,7 @@ module.exports = {
   },
   devServer: {
     static: {
-      directory: commonPaths.outputPath,
+      directory: commonPaths.imagesFolder,
     },
     compress: true,
     port: 9000,

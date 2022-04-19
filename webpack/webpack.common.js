@@ -38,9 +38,6 @@ module.exports = {
   },
   plugins: [
     new webpack.ProgressPlugin(),
-    new HtmlWebpackPlugin({
-      template: commonPaths.templatePath,
-    }),
     new ScriptExtHtmlWebpackPlugin({
       defaultAttribute: 'async',
     }),
