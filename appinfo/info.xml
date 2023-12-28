@@ -2,12 +2,21 @@
 <info>
 	<id>discount_cards</id>
 	<name>Discount Cards</name>
+	<summary>App for storing discount cards</summary>
 	<description>Application for storing your discount cards</description>
 	<licence>AGPL</licence>
 	<author>Artem Malozemov</author>
-
+	<version>1.0</version>
+	<namespace>Discount_Cards</namespace>
+	<category>office</category>
 	<dependencies>
-		<nextcloud min-version="13" max-version="15"/>
+		<nextcloud min-version="13" max-version="27"/>
 		<owncloud min-version="12" max-version="13"/>
 	</dependencies>
+	<navigations>
+		<navigation>
+			<name>Discount Cards</name>
+			<route>discount_cards.page.index</route>
+		</navigation>
+	</navigations>
 </info>

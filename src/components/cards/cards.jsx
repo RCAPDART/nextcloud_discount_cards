@@ -156,7 +156,6 @@ export class Cards extends BaseComponent {
             modalHeight={maxDialogHeight}
             closeCallback={closeCardModal}
             deleteCallback={deleteCardCallback}/>)}
-        )}
         <Loader loading={loading} />
       </Container>
     );
